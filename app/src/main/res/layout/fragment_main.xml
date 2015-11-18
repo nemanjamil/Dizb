@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/settings"
+                android:text="@string/settings_str"
                 android:id="@+id/textView"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -30,21 +30,36 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/textView"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="#FF607AFF"
+                android:layout_margin="@dimen/main_fragment_layout_margin">
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Button"
+                    android:layout_height="100dp"
+                    android:text="@string/connect_str"
                     android:id="@+id/button"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:layout_margin="@dimen/main_fragment_button_margin"
+                    android:padding="@dimen/main_fragment_button_padding"
+                    android:maxHeight="@dimen/main_fragment_button_max_height"
+                    android:maxWidth="@dimen/main_fragment_button_max_width"
+                    android:background="#ffff659f" />
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Button"
+                    android:layout_height="100dp"
+                    android:text="@string/setdevice_str"
                     android:id="@+id/button2"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:layout_margin="@dimen/main_fragment_button_margin"
+                    android:singleLine="false"
+                    android:padding="@dimen/main_fragment_button_padding"
+                    android:maxHeight="@dimen/main_fragment_button_max_height"
+                    android:maxWidth="@dimen/main_fragment_button_max_width"
+                    android:background="#ffff659f" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -57,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/readings"
+                android:text="@string/readings_str"
                 android:id="@+id/textView2"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -68,19 +83,33 @@
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="#ff607aff"
+                android:layout_margin="@dimen/main_fragment_layout_margin">
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Button"
-                    android:id="@+id/button3" />
+                    android:layout_height="100dp"
+                    android:text="@string/graphs_str"
+                    android:id="@+id/button3"
+                    android:layout_margin="@dimen/main_fragment_button_margin"
+                    android:layout_weight="0.5"
+                    android:padding="@dimen/main_fragment_button_padding"
+                    android:maxHeight="@dimen/main_fragment_button_max_height"
+                    android:maxWidth="@dimen/main_fragment_button_max_width"
+                    android:background="#ffff659f" />
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Button"
-                    android:id="@+id/button4" />
+                    android:layout_height="100dp"
+                    android:text="@string/notifications_str"
+                    android:id="@+id/button4"
+                    android:layout_margin="@dimen/main_fragment_button_margin"
+                    android:layout_weight="0.5"
+                    android:padding="@dimen/main_fragment_button_padding"
+                    android:maxHeight="@dimen/main_fragment_button_max_height"
+                    android:maxWidth="@dimen/main_fragment_button_max_width"
+                    android:background="#ffff659f" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
