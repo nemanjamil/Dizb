@@ -8,4 +8,14 @@
     <string name="setdevice_str">Setovanje\n uređaja</string>
     <string name="graphs_str">Grafici</string>
     <string name="notifications_str">Notifikacije</string>
+    <string name="full_name_hint">Ime i prezime</string>
+    <string name="email_hint">Email</string>
+    <string name="pass_hint">Šifra</string>
+    <string name="btn_text_register">Registruj</string>
+    <string name="text_already_have_account">Već imate nalog! Poveži se</string>
+    <string name="text_logged_in">Povezani ste</string>
+    <string name="btn_text_logout">Odveži se</string>
+    <string name="text_web_site">direktnoizbaste.rs</string>
+    <string name="btn_text_sign_in">Poveži se</string>
+    <string name="btn_text_register_here">Registruj me</string>
 </resources>

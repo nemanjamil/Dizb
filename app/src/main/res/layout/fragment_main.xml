@@ -4,7 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment">
+    tools:context=".MainActivity$PlaceholderFragment"
+    android:background="@mipmap/vegetables_set">
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,7 +32,7 @@
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/textView"
                 android:gravity="center"
-                android:background="#FF607AFF"
+                android:background="#87607aff"
                 android:layout_margin="@dimen/main_fragment_layout_margin">
 
                 <Button
@@ -84,7 +85,7 @@
                 android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:background="#ff607aff"
+                android:background="#7bd38989"
                 android:layout_margin="@dimen/main_fragment_layout_margin">
 
                 <Button
