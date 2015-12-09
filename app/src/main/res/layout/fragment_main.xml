@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/settings_str"
+                android:text="@string/text_settings"
                 android:id="@+id/textView"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -38,7 +38,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:text="@string/connect_str"
+                    android:text="@string/btn_text_connect"
                     android:id="@+id/button"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.5"
@@ -51,7 +51,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:text="@string/setdevice_str"
+                    android:text="@string/btn_text_set_device"
                     android:id="@+id/button2"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.5"
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/readings_str"
+                android:text="@string/text_readings"
                 android:id="@+id/textView2"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -91,7 +91,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:text="@string/graphs_str"
+                    android:text="@string/btn_text_graphs"
                     android:id="@+id/button3"
                     android:layout_margin="@dimen/main_fragment_button_margin"
                     android:layout_weight="0.5"
@@ -103,7 +103,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:text="@string/notifications_str"
+                    android:text="@string/btn_text_notifications"
                     android:id="@+id/button4"
                     android:layout_margin="@dimen/main_fragment_button_margin"
                     android:layout_weight="0.5"
