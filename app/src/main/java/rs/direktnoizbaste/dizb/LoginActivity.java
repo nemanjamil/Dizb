@@ -84,14 +84,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.setMessage("Logging in ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+        String url =  String.format(AppConfig.URL_LOGIN_GET, "login", email, password);
+
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 hideDialog();
 
                 try {
+
                     JSONObject jObj = new JSONObject(response);
                     String userId= jObj.getString("uid");
 
@@ -130,10 +133,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             protected Map<String, String> getParams() {
                 // Post params to login url
                 Map<String, String> params = new HashMap<String, String>();
+                //params.put("tag", "login");
+                //params.put("email", email);
+                //params.put("password", password);
+
+                params.put("action","povuciPodatkeAndroidKorisnik");
                 params.put("tag", "login");
                 params.put("email", email);
                 params.put("password", password);
-
                 return params;
             }
 

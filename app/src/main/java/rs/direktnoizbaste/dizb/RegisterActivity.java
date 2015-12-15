@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -94,14 +95,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         pDialog.setMessage("Registering ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+        String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, name);
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 hideDialog();
 
                 try {
+                    Log.i("REGISTER_URL", response);
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
@@ -153,8 +156,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("action", "registrujAndroid");
                 params.put("tag", "register");
-                params.put("name", name);
+                params.put("komitentime", name);
+                params.put("komitentprezime", name);
                 params.put("email", email);
                 params.put("password", password);
 
@@ -165,6 +170,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        Log.i("REGISTER_URL", strReq.getUrl());
+
     }
 
     private void showDialog() {
