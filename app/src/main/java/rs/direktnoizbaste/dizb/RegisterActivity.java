@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registering ...");
+        pDialog.setMessage("Registracija ...");
         showDialog();
 
         String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, name);
@@ -200,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     registerUser(name, email, password);
                 } else {
-                    Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Unesite podatke!", Snackbar.LENGTH_LONG)
                             .show();
                 }
                 break;

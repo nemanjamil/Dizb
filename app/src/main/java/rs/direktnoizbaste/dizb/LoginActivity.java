@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        progressDialog.setMessage("Logging in ...");
+        progressDialog.setMessage("Povezivanje...");
         showDialog();
 
         String url =  String.format(AppConfig.URL_LOGIN_GET, "login", email, password);
@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     checkLogin(email, password);
                 } else {
                     // show snackbar to enter credentials
-                    Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Unesite podatke!", Snackbar.LENGTH_LONG)
                             .show();
                 }
                 break;
