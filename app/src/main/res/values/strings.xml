@@ -18,4 +18,8 @@
     <string name="text_web_site">direktnoizbaste.rs</string>
     <string name="btn_text_sign_in">Poveži se</string>
     <string name="btn_text_register_here">Registruj me</string>
+
+    <!-- Line graph activity strings-->
+    <string name="graph_no_data">Nema podataka za prikaz.</string>
+    <string name="graph_description"></string>
 </resources>
