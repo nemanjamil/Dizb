@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registracija ...");
+        pDialog.setMessage("Registracija...");
         showDialog();
 
         String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, name);
@@ -106,6 +106,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     Log.i("REGISTER_URL", response);
                     JSONObject jObj = new JSONObject(response);
+/*TODO fix parsing of response JSON object
+{"error_msg":"","tag":"register","error":false,"uid":33,"user":{"KomitentIme":"Milan","KomitentPrezime":"Milan","KomitentUserName":"a","email":"a@b.com","created_at":"2016-01-14 19:03:33"}} */
+
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
                         // User successfully stored in MySQL
@@ -113,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
+                        String name = user.getString("KomitentIme");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
@@ -196,7 +199,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String name = etFullName.getText().toString();
                 String email = etEmailRegister.getText().toString();
                 String password = etPasswordRegister.getText().toString();
-
+/* TODO  Make better filed validation. Name can't contain spaces and/or UTF-8 letters.*/
+/* TODO Add separate field for last name*/
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     registerUser(name, email, password);
                 } else {
