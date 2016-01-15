@@ -8,7 +8,8 @@
     <string name="btn_text_set_device">Setovanje\n uređaja</string>
     <string name="btn_text_graphs">Grafici</string>
     <string name="btn_text_notifications">Notifikacije</string>
-    <string name="full_name_hint">Ime i prezime</string>
+    <string name="full_name_hint">Ime</string>
+    <string name="last_name_hint">Prezime</string>
     <string name="email_hint">Email</string>
     <string name="pass_hint">Šifra</string>
     <string name="btn_text_register">Registruj</string>
@@ -22,4 +23,8 @@
     <!-- Line graph activity strings-->
     <string name="graph_no_data">Nema podataka za prikaz.</string>
     <string name="graph_description"></string>
+    <string name="title_activity_drawer">DrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

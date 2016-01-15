@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
    /*
    function to register user details in mysql database
     */
-    private void registerUser(final String name, final String email,
+    private void registerUser(final String name, final String last_name, final String email,
                               final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         pDialog.setMessage("Registracija...");
         showDialog();
 
-        String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, name);
+        String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, last_name);
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
 
@@ -109,20 +109,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 /*TODO fix parsing of response JSON object
 {"error_msg":"","tag":"register","error":false,"uid":33,"user":{"KomitentIme":"Milan","KomitentPrezime":"Milan","KomitentUserName":"a","email":"a@b.com","created_at":"2016-01-14 19:03:33"}} */
 
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
+                    boolean success = jObj.getBoolean("success");
+                    if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
                         String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("KomitentIme");
+                        String last_name = user.getString("KomitentPrezime");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
 
                         AppController.setString(RegisterActivity.this, "uid", uid);
                         AppController.setString(RegisterActivity.this, "name", name);
+                        AppController.setString(RegisterActivity.this, "last_name", last_name);
                         AppController.setString(RegisterActivity.this, "email", email);
                         AppController.setString(RegisterActivity.this, "created_at", created_at);
 
@@ -137,6 +139,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
+                        if (errorMsg == "") errorMsg = "Server communication error!";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -162,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 params.put("action", "registrujAndroid");
                 params.put("tag", "register");
                 params.put("komitentime", name);
-                params.put("komitentprezime", name);
+                params.put("komitentprezime", last_name);
                 params.put("email", email);
                 params.put("password", password);
 
@@ -197,12 +200,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             case R.id.register_button:
                 String name = etFullName.getText().toString();
+                /* TODO */
+                String last_name = "PlaceHolder";
                 String email = etEmailRegister.getText().toString();
                 String password = etPasswordRegister.getText().toString();
 /* TODO  Make better filed validation. Name can't contain spaces and/or UTF-8 letters.*/
 /* TODO Add separate field for last name*/
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    registerUser(name, last_name, email, password);
                 } else {
                     Snackbar.make(v, "Unesite podatke!", Snackbar.LENGTH_LONG)
                             .show();

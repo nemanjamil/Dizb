@@ -96,9 +96,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
 
                     JSONObject jObj = new JSONObject(response);
-                    String userId= jObj.getString("uid");
 
-                    if (userId!=null) {
+                    //String userId= jObj.getString("uid");
+
+                    boolean success = jObj.getBoolean("success");
+
+                    if (success) {
                         // user successfully logged in
                         // Create login session
                         session.setLogin(true);
