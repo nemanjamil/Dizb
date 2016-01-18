@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (session.isLoggedIn()) {
             // User is already logged in. Move to main activity
             Intent intent = new Intent(RegisterActivity.this,
-                    MainActivity.class);
+                    SensorListActivity.class);
             startActivity(intent);
             finish();
         }
@@ -139,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
-                        if (errorMsg == "") errorMsg = "Server communication error!";
+                        if (errorMsg.equals("")) errorMsg = "Server communication error!";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
