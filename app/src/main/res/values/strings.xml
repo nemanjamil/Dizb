@@ -23,7 +23,6 @@
     <!-- Line graph activity strings-->
     <string name="graph_no_data">Nema podataka za prikaz.</string>
     <string name="graph_description"></string>
-    <string name="title_activity_drawer">DrawerActivity</string>
 
     <!-- Sensor list custom row strings -->
     <string name="sensor_list_raw_text">Sensor name</string>
@@ -31,7 +30,6 @@
     <string name="sensor_list_raw_image_content_description">Sensor image</string>
 
     <!-- Navigation drawer activity strings-->
-    <string name="title_activity_drawer">DrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
