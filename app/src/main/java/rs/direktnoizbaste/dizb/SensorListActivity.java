@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,13 @@ public class SensorListActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 hideDialog();
+                if (response!=null){
+                    Log.d("RESPONSE", "Nije null");
+                    Log.d("RESPONSE", response);
+                }else
+                {
+                    Log.d("RESPONSE", "NULL RESPONSE");
+                }
 
                 try {
 
@@ -88,6 +96,7 @@ public class SensorListActivity extends AppCompatActivity {
                             jsonObjects[i] = jArr.getJSONObject(i);
                         }
                         customArrayAdapter = new CustomArrayAdapter(getBaseContext(), jsonObjects);
+                        listView.setAdapter(customArrayAdapter);
 
                     } else {
                         // login error
