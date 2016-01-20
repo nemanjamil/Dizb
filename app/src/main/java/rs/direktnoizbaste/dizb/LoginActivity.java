@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
-            Intent intent = new Intent(LoginActivity.this, SensorListActivity.class);
+            Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
             startActivity(intent);
             finish();
         }
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         // Launching  main activity
                         Intent intent = new Intent(LoginActivity.this,
-                                SensorListActivity.class);
+                                DrawerActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

@@ -33,6 +33,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
+    <string name="title_slider">Direktno iz bašte</string>
+    <string name="subtitle_slider">www.direktnoizbaste.com</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -122,4 +125,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_drawer">DrawerActivity</string>
 </resources>

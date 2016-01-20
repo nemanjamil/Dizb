@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (session.isLoggedIn()) {
             // User is already logged in. Move to main activity
             Intent intent = new Intent(RegisterActivity.this,
-                    SensorListActivity.class);
+                    DrawerActivity.class);
             startActivity(intent);
             finish();
         }
