@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +42,7 @@ import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     ListView listView;
     CustomArrayAdapter customArrayAdapter;
@@ -76,6 +77,7 @@ public class DrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         listView = (ListView)findViewById(R.id.listView);
+        listView.setOnItemClickListener(this);
 
         //setting progressDialog
         progressDialog = new ProgressDialog(this);
@@ -248,6 +250,12 @@ public class DrawerActivity extends AppCompatActivity
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+        startActivity(intent);
     }
 
     private class RawSensorData{
