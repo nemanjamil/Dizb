@@ -13,7 +13,7 @@
     <string name="email_hint">Email</string>
     <string name="pass_hint">Šifra</string>
     <string name="btn_text_register">Registruj</string>
-    <string name="text_already_have_account">Već imate nalog! Poveži se</string>
+    <string name="text_already_have_account">Ako već imate nalog: kliknite ovde.</string>
     <string name="text_logged_in">Povezani ste</string>
     <string name="btn_text_logout">Odveži se</string>
     <string name="text_web_site">direktnoizbaste.rs</string>
@@ -34,7 +34,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
     <string name="title_slider">Direktno iz bašte</string>
-    <string name="subtitle_slider">www.direktnoizbaste.com</string>
+    <string name="subtitle_slider">www.direktnoizbaste.rs</string>
     <string name="drawer_menu_logout">Odjavi se...</string>
     <string name="drawer_menu_add">Dodaj senzor...</string>
 
@@ -129,4 +129,5 @@
     </string>
     <string name="title_activity_drawer">Lista senzora</string>
     <string name="drawer_action_subtitle">Akcije</string>
+    <string name="progress_update_sensor_list">Učitavam listu...</string>
 </resources>

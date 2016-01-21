@@ -2,6 +2,7 @@ package rs.direktnoizbaste.dizb;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -80,6 +81,8 @@ public class DrawerActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
+        session = new SessionManager(getApplicationContext());
+
         //Pulling sensor list from server
         pullSensorList("1");
     }
@@ -131,7 +134,15 @@ public class DrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else*/ if (id == R.id.nav_logout) {
-            /*TODO Logut user and show login activity */
+
+            //If the session is logged in log out
+            if (session.isLoggedIn()) {
+                /*TODO make actual log out from the server */
+                session.setLogin(false);
+                Intent intent = new Intent(DrawerActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
         } else if (id == R.id.nav_add) {
 
@@ -148,7 +159,7 @@ public class DrawerActivity extends AppCompatActivity
     private void pullSensorList(final String uid) {
         // Tag used to cancel the request
         String tag_string_req = "req_pull_sensors";
-        showDialog("Updating sensor list...");
+        showDialog(getString(R.string.progress_update_sensor_list));
 
         String url =  String.format(AppConfig.URL_SENSOR_LIST_GET, uid);
 
@@ -266,6 +277,13 @@ public class DrawerActivity extends AppCompatActivity
             try {
                 textView.setText(values[position].getString("ImeKulture") + " - " + values[position].getString("LokacijaIme"));
                 textView_desc.setText(values[position].getString("SenzorSifra"));
+                imageView.setImageResource(R.mipmap.tomato6);
+                /*TODO figure out better way to pair name with icon */
+                if (values[position].getString("ImeKulture").equals("Paprika"))
+                    imageView.setImageResource(R.mipmap.capsicum);
+                if (values[position].getString("ImeKulture").equals("Boranija"))
+                    imageView.setImageResource(R.mipmap.peas);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
