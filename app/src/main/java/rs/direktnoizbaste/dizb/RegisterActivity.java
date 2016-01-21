@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         pDialog.setMessage("Registracija...");
         showDialog();
 
-        String url = String.format(AppConfig.URL_REGISTER_GET,"register", email, password, name, last_name);
+        String url = String.format(AppConfig.URL_REGISTER_GET, "register", email, password, name, last_name);
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
 

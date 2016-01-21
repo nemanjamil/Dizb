@@ -35,6 +35,8 @@
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
     <string name="title_slider">Direktno iz bašte</string>
     <string name="subtitle_slider">www.direktnoizbaste.com</string>
+    <string name="drawer_menu_logout">Odjavi se...</string>
+    <string name="drawer_menu_add">Dodaj senzor...</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -125,5 +127,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="title_activity_drawer">Lista senzora</string>
+    <string name="drawer_action_subtitle">Akcije</string>
 </resources>
