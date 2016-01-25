@@ -15,4 +15,7 @@ public class AppConfig {
     public static String URL_REGISTER_GET = "http://direktnoizbaste.rs/parametri.php?action=registrujAndroid&tag=%1$s&email=%2$s&sifra=%3$s&komitentime=%4$s&komitentprezime=%5$s";
     //http://direktnoizbaste.rs/parametri.php?action=povuciSenzorUid&id=1
     public static String URL_SENSOR_LIST_GET = "http://direktnoizbaste.rs/parametri.php?action=povuciSenzorUid&id=%1$s";
+    //http://direktnoizbaste.rs/parametri.php?action=povuciPodatkeSenzorId&string=5CCF7F747A7&id=1
+    public static String URL_GRAPHS_DATA_GET = "http://direktnoizbaste.rs/parametri.php?action=povuciPodatkeSenzorId&id=%1$s&string=%2$s";
+
 }
