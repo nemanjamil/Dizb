@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Testing webView</title>
     <script src="./highcharts.js"></script>
-      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="./exporting.js"></script>
     <script type="text/javascript">
 		var options = {
 			chart: {
@@ -117,7 +115,9 @@
 			}
 		};
 	
-		function visitor (data, kojaTabela, varijablaZaTip) {
+		function visitor (data,kojaTabela,varijablaZaTip,tipSenzora) {
+
+
 			options.chart.renderTo = kojaTabela;
 			senzorTipIme = data.podaciSenzor[varijablaZaTip].senzorTipIme
 
@@ -146,9 +146,10 @@
 			//options.yAxis.title.text = senzorTipIme;
 			options.series[0].data = data.podaciSenzor[varijablaZaTip].podacizaSenzorTime[0];
 			options.series[0].name = data.podaciSenzor[varijablaZaTip].podacizaSenzor[0].OpisSenNot;
-			options.tooltip.valueSuffix = ' C';
+			options.tooltip.valueSuffix = tipSenzora;
 
 			var chartTemp = new Highcharts.Chart(options);
+
 		}
 	
 		document.addEventListener('DOMContentLoaded', function() {
@@ -156,10 +157,10 @@
 			var data = Android.getJson();
 			data = JSON.parse(data);
 						
-			visitor(data,'containerA',0); // vlaznost zemljista
-			visitor(data,'containerB',1);
-			visitor(data,'containerC',2);
-			visitor(data,'containerD',3);
+			visitor(data,'containerA',0,'%'); // vlaznost zemljista
+			visitor(data,'containerB',1,'°C');
+			visitor(data,'containerC',2,'lux');
+			visitor(data,'containerD',3,'%');
 		});
 		</script>
 </head>
