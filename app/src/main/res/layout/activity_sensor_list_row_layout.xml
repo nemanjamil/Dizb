@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:padding="6dip"
+    android:background="#79000000">
 
     <ImageView
         android:id="@+id/icon"
@@ -27,7 +28,8 @@
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="@string/sensor_list_raw_description"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/firstLine"
@@ -42,6 +44,7 @@
         android:layout_toEndOf="@id/icon"
         android:gravity="center_vertical"
         android:text="@string/sensor_list_raw_text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
