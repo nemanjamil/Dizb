@@ -1,13 +1,13 @@
 package rs.direktnoizbaste.dizb;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.ActionMode;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -41,13 +38,15 @@ import java.util.Map;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.SessionManager;
+import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
 
     ListView listView;
-    CustomArrayAdapter customArrayAdapter;
+    SensorListAdapter customArrayAdapter;
     JSONObject[] jsonObjects;
+    Toolbar toolbar;
 
     private ProgressDialog progressDialog;
     private SessionManager session;
@@ -56,7 +55,7 @@ public class DrawerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -77,8 +76,10 @@ public class DrawerActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(this);
 
         //setting progressDialog
         progressDialog = new ProgressDialog(this);
@@ -136,7 +137,8 @@ public class DrawerActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else*/ if (id == R.id.nav_logout) {
+        } else*/
+        if (id == R.id.nav_logout) {
 
             //If the session is logged in log out
             if (session.isLoggedIn()) {
@@ -158,13 +160,13 @@ public class DrawerActivity extends AppCompatActivity
 
     /**
      * function to pull sensor list form web server
-     * */
+     */
     private void pullSensorList(final String uid) {
         // Tag used to cancel the request
         String tag_string_req = "req_pull_sensors";
         showDialog(getString(R.string.progress_update_sensor_list));
 
-        String url =  String.format(AppConfig.URL_SENSOR_LIST_GET, uid);
+        String url = String.format(AppConfig.URL_SENSOR_LIST_GET, uid);
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
@@ -172,11 +174,10 @@ public class DrawerActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 hideDialog();
-                if (response!=null){
+                if (response != null) {
                     Log.d("RESPONSE", "Nije null");
                     Log.d("RESPONSE", response);
-                }else
-                {
+                } else {
                     Log.d("RESPONSE", "NULL RESPONSE");
                 }
 
@@ -189,13 +190,13 @@ public class DrawerActivity extends AppCompatActivity
 
                     if (success) {
                         //create Array of JSON objects
-                        JSONArray jArr= jObj.getJSONArray("senzor");
+                        JSONArray jArr = jObj.getJSONArray("senzor");
 
                         jsonObjects = new JSONObject[jArr.length()];
-                        for (int i=0; i<jArr.length(); i++){
+                        for (int i = 0; i < jArr.length(); i++) {
                             jsonObjects[i] = jArr.getJSONObject(i);
                         }
-                        customArrayAdapter = new CustomArrayAdapter(getBaseContext(), jsonObjects);
+                        customArrayAdapter = new SensorListAdapter(getBaseContext(), jsonObjects);
                         listView.setAdapter(customArrayAdapter);
 
                     } else {
@@ -223,7 +224,7 @@ public class DrawerActivity extends AppCompatActivity
             protected Map<String, String> getParams() {
                 // Post params
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("action","povuciSensorUid");
+                params.put("action", "povuciSensorUid");
                 params.put("id", uid);
                 return params;
             }
@@ -240,7 +241,7 @@ public class DrawerActivity extends AppCompatActivity
     function to show dialog
     */
     private void showDialog(String msg) {
-        if (!progressDialog.isShowing()){
+        if (!progressDialog.isShowing()) {
             progressDialog.setMessage(msg);
             progressDialog.show();
         }
@@ -260,44 +261,49 @@ public class DrawerActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private class RawSensorData{
+    //Multichoice mode listener methods for list view
 
+    @Override
+    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+        // Here you can do something when items are selected/de-selected,
+        // such as update the title in the CAB
+        customArrayAdapter.selectView(position, checked);
     }
 
-    private class CustomArrayAdapter extends ArrayAdapter<JSONObject> {
-        private final Context context;
-        private final JSONObject[] values;
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        // Inflate the menu for the CAB
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.drawer, menu); /*TODO figure out the menu*/
+        return true;
+    }
 
-        public CustomArrayAdapter(Context context, JSONObject[] values) {
-            super(context, R.layout.activity_sensor_list_row_layout, values);
-            this.context = context;
-            this.values = values;
-        }
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        // Here you can perform updates to the CAB due to
+        // an invalidate() request
+        return false;
+    }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            /*TODO use view recycling for smooth scrolling...*/
-            View rowView = inflater.inflate(R.layout.activity_sensor_list_row_layout, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
-            TextView textView_desc = (TextView) rowView.findViewById(R.id.secondLine);
-            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-
-            try {
-                textView.setText(values[position].getString("ImeKulture") + " - " + values[position].getString("LokacijaIme"));
-                textView_desc.setText(values[position].getString("SenzorSifra"));
-                imageView.setImageResource(R.mipmap.tomato6);
-                /*TODO figure out better way to pair name with icon */
-                if (values[position].getString("ImeKulture").equals("Paprika"))
-                    imageView.setImageResource(R.mipmap.capsicum);
-                if (values[position].getString("ImeKulture").equals("Boranija"))
-                    imageView.setImageResource(R.mipmap.peas);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return rowView;
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        // Respond to clicks on the actions in the CAB
+        switch (item.getItemId()) {
+            case R.id.nav_add: /*TODO actual item for delete action */
+                //deleteSelectedItems();
+                /*TODO implement deleteSelectedItems */
+                mode.finish(); // Action picked, so close the CAB
+                return true;
+            default:
+                return false;
         }
     }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        // Here you can make any necessary updates to the activity when
+        // the CAB is removed. By default, selected items are deselected/unchecked.
+    }
+
+
 }

@@ -1,6 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="BaseTheme" />
+    <style name="AppTheme" parent="BaseTheme" >
+        <item name="windowActionModeOverlay">true</item>
+    </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item> 
@@ -10,16 +12,10 @@
     </style>
 
 
-    <color name="primary">#D1555D</color>
-    <color name="primary_dark">#BC6162</color>
-    <color name="accent">#727272</color>
-    <color name="accent_translucent">#80bebebe</color>
-    <color name="accent_bright">#FFF493</color>
 
-    <color name="button_color">#70ae79</color>
-    <color name="main_title_color">#70ae79</color>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

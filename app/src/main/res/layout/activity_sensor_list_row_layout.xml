@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
-    android:background="#79000000">
+    android:background="@color/sensor_list_row_bg_color">
 
     <ImageView
         android:id="@+id/icon"

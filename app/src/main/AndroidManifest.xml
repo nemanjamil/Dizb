@@ -31,7 +31,6 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".wifi.SensorAPActivity" />
-        <activity android:name=".SensorListActivity" />
         <activity android:name=".GraphActivity" />
         <activity
             android:name=".DrawerActivity"
