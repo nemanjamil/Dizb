@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,8 +60,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         tvLogin = (TextView) findViewById(R.id.tv_signin);
 
         //setting toolbar
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
+//        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolBar);
 
         tvLogin.setOnClickListener(this);
         registerButton.setOnClickListener(this);
@@ -174,6 +175,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         };
 
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         Log.i("REGISTER_URL", strReq.getUrl());

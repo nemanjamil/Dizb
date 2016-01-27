@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -44,8 +45,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //initializing toolbar
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
+//        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolBar);
         //initializing views
         registerHere=(Button)findViewById(R.id.registerhere_button);
         signIn=(Button)findViewById(R.id.signin_button);
@@ -148,6 +149,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
         };
+
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
 
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);

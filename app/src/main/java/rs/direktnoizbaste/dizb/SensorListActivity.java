@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -130,6 +131,7 @@ public class SensorListActivity extends AppCompatActivity {
 
         };
 
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

@@ -16,6 +16,9 @@
     <color name="accent_translucent">#80bebebe</color>
     <color name="accent_bright">#FFF493</color>
 
+    <color name="button_color">#70ae79</color>
+    <color name="main_title_color">#70ae79</color>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
