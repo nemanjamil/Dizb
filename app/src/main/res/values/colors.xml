@@ -10,6 +10,6 @@
     <color name="main_title_color">#70ae79</color>
 
     <color name="sensor_list_row_bg_color">#79000000</color>
-    <color name="sensor_list_row_sel_color">#9934B5E4</color>
+    <color name="sensor_list_row_sel_color">#70ae79</color>
 
 </resources>

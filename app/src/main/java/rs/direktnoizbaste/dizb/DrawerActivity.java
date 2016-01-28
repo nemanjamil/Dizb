@@ -1,6 +1,8 @@
 package rs.direktnoizbaste.dizb;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -39,6 +41,7 @@ import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
+import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
@@ -47,6 +50,8 @@ public class DrawerActivity extends AppCompatActivity
     SensorListAdapter customArrayAdapter;
     JSONObject[] jsonObjects;
     Toolbar toolbar;
+
+    ActionMode actionBarReference;
 
     private ProgressDialog progressDialog;
     private SessionManager session;
@@ -88,7 +93,7 @@ public class DrawerActivity extends AppCompatActivity
         session = new SessionManager(getApplicationContext());
 
         //Pulling sensor list from server
-        pullSensorList("1");
+        pullSensorList("1"); /*TODO make pulling sensor list to depend on user*/
     }
 
     @Override
@@ -104,8 +109,7 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -114,11 +118,6 @@ public class DrawerActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -274,7 +273,7 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         // Inflate the menu for the CAB
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer, menu); /*TODO figure out the menu*/
+        inflater.inflate(R.menu.menu_sensor_list_cab, menu); /*TODO figure out the menu*/
         return true;
     }
 
@@ -289,10 +288,27 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         // Respond to clicks on the actions in the CAB
         switch (item.getItemId()) {
-            case R.id.nav_add: /*TODO actual item for delete action */
+            case R.id.action_delete:
                 //deleteSelectedItems();
-                /*TODO implement deleteSelectedItems */
-                mode.finish(); // Action picked, so close the CAB
+                // create Alert dialog to confirm sensor delete
+                SensorDeleteConfirmationDialog sensorDeleteConfirmationDialog = new SensorDeleteConfirmationDialog(DrawerActivity.this);
+                sensorDeleteConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                     /*TODO implement delete action*/
+                        if (actionBarReference != null)// Action picked, so close the CAB
+                            actionBarReference.finish();
+                    }
+                });
+                sensorDeleteConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                });
+                sensorDeleteConfirmationDialog.create().show();
+                actionBarReference = mode;
+                //mode.finish(); // Action picked, so close the CAB
                 return true;
             default:
                 return false;
@@ -303,6 +319,7 @@ public class DrawerActivity extends AppCompatActivity
     public void onDestroyActionMode(ActionMode mode) {
         // Here you can make any necessary updates to the activity when
         // the CAB is removed. By default, selected items are deselected/unchecked.
+        customArrayAdapter.removeSelection();
     }
 
 
