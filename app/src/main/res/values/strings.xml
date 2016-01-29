@@ -50,4 +50,5 @@
     <string name="ok">Da</string>
     <string name="cancel">Otkaži</string>
     <string name="delete_confirmation_title">Brisanje senzora?</string>
+    <string name="progress_delete_sensor">Brisanje senzora...</string>
 </resources>

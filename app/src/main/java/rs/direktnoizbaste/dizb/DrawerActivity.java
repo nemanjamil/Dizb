@@ -1,13 +1,10 @@
 package rs.direktnoizbaste.dizb;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,40 +18,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import rs.direktnoizbaste.dizb.app.AppConfig;
-import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
+import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
+import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
+import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
 
     ListView listView;
-    SensorListAdapter customArrayAdapter;
-    JSONObject[] jsonObjects;
     Toolbar toolbar;
 
     ActionMode actionBarReference;
-
-    private ProgressDialog progressDialog;
     private SessionManager session;
+    private PullSensorListRequest psl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +68,13 @@ public class DrawerActivity extends AppCompatActivity
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(this);
 
-        //setting progressDialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-
         session = new SessionManager(getApplicationContext());
 
         //Pulling sensor list from server
-        pullSensorList("1"); /*TODO make pulling sensor list to depend on user*/
+       // pullSensorList("1"); /*TODO make pulling sensor list to depend on user*/
+        if (psl == null)
+            psl = new PullSensorListRequest(this);
+        psl.pullSensorList("1");
     }
 
     @Override
@@ -157,102 +138,6 @@ public class DrawerActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * function to pull sensor list form web server
-     */
-    private void pullSensorList(final String uid) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_pull_sensors";
-        showDialog(getString(R.string.progress_update_sensor_list));
-
-        String url = String.format(AppConfig.URL_SENSOR_LIST_GET, uid);
-
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                hideDialog();
-                if (response != null) {
-                    Log.d("RESPONSE", "Nije null");
-                    Log.d("RESPONSE", response);
-                } else {
-                    Log.d("RESPONSE", "NULL RESPONSE");
-                }
-
-                try {
-
-                    JSONObject jObj = new JSONObject(response);
-
-                    boolean success = jObj.getBoolean("success");
-
-
-                    if (success) {
-                        //create Array of JSON objects
-                        JSONArray jArr = jObj.getJSONArray("senzor");
-
-                        jsonObjects = new JSONObject[jArr.length()];
-                        for (int i = 0; i < jArr.length(); i++) {
-                            jsonObjects[i] = jArr.getJSONObject(i);
-                        }
-                        customArrayAdapter = new SensorListAdapter(getBaseContext(), jsonObjects);
-                        listView.setAdapter(customArrayAdapter);
-
-                    } else {
-                        // login error
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Post params
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("action", "povuciSensorUid");
-                params.put("id", uid);
-                return params;
-            }
-
-        };
-
-        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
-        // Adding request to  queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-
-    /*
-    function to show dialog
-    */
-    private void showDialog(String msg) {
-        if (!progressDialog.isShowing()) {
-            progressDialog.setMessage(msg);
-            progressDialog.show();
-        }
-    }
-
-    /*
-    function to hide dialog
-     */
-    private void hideDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -266,7 +151,9 @@ public class DrawerActivity extends AppCompatActivity
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         // Here you can do something when items are selected/de-selected,
         // such as update the title in the CAB
-        customArrayAdapter.selectView(position, checked);
+        ListAdapter la = listView.getAdapter();
+        SensorListAdapter sla = (SensorListAdapter)la;
+        sla.selectView(position, checked);
     }
 
     @Override
@@ -296,6 +183,22 @@ public class DrawerActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                      /*TODO implement delete action*/
+                        DeleteSensorRequest dsr = new DeleteSensorRequest(DrawerActivity.this);
+                        dsr.setCallbackListener(new WebRequestCallbackInterface() {
+                            @Override
+                            public void webRequestSuccess(boolean success) {
+                                // refresh sensor list
+                                psl.pullSensorList("1");
+                            }
+
+                            @Override
+                            public void webRequestError(String error) {
+                                // refresh sensor list
+                                psl.pullSensorList("1");
+                            }
+                        });
+                        dsr.deleteSensorRequest("1", "5CCF7F752BA");
+
                         if (actionBarReference != null)// Action picked, so close the CAB
                             actionBarReference.finish();
                     }
@@ -319,8 +222,9 @@ public class DrawerActivity extends AppCompatActivity
     public void onDestroyActionMode(ActionMode mode) {
         // Here you can make any necessary updates to the activity when
         // the CAB is removed. By default, selected items are deselected/unchecked.
-        customArrayAdapter.removeSelection();
+       // customArrayAdapter.removeSelection();
+        ListAdapter la = listView.getAdapter();
+        SensorListAdapter sla = (SensorListAdapter)la;
+        sla.removeSelection();
     }
-
-
 }
