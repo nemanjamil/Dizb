@@ -3,10 +3,6 @@ package rs.direktnoizbaste.dizb.web_requests;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -28,20 +24,22 @@ import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
 /**
- * Created by 1 on 1/29/2016.
+ * Created by milan on 1/30/2016.
  */
-public class DeleteSensorRequest {
+public class AddSensorRequest {
     private Context context;
     private ProgressDialogCustom progressDialog;
     private WebRequestCallbackInterface webRequestCallbackInterface;
-    private ListView listView;
+    private SensorListAdapter customArrayAdapter;
     private JSONObject[] jsonObjects;
 
-    public DeleteSensorRequest(Activity context) {
+    //ListView listView;
+
+    public AddSensorRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
         webRequestCallbackInterface = null;
-        listView = (ListView) context.findViewById(R.id.listView);
+        //listView = (ListView) context.findViewById(R.id.listView);
     }
 
     public void setCallbackListener(WebRequestCallbackInterface listener) {
@@ -51,12 +49,12 @@ public class DeleteSensorRequest {
     /**
      * function to pull sensor list form web server
      */
-    private void deleteSensorRequest(final String uid, final String mac) {
+    public void addSensor(final String uid, final String mac, final String kind) {
         // Tag used to cancel the request
-        String tag_string_req = "req_del_sensor";
-        progressDialog.showDialog(context.getString(R.string.progress_delete_sensor));
+        String tag_string_req = "req_add_sensor";
+        progressDialog.showDialog(context.getString(R.string.progress_add_sensor_list));
 
-        String url = String.format(AppConfig.URL_DEL_SENSOR_GET, uid, mac);
+        String url = String.format(AppConfig.URL_ADD_SENSOR_GET, uid, mac, kind);
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
@@ -76,7 +74,6 @@ public class DeleteSensorRequest {
                     JSONObject jObj = new JSONObject(response);
 
                     boolean success = jObj.getBoolean("success");
-
                     jsonObjects = new JSONObject[1];
                     jsonObjects[0] = jObj;
 
@@ -105,28 +102,18 @@ public class DeleteSensorRequest {
             protected Map<String, String> getParams() {
                 // Post params
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("action", "obrisiSenzorId");
+                params.put("action", "dodajSenzorId");
                 params.put("id", uid);
                 params.put("string", mac);
+                params.put("br", kind);
                 return params;
             }
+
         };
 
         strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
-    public void deleteSensorListRequest(final String uid) {
-
-        //Loop through sensor list and delete all selected sensors
-        ListAdapter la = listView.getAdapter();
-        SensorListAdapter sla = (SensorListAdapter) la;
-        SparseBooleanArray selectedIds = sla.getSelectedIds();
-        int listCount = listView.getCount();
-        for (int i = 0; i < listCount; i++) {
-            if (selectedIds.get(i))
-                deleteSensorRequest(uid, sla.getSensorMAC(i));
-        }
     }
 }

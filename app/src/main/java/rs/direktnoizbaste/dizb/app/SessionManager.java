@@ -8,6 +8,7 @@ public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "AndroidSources";
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
+    private static final String KEY_UID = "userID";
 
     // Shared Preferences
     SharedPreferences pref;
@@ -32,5 +33,15 @@ public class SessionManager {
 
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
+    }
+
+    public String getUID() {
+        return pref.getString(KEY_UID, "");
+    }
+
+    public void setUID(String uid) {
+        editor.putString(KEY_UID, uid);
+        // commit changes
+        editor.commit();
     }
 }

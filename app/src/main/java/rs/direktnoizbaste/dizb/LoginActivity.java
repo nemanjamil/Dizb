@@ -105,7 +105,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (success) {
                         // user successfully logged in
                         // Create login session
+                        String uid = jObj.getString("uid");
+
                         session.setLogin(true);
+                        session.setUID(uid);
 
                         // Launching  main activity
                         Intent intent = new Intent(LoginActivity.this,

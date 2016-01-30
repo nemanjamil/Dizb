@@ -123,6 +123,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         String created_at = user
                                 .getString("created_at");
 
+                        /* TODO Remove storing user data at register*/
+                        //I don't think storing this is usefull*/
                         AppController.setString(RegisterActivity.this, "uid", uid);
                         AppController.setString(RegisterActivity.this, "name", name);
                         AppController.setString(RegisterActivity.this, "last_name", last_name);

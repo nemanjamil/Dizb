@@ -82,6 +82,16 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         return mSelectedItemsIds.size();
     }
 
+    public String getSensorMAC(int position) {
+        String mac = "";
+        try {
+            mac = values[position].getString("SenzorSifra");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mac;
+    }
+
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }

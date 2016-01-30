@@ -1,33 +1,24 @@
 package rs.direktnoizbaste.dizb;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
+import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.app.WebAppInterface;
+import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.web_requests.PullGraphDataRequest;
 
 public class GraphActivity extends AppCompatActivity {
     WebView browser;
     WebAppInterface webAppInterface;
+
+    SessionManager session;
 
     JSONObject[] jsonObjects;
     private ProgressDialog progressDialog;
@@ -44,13 +35,34 @@ public class GraphActivity extends AppCompatActivity {
 
         browser = (WebView) findViewById(R.id.webView);
 
+        session = new SessionManager(getApplicationContext());
         webAppInterface = new WebAppInterface(this);
         browser.addJavascriptInterface(webAppInterface, "Android");
         browser.getSettings().setJavaScriptEnabled(true);
 
-        if (pgd == null){
+        if (pgd == null) {
             pgd = new PullGraphDataRequest(this);
         }
-        pgd.pullGraphData("1", "5CCF7F752BA");
+        pgd.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                if(!success){
+                    showSnack("Nije uspelo prikazivanje podataka!");
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                showSnack(error);
+            }
+        });
+        String uid = session.getUID();
+        String mac = getIntent().getStringExtra("SensorMAC");
+        pgd.pullGraphData(uid, mac);
+    }
+
+    private void showSnack(String msg) {
+        Snackbar.make(browser, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }

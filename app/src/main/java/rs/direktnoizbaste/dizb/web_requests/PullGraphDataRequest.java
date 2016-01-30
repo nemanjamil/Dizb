@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -22,6 +21,7 @@ import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.WebAppInterface;
+import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
 /**
@@ -31,15 +31,21 @@ public class PullGraphDataRequest {
 
     private WebView browser;
     private WebAppInterface webAppInterface;
-
+    private WebRequestCallbackInterface webRequestCallbackInterface;
     private Context context;
     private ProgressDialogCustom progressDialog;
+    private JSONObject[] jsonObjects;
 
     public PullGraphDataRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
         browser = (WebView) context.findViewById(R.id.webView);
         webAppInterface = new WebAppInterface(context);
+        webRequestCallbackInterface = null;
+    }
+
+    public void setCallbackListener(WebRequestCallbackInterface listener) {
+        this.webRequestCallbackInterface = listener;
     }
 
     /**
@@ -70,16 +76,19 @@ public class PullGraphDataRequest {
                     JSONObject jObj = new JSONObject(response);
 
                     boolean success = jObj.getBoolean("success");
+                    jsonObjects = new JSONObject[1];
+                    jsonObjects[0] = jObj;
 
                     if (success) {
                         webAppInterface.setJsonObject(jObj);
                         browser.addJavascriptInterface(webAppInterface, "Android");
                         browser.loadUrl("file:///android_asset/www/graphs.htm");
+
+                        webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
                     } else {
                         // login error
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(context,
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        webRequestCallbackInterface.webRequestSuccess(false, jsonObjects);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -90,8 +99,7 @@ public class PullGraphDataRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                webRequestCallbackInterface.webRequestError(error.getMessage());
                 progressDialog.hideDialog();
             }
         }) {

@@ -24,6 +24,7 @@ import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
+import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
 /**
@@ -32,8 +33,8 @@ import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 public class PullSensorListRequest {
     private Context context;
     private ProgressDialogCustom progressDialog;
+    WebRequestCallbackInterface webRequestCallbackInterface;
 
-    private SensorListAdapter customArrayAdapter;
     private JSONObject[] jsonObjects;
 
     ListView listView;
@@ -42,6 +43,11 @@ public class PullSensorListRequest {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
         listView = (ListView) context.findViewById(R.id.listView);
+        webRequestCallbackInterface = null;
+    }
+
+    public void setCallbackListener(WebRequestCallbackInterface listener) {
+        this.webRequestCallbackInterface = listener;
     }
 
     /**
@@ -61,10 +67,10 @@ public class PullSensorListRequest {
             public void onResponse(String response) {
                 progressDialog.hideDialog();
                 if (response != null) {
-                    Log.d("RESPONSE", "Nije null");
-                    Log.d("RESPONSE", response);
+                    Log.i("pullSensorResp:", "Nije null");
+                    Log.i("pullSensorResp:", response);
                 } else {
-                    Log.d("RESPONSE", "NULL RESPONSE");
+                    Log.d("pullSensorResp", "NULL RESPONSE");
                 }
 
                 try {
@@ -82,14 +88,13 @@ public class PullSensorListRequest {
                         for (int i = 0; i < jArr.length(); i++) {
                             jsonObjects[i] = jArr.getJSONObject(i);
                         }
-                        customArrayAdapter = new SensorListAdapter(context, jsonObjects);
-                        listView.setAdapter(customArrayAdapter);
+
+                        webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
+
 
                     } else {
-                        // login error
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(context.getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        webRequestCallbackInterface.webRequestSuccess(false, jsonObjects);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -100,8 +105,7 @@ public class PullSensorListRequest {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context.getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                webRequestCallbackInterface.webRequestError(error.getMessage());
                 progressDialog.hideDialog();
             }
         }) {

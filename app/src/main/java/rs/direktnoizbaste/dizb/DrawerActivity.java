@@ -4,53 +4,95 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.ActionMode;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
+import rs.direktnoizbaste.dizb.web_requests.AddSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
 
-    ListView listView;
-    Toolbar toolbar;
+    private ListView listView;
+    private SensorListAdapter customArrayAdapter;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
 
-    ActionMode actionBarReference;
+    private ActionMode actionBarReference;
     private SessionManager session;
+
     private PullSensorListRequest psl;
+    private AddSensorRequest asr;
+    private DeleteSensorRequest dsr;
+
+    private String uid;
+
+    private int sensor_count = 0; // For debugging only!!! Should be deleted when finished.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
+        session = new SessionManager(getApplicationContext());
+        uid = session.getUID();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        asr = new AddSensorRequest(DrawerActivity.this);
+        asr.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                if (success) {
+                    showSnack("Senzor uspešno dodat.");
+                    psl.pullSensorList(uid); // refresh sensor list
+                } else {
+                    showSnack("Nije uspelo dodavanje senzora!");
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                showSnack(error);
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /* TODO implement sensor adding action */
+
+                // Dummy code
+                sensor_count++;
+                //Add new sensor
+                if (sensor_count ==1)
+                    asr.addSensor(uid, "5CCF7F747A7", "4");
+                if (sensor_count ==2)
+                    asr.addSensor(uid, "5CCF7F752BA", "4");
+                if (sensor_count ==3)
+                    asr.addSensor(uid, "18FE349DB7E6", "4");
+                //end dummy code
             }
         });
 
@@ -70,11 +112,54 @@ public class DrawerActivity extends AppCompatActivity
 
         session = new SessionManager(getApplicationContext());
 
-        //Pulling sensor list from server
-       // pullSensorList("1"); /*TODO make pulling sensor list to depend on user*/
-        if (psl == null)
-            psl = new PullSensorListRequest(this);
-        psl.pullSensorList("1");
+
+        psl = new PullSensorListRequest(this);
+        psl.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                // reload sensor list
+
+                if (success) {
+                    //successfully loaded sensor list
+                    customArrayAdapter = new SensorListAdapter(DrawerActivity.this, jsonObjects);
+                    listView.setAdapter(customArrayAdapter);
+
+                } else {
+                    showSnack("Nema dodatih senzora.\nKlikni na + da dodaš senzor.");
+                    customArrayAdapter = new SensorListAdapter(DrawerActivity.this, new JSONObject[0]);
+                    listView.setAdapter(customArrayAdapter);
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                showSnack(error);
+            }
+        });
+
+        dsr = new DeleteSensorRequest(this);
+        dsr.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                /*TODO create one final success callback, not after each individual sensor delete*/
+                if (success) {
+                    // refresh sensor list
+                    psl.pullSensorList(uid);
+                } else {
+                    showSnack("Brisanje nije uspelo.");
+                    psl.pullSensorList(uid);
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                // refresh sensor list
+                showSnack(error);
+                psl.pullSensorList(uid);
+            }
+        });
+
+        psl.pullSensorList(uid);
     }
 
     @Override
@@ -109,15 +194,6 @@ public class DrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-/*        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else*/
         if (id == R.id.nav_logout) {
 
             //If the session is logged in log out
@@ -142,6 +218,9 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+        ListAdapter la = listView.getAdapter();
+        SensorListAdapter sla = (SensorListAdapter) la;
+        intent.putExtra("SensorMAC", sla.getSensorMAC(position));
         startActivity(intent);
     }
 
@@ -152,7 +231,7 @@ public class DrawerActivity extends AppCompatActivity
         // Here you can do something when items are selected/de-selected,
         // such as update the title in the CAB
         ListAdapter la = listView.getAdapter();
-        SensorListAdapter sla = (SensorListAdapter)la;
+        SensorListAdapter sla = (SensorListAdapter) la;
         sla.selectView(position, checked);
     }
 
@@ -160,7 +239,7 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         // Inflate the menu for the CAB
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_sensor_list_cab, menu); /*TODO figure out the menu*/
+        inflater.inflate(R.menu.menu_sensor_list_cab, menu);
         return true;
     }
 
@@ -182,22 +261,7 @@ public class DrawerActivity extends AppCompatActivity
                 sensorDeleteConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                     /*TODO implement delete action*/
-                        DeleteSensorRequest dsr = new DeleteSensorRequest(DrawerActivity.this);
-                        dsr.setCallbackListener(new WebRequestCallbackInterface() {
-                            @Override
-                            public void webRequestSuccess(boolean success) {
-                                // refresh sensor list
-                                psl.pullSensorList("1");
-                            }
-
-                            @Override
-                            public void webRequestError(String error) {
-                                // refresh sensor list
-                                psl.pullSensorList("1");
-                            }
-                        });
-                        dsr.deleteSensorRequest("1", "5CCF7F752BA");
+                        dsr.deleteSensorListRequest(uid);
 
                         if (actionBarReference != null)// Action picked, so close the CAB
                             actionBarReference.finish();
@@ -222,9 +286,15 @@ public class DrawerActivity extends AppCompatActivity
     public void onDestroyActionMode(ActionMode mode) {
         // Here you can make any necessary updates to the activity when
         // the CAB is removed. By default, selected items are deselected/unchecked.
-       // customArrayAdapter.removeSelection();
+        // customArrayAdapter.removeSelection();
         ListAdapter la = listView.getAdapter();
-        SensorListAdapter sla = (SensorListAdapter)la;
+        SensorListAdapter sla = (SensorListAdapter) la;
         sla.removeSelection();
     }
+
+    private void showSnack(String msg) {
+        Snackbar.make(fab, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
 }
