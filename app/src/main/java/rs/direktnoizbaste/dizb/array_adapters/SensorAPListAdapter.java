@@ -2,6 +2,7 @@ package rs.direktnoizbaste.dizb.array_adapters;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,17 @@ public class SensorAPListAdapter extends ArrayAdapter<ScanResult> {
         textView.setText(objects.get(position).SSID);
         textView_desc.setText(objects.get(position).BSSID);
         imageView.setImageResource(R.mipmap.tomato6);
-        progressBar.setMax(100);
-        progressBar.setProgress(progressBar.getMax() + objects.get(position).level);
+        progressBar.setMax(5);
+        int level = WifiManager.calculateSignalLevel(objects.get(position).level, 5);
+        /*TODO change bar color depending on signal strength*/
+        if (level >= 4) {
+
+        } else if (level >= 2) {
+
+        } else {
+
+        }
+        progressBar.setProgress(level);
 
 
         rowView.setBackgroundColor(ContextCompat.getColor(context, R.color.sensor_list_row_bg_color));

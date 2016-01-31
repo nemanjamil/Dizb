@@ -8,13 +8,13 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.json.JSONObject;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import rs.direktnoizbaste.dizb.R;
@@ -26,7 +26,7 @@ public class SensorAPActivity extends AppCompatActivity {
     boolean wasWiFiEnabled;
 
     ListView listView;
-    JSONObject wifis[];
+    Toolbar toolbar;
     WifiScanReceiver wifiReciever = new WifiScanReceiver();
 
     ProgressDialog progressDialog;
@@ -36,6 +36,7 @@ public class SensorAPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_ap);
         listView = (ListView) findViewById(R.id.lv_access_points);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // get Wifi service
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -45,7 +46,7 @@ public class SensorAPActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
-
+        setSupportActionBar(toolbar);
         // enabling wifi
         wifiManager.setWifiEnabled(true);
     }
@@ -89,12 +90,14 @@ public class SensorAPActivity extends AppCompatActivity {
             String intentAction = intent.getAction();
             if (wifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
                 List<ScanResult> wifiScanList = wifiManager.getScanResults();
-                wifis = new JSONObject[wifiScanList.size()];
+                List<ScanResult> wifiSensorAPList = new ArrayList<ScanResult>();
 
                 for (int i = 0; i < wifiScanList.size(); i++) {
-                    //wifis[i] = ((wifiScanList.get(i)).toString());
-                    /*TODO filter out only sensor AP*/
+                    if (wifiScanList.get(i).SSID.startsWith("SENZOR"))
+                        wifiSensorAPList.add(wifiScanList.get(i));
                 }
+
+                if (wifiSensorAPList.size() == 0) showSnack("Nije pronađen ni jedan senzor.\nDa li ste prebacili senzor u mod za podešavanje?");
 
                 listView.setAdapter(new SensorAPListAdapter(getApplicationContext(), wifiScanList));
                 hideDialog();
@@ -106,7 +109,6 @@ public class SensorAPActivity extends AppCompatActivity {
                 } else if (wifi_state == wifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
                     hideDialog();
-                    /* TODO fire up scanning*/
                     wifiManager.startScan();
                     showDialog("Tražim senzore...");
                 } else if (wifi_state == wifiManager.WIFI_STATE_DISABLED) {
@@ -115,6 +117,11 @@ public class SensorAPActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void showSnack(String msg) {
+        Snackbar.make(listView, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
 }
