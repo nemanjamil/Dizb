@@ -47,9 +47,12 @@
     <string name="drawer_action_subtitle">Akcije</string>
     <string name="progress_update_sensor_list">Učitavam listu...</string>
     <string name="delete_confirmation_question">Ako potvrdite, izbrisaćete izabrane senzore.</string>
-    <string name="ok">Da</string>
+    <string name="yes">Da</string>
+    <string name="ok">OK</string>
     <string name="cancel">Otkaži</string>
     <string name="delete_confirmation_title">Brisanje senzora?</string>
     <string name="progress_delete_sensor">Brisanje senzora...</string>
     <string name="progress_add_sensor_list">Dodajem novi senzor...</string>
+    <string name="sensor_scan_confirmation_title">Pretraga senzora</string>
+    <string name="sensor_scan_confirmation_question">Postavite senzor u mod za podešavajne. Potom kliknite OK.</string>
 </resources>

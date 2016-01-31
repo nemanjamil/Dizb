@@ -8,21 +8,21 @@ import android.support.v7.app.AlertDialog;
 import rs.direktnoizbaste.dizb.R;
 
 /**
- * Created by 1 on 1/28/2016.
+ * Created by milan on 1/31/2016.
  */
-public class SensorDeleteConfirmationDialog {
+public class SensorScanConfirmationDialog {
     AlertDialog.Builder builder;
 
-    public SensorDeleteConfirmationDialog(Context context) {
+    public SensorScanConfirmationDialog(Context context) {
         builder = new AlertDialog.Builder(context);
 
         // Use the Builder class for convenient dialog construction
-        builder.setTitle(R.string.delete_confirmation_title);
-        builder.setMessage(R.string.delete_confirmation_question);
+        builder.setTitle(R.string.sensor_scan_confirmation_title);
+        builder.setMessage(R.string.sensor_scan_confirmation_question);
     }
 
     public void setPositiveButtonListener(DialogInterface.OnClickListener listener) {
-        builder.setPositiveButton(R.string.yes, listener);
+        builder.setPositiveButton(R.string.ok, listener);
     }
 
     public void setNegativeButtonListener(DialogInterface.OnClickListener listener) {

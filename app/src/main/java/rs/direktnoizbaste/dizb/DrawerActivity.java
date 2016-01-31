@@ -27,9 +27,11 @@ import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
+import rs.direktnoizbaste.dizb.dialogs.SensorScanConfirmationDialog;
 import rs.direktnoizbaste.dizb.web_requests.AddSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
+import rs.direktnoizbaste.dizb.wifi.SensorAPActivity;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
@@ -83,16 +85,33 @@ public class DrawerActivity extends AppCompatActivity
             public void onClick(View view) {
                 /* TODO implement sensor adding action */
 
-                // Dummy code
-                sensor_count++;
-                //Add new sensor
-                if (sensor_count ==1)
-                    asr.addSensor(uid, "5CCF7F747A7", "4");
-                if (sensor_count ==2)
-                    asr.addSensor(uid, "5CCF7F752BA", "4");
-                if (sensor_count ==3)
-                    asr.addSensor(uid, "18FE349DB7E6", "4");
-                //end dummy code
+//                // Dummy code
+//                sensor_count++;
+//                //Add new sensor
+//                if (sensor_count ==1)
+//                    asr.addSensor(uid, "5CCF7F747A7", "4");
+//                if (sensor_count ==2)
+//                    asr.addSensor(uid, "5CCF7F752BA", "4");
+//                if (sensor_count ==3)
+//                    asr.addSensor(uid, "18FE349DB7E6", "4");
+//                //end dummy code
+                final SensorScanConfirmationDialog sensorScanConfirmationDialog = new SensorScanConfirmationDialog(DrawerActivity.this);
+                sensorScanConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(DrawerActivity.this, SensorAPActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                sensorScanConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                });
+                sensorScanConfirmationDialog.create().show();
+
+
             }
         });
 

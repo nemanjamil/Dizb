@@ -1,7 +1,6 @@
 package rs.direktnoizbaste.dizb.array_adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -25,7 +24,7 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
     private SparseBooleanArray mSelectedItemsIds;
 
     public SensorListAdapter(Context context, JSONObject[] values) {
-        super(context, R.layout.activity_sensor_list_row_layout, values);
+        super(context, R.layout.sensor_list_row_layout, values);
         this.context = context;
         this.values = values;
         mSelectedItemsIds = new SparseBooleanArray();
@@ -36,7 +35,7 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             /*TODO use view recycling for smooth scrolling...*/
-        View rowView = inflater.inflate(R.layout.activity_sensor_list_row_layout, parent, false);
+        View rowView = inflater.inflate(R.layout.sensor_list_row_layout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
         TextView textView_desc = (TextView) rowView.findViewById(R.id.secondLine);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
