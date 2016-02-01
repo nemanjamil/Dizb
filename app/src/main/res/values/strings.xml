@@ -54,6 +54,7 @@
     <string name="progress_delete_sensor">Brisanje senzora...</string>
     <string name="progress_add_sensor_list">Dodajem novi senzor...</string>
     <string name="sensor_scan_confirmation_title">Pretraga senzora</string>
-    <string name="sensor_scan_confirmation_question">Postavite senzor u mod za podešavajne. Potom kliknite OK.</string>
+    <string name="sensor_scan_confirmation_question">Postavite senzor u mod za podešavanje. Potom kliknite OK.</string>
     <string name="title_ap_activity">Dodaj senzor</string>
+    <string name="set_wifi_dialog_title">Podesi WiFi za</string>
 </resources>
