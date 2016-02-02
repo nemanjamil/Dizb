@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -33,6 +34,8 @@ import rs.direktnoizbaste.dizb.array_adapters.SensorAPListAdapter;
 public class SensorAPActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     WifiManager wifiManager;
     boolean wasWiFiEnabled;
+    boolean wasWiFiEnabledBeforeSensorConfig;
+    int wasNetworkId;
 
     ListView listView;
     Toolbar toolbar;
@@ -119,6 +122,8 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 //        tv_ssid.setText(wifiScanList.get(position).SSID);
 //        tv_mac.setText(wifiScanList.get(position).BSSID);
 
+        final String ssid = wifiScanList.get(position).SSID;
+
         String[] items = new String[wifiAPList.size()];
         for (int i = 0; i < wifiAPList.size(); i++) {
             items[i] = wifiAPList.get(i).SSID;
@@ -131,6 +136,18 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
+                /* TODO save current Wifi state*/
+                wasNetworkId = wifiManager.getConnectionInfo().getNetworkId();
+                wasWiFiEnabledBeforeSensorConfig = wifiManager.isWifiEnabled();
+
+                final WifiConfiguration config = new WifiConfiguration();
+                config.SSID = "\"" + ssid + "\"";
+                config.preSharedKey = "\"12345678\"";
+                if (!wifiManager.isWifiEnabled()) {
+                    wifiManager.setWifiEnabled(true);
+                    int networkId = wifiManager.addNetwork(config);
+                    wifiManager.enableNetwork(networkId, true);
+                }
                 showSnack("Uspešno podešen senzor.");
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -139,7 +156,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         });
 
         String title = getResources().getString(R.string.set_wifi_dialog_title);
-        title = title + " " + wifiScanList.get(position).SSID;
+        title = title + " " + ssid;
         builder.setTitle(title);
 
         builder.create().show();
@@ -154,7 +171,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         public void onReceive(Context c, Intent intent) {
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
-            if (wifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
+            if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
                 wifiScanList = wifiManager.getScanResults();
                 wifiSensorAPList = new ArrayList<ScanResult>();
                 wifiAPList = new ArrayList<ScanResult>();
@@ -171,17 +188,17 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 
                 listView.setAdapter(new SensorAPListAdapter(getApplicationContext(), wifiScanList));
                 hideDialog();
-            } else if (wifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
-                int wifi_state = intent.getIntExtra(wifiManager.EXTRA_WIFI_STATE, wifiManager.WIFI_STATE_UNKNOWN);
-                if (wifi_state == wifiManager.WIFI_STATE_ENABLING) {
+            } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
+                int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
+                if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
                     // show progress dialog
                     showDialog("Uključujem WiFi...");
-                } else if (wifi_state == wifiManager.WIFI_STATE_ENABLED) {
+                } else if (wifi_state == WifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
                     hideDialog();
                     wifiManager.startScan();
                     showDialog("Tražim senzore...");
-                } else if (wifi_state == wifiManager.WIFI_STATE_DISABLED) {
+                } else if (wifi_state == WifiManager.WIFI_STATE_DISABLED) {
                     // hide progress dialog
                     hideDialog();
                 }
