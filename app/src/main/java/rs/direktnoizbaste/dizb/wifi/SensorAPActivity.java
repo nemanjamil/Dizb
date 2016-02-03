@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -24,12 +25,20 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.array_adapters.SensorAPListAdapter;
@@ -51,9 +60,6 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
     List<ScanResult> wifiScanList;
     List<ScanResult> wifiSensorAPList;
     List<ScanResult> wifiAPList;
-
-    private ExecutorService pool;
-
     String ssid;
 
     @Override
@@ -78,7 +84,6 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         configuringSensor = false;
         wifiManager.setWifiEnabled(true);
 
-        pool = Executors.newSingleThreadExecutor();
     }
 
     protected void onPause() {
@@ -90,6 +95,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 
         registerReceiver(wifiReciever, intentFilter);
         Log.i("SensorScan", "onResume");
@@ -118,7 +124,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // the list item was clicked
-        /*TODO launch a dialog for user to set the wifi and password */
+
         AlertDialog.Builder builder = new AlertDialog.Builder(SensorAPActivity.this);
         // Get the layout inflater
         LayoutInflater inflater = SensorAPActivity.this.getLayoutInflater();
@@ -151,7 +157,24 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             public void onClick(DialogInterface dialog, int id) {
                 /* TODO save current Wifi state*/
                 showDialog("Povezivanje sa senzorom...");
-                pool.execute(new ConnectToSensorRunnable());
+                //pool.execute(new ConnectToSensorRunnable());
+                wasNetworkId = wifiManager.getConnectionInfo().getNetworkId();
+                wasWiFiEnabledBeforeSensorConfig = wifiManager.isWifiEnabled();
+                configuringSensor = true;
+                final WifiConfiguration config = new WifiConfiguration();
+                config.SSID = "\"" + ssid + "\"";
+                config.preSharedKey = "\"12345678\"";
+                config.priority = 999;
+
+                if (!wifiManager.isWifiEnabled()) {
+                    wifiManager.setWifiEnabled(true);
+                }
+                int networkId = wifiManager.addNetwork(config);
+                wifiManager.saveConfiguration();
+                //wifiManager.disconnect();
+                wifiManager.enableNetwork(networkId, true);
+                //wifiManager.reconnect();
+                Log.i("OKClicked", "enabling " + ssid);
 
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -171,59 +194,57 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 .setAction("Action", null).show();
     }
 
-    private class ConnectToSensorRunnable implements Runnable {
+
+    private class TaskEsp extends AsyncTask<String, Void, String> {
+
+        String server;
+
+        TaskEsp(String server) {
+            this.server = server;
+        }
 
         @Override
-        public void run() {
-            wasNetworkId = wifiManager.getConnectionInfo().getNetworkId();
-            wasWiFiEnabledBeforeSensorConfig = wifiManager.isWifiEnabled();
-            configuringSensor = true;
-            final WifiConfiguration config = new WifiConfiguration();
-            config.SSID = "\"" + ssid + "\"";
-            config.preSharedKey = "\"12345678\"";
-            if (!wifiManager.isWifiEnabled()) {
-                wifiManager.setWifiEnabled(true);
-            }
-            int networkId = wifiManager.addNetwork(config);
-            wifiManager.enableNetwork(networkId, true);
+        protected String doInBackground(String... params) {
 
-            // polling for sensor connectivity
+            String val = params[0];
+            final String p = "http://" + server + "/read";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL("http://192.168.4.1/read");
 
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            boolean isConnected = false;
-            boolean isWifi = false;
-            int poll_count = 0;
-            while (poll_count < 20) {
-                isConnected = activeNetwork != null &&
-                        activeNetwork.isConnectedOrConnecting();
-                isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                poll_count++;
-                if (isConnected && isWifi) break;
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(90000);
+                Log.i("Headers",urlConnection.getHeaderFields().toString());
+
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                //readStream(in);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+               // urlConnection.disconnect();
             }
 
-            hideDialog();
-            if (isConnected && isWifi) {
-                // successfully connected to sensor
-                /* TODO send configuration to sensor */
-                showSnack("Uspešno podešen senzor.");
-            } else {
-                // fail to connect to sensor
-                showSnack("Nije uspelo povezivanje sa senzorom.");
-            }
+
+            String serverResponse = "";
+
+            return serverResponse;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
         }
     }
+
 
     private class WifiScanReceiver extends BroadcastReceiver {
         public void onReceive(Context c, Intent intent) {
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
+                Log.i("BroadCastRec","scan results available");
                 if (!configuringSensor) {
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
@@ -245,10 +266,14 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
                 int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
+                    Log.i("BroadCastRec","wifi enabling");
+
                     // show progress dialog
                     showDialog("Uključujem WiFi...");
                 } else if (wifi_state == WifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
+                    Log.i("BroadCastRec","wifi enabled");
+
                     hideDialog();
                     if (!configuringSensor) {
                         wifiManager.startScan();
@@ -256,7 +281,49 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     }
                 } else if (wifi_state == WifiManager.WIFI_STATE_DISABLED) {
                     // hide progress dialog
+                    Log.i("BroadCastRec","wifi disabled");
+
                     hideDialog();
+                }
+            } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(intentAction)) {
+                Log.i("BroadCastRec", "connection change action");
+                NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+
+                if (info != null) {
+                    Log.i("BroadCastRec", info.getState().toString());
+                }
+
+
+                if (info != null && info.isConnected()) {
+
+                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                    String ssid = wifiInfo.getSSID();
+                    Log.i("BroadCastRec", ssid);
+                    Log.i("BroadCastRec", String.valueOf(configuringSensor));
+                    Log.i("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
+
+                    if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
+                        Log.i("BroadCastRec", "Sakrij dialog");
+                        hideDialog();
+                        showSnack("Povezan sa senzorom");
+                        configuringSensor = false;
+                        //Send web request to sensor
+                        String url = "http://192.168.4.1/read";
+                        TaskEsp taskEsp = new TaskEsp(url);
+                       // taskEsp.execute("abc");
+
+                    }
+                }
+
+                if (info != null && (info.getDetailedState() == NetworkInfo.DetailedState.FAILED)) {
+                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                    String ssid = wifiInfo.getSSID();
+                    if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
+                        Log.i("BroadCastRec", "Sakrij dialog");
+                        hideDialog();
+                        showSnack("Nije uspelo povezivanje sa senzorom");
+                        configuringSensor = false;
+                    }
                 }
             }
         }
