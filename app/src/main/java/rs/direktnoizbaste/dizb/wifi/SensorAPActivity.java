@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -26,6 +28,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.array_adapters.SensorAPListAdapter;
@@ -35,6 +39,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
     WifiManager wifiManager;
     boolean wasWiFiEnabled;
     boolean wasWiFiEnabledBeforeSensorConfig;
+    boolean configuringSensor;
     int wasNetworkId;
 
     ListView listView;
@@ -47,6 +52,9 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
     List<ScanResult> wifiSensorAPList;
     List<ScanResult> wifiAPList;
 
+    private ExecutorService pool;
+
+    String ssid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,11 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 
         setSupportActionBar(toolbar);
         // enabling wifi
+
+        configuringSensor = false;
         wifiManager.setWifiEnabled(true);
+
+        pool = Executors.newSingleThreadExecutor();
     }
 
     protected void onPause() {
@@ -78,8 +90,9 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+
         registerReceiver(wifiReciever, intentFilter);
-        Log.i("SnesorScan", "onResume");
+        Log.i("SensorScan", "onResume");
         super.onResume();
     }
 
@@ -122,7 +135,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 //        tv_ssid.setText(wifiScanList.get(position).SSID);
 //        tv_mac.setText(wifiScanList.get(position).BSSID);
 
-        final String ssid = wifiScanList.get(position).SSID;
+        ssid = wifiScanList.get(position).SSID;
 
         String[] items = new String[wifiAPList.size()];
         for (int i = 0; i < wifiAPList.size(); i++) {
@@ -137,18 +150,9 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 /* TODO save current Wifi state*/
-                wasNetworkId = wifiManager.getConnectionInfo().getNetworkId();
-                wasWiFiEnabledBeforeSensorConfig = wifiManager.isWifiEnabled();
+                showDialog("Povezivanje sa senzorom...");
+                pool.execute(new ConnectToSensorRunnable());
 
-                final WifiConfiguration config = new WifiConfiguration();
-                config.SSID = "\"" + ssid + "\"";
-                config.preSharedKey = "\"12345678\"";
-                if (!wifiManager.isWifiEnabled()) {
-                    wifiManager.setWifiEnabled(true);
-                    int networkId = wifiManager.addNetwork(config);
-                    wifiManager.enableNetwork(networkId, true);
-                }
-                showSnack("Uspešno podešen senzor.");
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -167,27 +171,77 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 .setAction("Action", null).show();
     }
 
+    private class ConnectToSensorRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            wasNetworkId = wifiManager.getConnectionInfo().getNetworkId();
+            wasWiFiEnabledBeforeSensorConfig = wifiManager.isWifiEnabled();
+            configuringSensor = true;
+            final WifiConfiguration config = new WifiConfiguration();
+            config.SSID = "\"" + ssid + "\"";
+            config.preSharedKey = "\"12345678\"";
+            if (!wifiManager.isWifiEnabled()) {
+                wifiManager.setWifiEnabled(true);
+            }
+            int networkId = wifiManager.addNetwork(config);
+            wifiManager.enableNetwork(networkId, true);
+
+            // polling for sensor connectivity
+
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = false;
+            boolean isWifi = false;
+            int poll_count = 0;
+            while (poll_count < 20) {
+                isConnected = activeNetwork != null &&
+                        activeNetwork.isConnectedOrConnecting();
+                isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                poll_count++;
+                if (isConnected && isWifi) break;
+            }
+
+            hideDialog();
+            if (isConnected && isWifi) {
+                // successfully connected to sensor
+                /* TODO send configuration to sensor */
+                showSnack("Uspešno podešen senzor.");
+            } else {
+                // fail to connect to sensor
+                showSnack("Nije uspelo povezivanje sa senzorom.");
+            }
+        }
+    }
+
     private class WifiScanReceiver extends BroadcastReceiver {
         public void onReceive(Context c, Intent intent) {
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
-                wifiScanList = wifiManager.getScanResults();
-                wifiSensorAPList = new ArrayList<ScanResult>();
-                wifiAPList = new ArrayList<ScanResult>();
+                if (!configuringSensor) {
+                    wifiScanList = wifiManager.getScanResults();
+                    wifiSensorAPList = new ArrayList<ScanResult>();
+                    wifiAPList = new ArrayList<ScanResult>();
 
-                for (int i = 0; i < wifiScanList.size(); i++) {
-                    if (wifiScanList.get(i).SSID.startsWith("SENZOR"))
-                        wifiSensorAPList.add(wifiScanList.get(i));
-                    else
-                        wifiAPList.add(wifiScanList.get(i));
+                    for (int i = 0; i < wifiScanList.size(); i++) {
+                        if (wifiScanList.get(i).SSID.startsWith("SENZOR"))
+                            wifiSensorAPList.add(wifiScanList.get(i));
+                        else
+                            wifiAPList.add(wifiScanList.get(i));
+                    }
+
+                    if (wifiSensorAPList.size() == 0)
+                        showSnack("Nije pronađen ni jedan senzor.\nDa li ste prebacili senzor u mod za podešavanje?");
+
+                    listView.setAdapter(new SensorAPListAdapter(getApplicationContext(), wifiScanList));
+                    hideDialog();
                 }
-
-                if (wifiSensorAPList.size() == 0)
-                    showSnack("Nije pronađen ni jedan senzor.\nDa li ste prebacili senzor u mod za podešavanje?");
-
-                listView.setAdapter(new SensorAPListAdapter(getApplicationContext(), wifiScanList));
-                hideDialog();
             } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
                 int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
@@ -196,8 +250,10 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 } else if (wifi_state == WifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
                     hideDialog();
-                    wifiManager.startScan();
-                    showDialog("Tražim senzore...");
+                    if (!configuringSensor) {
+                        wifiManager.startScan();
+                        showDialog("Tražim senzore...");
+                    }
                 } else if (wifi_state == WifiManager.WIFI_STATE_DISABLED) {
                     // hide progress dialog
                     hideDialog();
@@ -205,5 +261,6 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             }
         }
     }
-
 }
+
+
