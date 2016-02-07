@@ -1,11 +1,9 @@
 package rs.direktnoizbaste.dizb.web_requests;
 
 import android.app.Activity;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -23,7 +21,6 @@ import java.util.Map;
 import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
-import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
@@ -31,17 +28,16 @@ import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
  * Created by 1 on 1/29/2016.
  */
 public class PullSensorListRequest {
+    WebRequestCallbackInterface webRequestCallbackInterface;
+    ListView listView;
     private Context context;
     private ProgressDialogCustom progressDialog;
-    WebRequestCallbackInterface webRequestCallbackInterface;
-
     private JSONObject[] jsonObjects;
-
-    ListView listView;
 
     public PullSensorListRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
+        progressDialog.setCancelable(false);
         listView = (ListView) context.findViewById(R.id.listView);
         webRequestCallbackInterface = null;
     }
@@ -118,13 +114,10 @@ public class PullSensorListRequest {
                 params.put("id", uid);
                 return params;
             }
-
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
     }
-
 }

@@ -39,6 +39,7 @@ public class PullGraphDataRequest {
     public PullGraphDataRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
+        progressDialog.setCancelable(false);
         browser = (WebView) context.findViewById(R.id.webView);
         webAppInterface = new WebAppInterface(context);
         webRequestCallbackInterface = null;
@@ -116,7 +117,7 @@ public class PullGraphDataRequest {
 
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

@@ -8,7 +8,6 @@ import android.webkit.WebView;
 
 import org.json.JSONObject;
 
-import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.app.WebAppInterface;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
@@ -29,10 +28,6 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_graph);
 
-        //setting progressDialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-
         browser = (WebView) findViewById(R.id.webView);
 
         session = new SessionManager(getApplicationContext());
@@ -46,7 +41,7 @@ public class GraphActivity extends AppCompatActivity {
         pgd.setCallbackListener(new WebRequestCallbackInterface() {
             @Override
             public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
-                if(!success){
+                if (!success) {
                     showSnack("Nije uspelo prikazivanje podataka!");
                 }
             }

@@ -40,6 +40,7 @@ public class DeleteSensorRequest {
     public DeleteSensorRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
+        progressDialog.setCancelable(false);
         webRequestCallbackInterface = null;
         listView = (ListView) context.findViewById(R.id.listView);
     }

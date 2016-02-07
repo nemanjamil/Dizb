@@ -28,10 +28,9 @@ import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorScanConfirmationDialog;
-import rs.direktnoizbaste.dizb.web_requests.AddSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
-import rs.direktnoizbaste.dizb.wifi.SensorAPActivity;
+import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
@@ -45,7 +44,7 @@ public class DrawerActivity extends AppCompatActivity
     private SessionManager session;
 
     private PullSensorListRequest psl;
-    private AddSensorRequest asr;
+
     private DeleteSensorRequest dsr;
 
     private String uid;
@@ -61,24 +60,6 @@ public class DrawerActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         session = new SessionManager(getApplicationContext());
         uid = session.getUID();
-
-        asr = new AddSensorRequest(DrawerActivity.this);
-        asr.setCallbackListener(new WebRequestCallbackInterface() {
-            @Override
-            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
-                if (success) {
-                    showSnack("Senzor uspešno dodat.");
-                    psl.pullSensorList(uid); // refresh sensor list
-                } else {
-                    showSnack("Nije uspelo dodavanje senzora!");
-                }
-            }
-
-            @Override
-            public void webRequestError(String error) {
-                showSnack(error);
-            }
-        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +80,9 @@ public class DrawerActivity extends AppCompatActivity
                 sensorScanConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DrawerActivity.this, SensorAPActivity.class);
+                        Intent intent = new Intent(DrawerActivity.this, SensorAPActivity_old.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
                 sensorScanConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
@@ -249,6 +231,7 @@ public class DrawerActivity extends AppCompatActivity
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         // Here you can do something when items are selected/de-selected,
         // such as update the title in the CAB
+
         ListAdapter la = listView.getAdapter();
         SensorListAdapter sla = (SensorListAdapter) la;
         sla.selectView(position, checked);
@@ -266,6 +249,7 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
         // Here you can perform updates to the CAB due to
         // an invalidate() request
+
         return false;
     }
 
@@ -294,6 +278,7 @@ public class DrawerActivity extends AppCompatActivity
                 });
                 sensorDeleteConfirmationDialog.create().show();
                 actionBarReference = mode;
+
                 //mode.finish(); // Action picked, so close the CAB
                 return true;
             default:

@@ -10,8 +10,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:paddingBottom="20dp"
         android:paddingTop="20dp">
 
@@ -77,30 +77,37 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/signin_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/button_color"
-        android:text="@string/btn_text_sign_in"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/registerhere_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/button_color"
-        android:text="@string/btn_text_register_here"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        android:layout_gravity = "bottom"/>
+        <Button
+            android:id="@+id/signin_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.5"
+            android:background="@color/button_color"
+            android:text="@string/btn_text_sign_in"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/registerhere_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.5"
+            android:background="@color/button_color"
+            android:text="@string/btn_text_register_here"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -1,12 +1,12 @@
 package rs.direktnoizbaste.dizb;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,15 +19,19 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import rs.direktnoizbaste.dizb.app.AppConfig;
-import rs.direktnoizbaste.dizb.app.AppController;
-import rs.direktnoizbaste.dizb.app.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import rs.direktnoizbaste.dizb.app.AppConfig;
+import rs.direktnoizbaste.dizb.app.AppController;
+import rs.direktnoizbaste.dizb.app.SessionManager;
+import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,13 +40,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     TextInputLayout emailRegister;
     TextInputLayout passwordRegister;
     EditText etFullName;
+    EditText etLastName;
     EditText etEmailRegister;
     EditText etPasswordRegister;
     Button registerButton;
 
     SessionManager session;
 
-    private ProgressDialog pDialog;
+    private ProgressDialogCustom pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         emailRegister = (TextInputLayout) findViewById(R.id.email_registerlayout);
         passwordRegister = (TextInputLayout) findViewById(R.id.password_registerlayout);
         etFullName = (EditText) findViewById(R.id.fullname_register);
+        etLastName = (EditText) findViewById(R.id.lastname_register);
         etEmailRegister = (EditText) findViewById(R.id.email_register);
         etPasswordRegister = (EditText) findViewById(R.id.password_register);
         tvLogin = (TextView) findViewById(R.id.tv_signin);
@@ -67,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerButton.setOnClickListener(this);
 
         // Progress dialog
-        pDialog = new ProgressDialog(this);
+        pDialog = new ProgressDialogCustom(this);
         pDialog.setCancelable(false);
 
         // Session manager
@@ -85,30 +91,38 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-   /*
-   function to register user details in mysql database
-    */
+    /*
+    function to register user details in mysql database
+     */
     private void registerUser(final String name, final String last_name, final String email,
                               final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registracija...");
-        showDialog();
+        pDialog.showDialog("Registracija...");
+        String url = "";
+        try {
+            //String email_enc = URLEncoder.encode(email, "utf-8");
+            //String pass_enc = URLEncoder.encode(password, "utf-8");
+            String name_enc = URLEncoder.encode(name, "utf-8");
+            String last_name_enc = URLEncoder.encode(last_name, "utf-8");
+            url = String.format(AppConfig.URL_REGISTER_GET, "register", email, password, name_enc, last_name_enc);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        String url = String.format(AppConfig.URL_REGISTER_GET, "register", email, password, name, last_name);
+
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                hideDialog();
+                pDialog.hideDialog();
 
                 try {
                     Log.i("REGISTER_URL", response);
                     JSONObject jObj = new JSONObject(response);
-/*TODO fix parsing of response JSON object
-{"error_msg":"","tag":"register","error":false,"uid":33,"user":{"KomitentIme":"Milan","KomitentPrezime":"Milan","KomitentUserName":"a","email":"a@b.com","created_at":"2016-01-14 19:03:33"}} */
+//{"error_msg":"","tag":"register","error":false,"uid":33,"user":{"KomitentIme":"Milan","KomitentPrezime":"Milan","KomitentUserName":"a","email":"a@b.com","created_at":"2016-01-14 19:03:33"}} */
 
                     boolean success = jObj.getBoolean("success");
                     if (success) {
@@ -131,20 +145,33 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         AppController.setString(RegisterActivity.this, "email", email);
                         AppController.setString(RegisterActivity.this, "created_at", created_at);
 
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                RegisterActivity.this,
-                                LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+                        alertDialog.setTitle("Registracija novog korisnika");
+                        alertDialog.setMessage("Registracija uspešna!");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getString(R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Launch login activity
+                                        Intent intent = new Intent(
+                                                RegisterActivity.this,
+                                                LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+
                     } else {
 
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
-                        if (errorMsg.equals("")) errorMsg = "Server communication error!";
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        if (errorMsg.equals("")) errorMsg = "Greška u komunikaciji sa serverom!";
+                        //Toast.makeText(getApplicationContext(),
+                        //        errorMsg, Toast.LENGTH_LONG).show();
+                        showSnack(errorMsg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -157,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
+                pDialog.hideDialog();
             }
         }) {
 
@@ -177,21 +204,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         Log.i("REGISTER_URL", strReq.getUrl());
 
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 
     @Override
@@ -204,19 +221,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             case R.id.register_button:
                 String name = etFullName.getText().toString();
-                /* TODO */
-                String last_name = "PlaceHolder";
+                String last_name = etLastName.getText().toString();
                 String email = etEmailRegister.getText().toString();
                 String password = etPasswordRegister.getText().toString();
 /* TODO  Make better filed validation. Name can't contain spaces and/or UTF-8 letters.*/
-/* TODO Add separate field for last name*/
-                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !last_name.isEmpty()) {
                     registerUser(name, last_name, email, password);
                 } else {
-                    Snackbar.make(v, "Unesite podatke!", Snackbar.LENGTH_LONG)
-                            .show();
+                    showSnack("Unesite podatke!");
                 }
                 break;
         }
     }
+
+    private void showSnack(String msg) {
+        Snackbar.make(registerButton, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
 }

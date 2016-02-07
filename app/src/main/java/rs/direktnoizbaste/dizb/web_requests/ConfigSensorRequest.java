@@ -10,37 +10,28 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
-import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 
 /**
- * Created by milan on 1/30/2016.
+ * Created by milan on 2/6/2016.
  */
-public class AddSensorRequest {
+public class ConfigSensorRequest {
     private Context context;
     private ProgressDialogCustom progressDialog;
     private WebRequestCallbackInterface webRequestCallbackInterface;
-    private SensorListAdapter customArrayAdapter;
     private JSONObject[] jsonObjects;
 
-    //ListView listView;
-
-    public AddSensorRequest(Activity context) {
+    public ConfigSensorRequest(Activity context) {
         this.context = context;
         progressDialog = new ProgressDialogCustom(context);
         progressDialog.setCancelable(false);
         webRequestCallbackInterface = null;
-        //listView = (ListView) context.findViewById(R.id.listView);
     }
 
     public void setCallbackListener(WebRequestCallbackInterface listener) {
@@ -50,12 +41,12 @@ public class AddSensorRequest {
     /**
      * function to pull sensor list form web server
      */
-    public void addSensor(final String uid, final String mac, final String kind) {
+    public void configSensor(final String ssid, final String pass) {
         // Tag used to cancel the request
-        String tag_string_req = "req_add_sensor";
-        progressDialog.showDialog(context.getString(R.string.progress_add_sensor_list));
+        String tag_string_req = "req_config_sensor";
+        progressDialog.showDialog(context.getString(R.string.sensor_config_msg));
 
-        String url = String.format(AppConfig.URL_ADD_SENSOR_GET, uid, mac, kind);
+        String url = String.format(AppConfig.URL_CONFIG_SENSOR, ssid, pass);
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
@@ -69,52 +60,36 @@ public class AddSensorRequest {
                 } else {
                     Log.d("RESPONSE", "NULL RESPONSE");
                 }
+                boolean success = true;
 
-                try {
+                if (success) {
 
-                    JSONObject jObj = new JSONObject(response);
+                    webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
 
-                    boolean success = jObj.getBoolean("success");
-                    jsonObjects = new JSONObject[1];
-                    jsonObjects[0] = jObj;
-
-                    if (success) {
-                        webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
-
-                    } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        webRequestCallbackInterface.webRequestSuccess(false, jsonObjects);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    webRequestCallbackInterface.webRequestSuccess(false, jsonObjects);
                 }
-
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.hideDialog();
-                webRequestCallbackInterface.webRequestError(error.getMessage());
+                String msg = error.getMessage();
+                if ((msg == null) || msg.equals("")) {
+                    msg = "Nije uspelo podešavanje senzora.\nResetujte senzor.";
+                }
+                /*TODO make a custom request to handle 200 code*/
+                if (msg.contains("timeout")) {
+                    webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
+                } else
+                    webRequestCallbackInterface.webRequestError(msg);
             }
         }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Post params
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("action", "dodajSenzorId");
-                params.put("id", uid);
-                params.put("string", mac);
-                params.put("br", kind);
-                return params;
-            }
-
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(30 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES*4, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
     }
 }

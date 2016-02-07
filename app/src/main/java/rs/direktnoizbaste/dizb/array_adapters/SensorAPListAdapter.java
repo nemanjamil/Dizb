@@ -42,7 +42,7 @@ public class SensorAPListAdapter extends ArrayAdapter<ScanResult> {
 
         textView.setText(objects.get(position).SSID);
         textView_desc.setText(objects.get(position).BSSID);
-        imageView.setImageResource(R.mipmap.tomato6);
+        //imageView.setImageResource(R.mipmap.tomato6);
         progressBar.setMax(5);
         int level = WifiManager.calculateSignalLevel(objects.get(position).level, 5);
         /*TODO change bar color depending on signal strength*/
