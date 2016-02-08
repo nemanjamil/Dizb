@@ -80,7 +80,7 @@ public class ConfigSensorRequest {
                     msg = "Nije uspelo podešavanje senzora.\nResetujte senzor.";
                 }
                 /*TODO make a custom request to handle 200 code*/
-                if (msg.contains("timeout")) {
+                if (msg.contains("timed")) {
                     webRequestCallbackInterface.webRequestSuccess(true, jsonObjects);
                 } else
                     webRequestCallbackInterface.webRequestError(msg);
