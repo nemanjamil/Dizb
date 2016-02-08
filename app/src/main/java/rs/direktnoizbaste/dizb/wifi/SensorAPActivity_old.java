@@ -97,9 +97,6 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
         csr.setCallbackListener(new WebRequestCallbackInterface() {
             @Override
             public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
-
-
-
                 if (success) {
                     //showSnack("Senzor uspešno konfigurisan.");
                     AlertDialog alertDialog = new AlertDialog.Builder(SensorAPActivity_old.this).create();
@@ -396,11 +393,13 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
 //                        });
 
                         // snackbar.show();
-                        if (wasWiFiEnabledBeforeSensorConfig){
+                        if (wasWiFiEnabled){
                             wifiManager.enableNetwork(wasNetworkId, true);
+                            Log.i("SensorWasWifi","enabling network...");
                         }else
                         {
                             wifiManager.setWifiEnabled(false);
+                            Log.i("SensorWasWifi", "disabling network...");
                         }
                         AlertDialog alertDialog = new AlertDialog.Builder(SensorAPActivity_old.this).create();
                         alertDialog.setTitle("Pretraga senzora");
