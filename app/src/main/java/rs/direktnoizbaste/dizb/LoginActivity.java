@@ -20,7 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
@@ -104,6 +106,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         session.setLogin(true);
                         session.setUID(uid);
+
+                        // collect user data
+                        //"KomitentNaziv":null,"KomitentIme":"Xman","KomitentPrezime":"Xavier","KomitentAdresa":null,"KomitentPosBroj":null,"KomitentMesto":null
+                        // ,"KomitentTelefon":null,"KomitentMobTel":null,"KomitentEmail":"x@y.z","KomitentUserName":"x","KomitentTipUsera":1,"KomitentFirma":null,
+                        // "KomitentMatBr":null,"KomitentPIB":null,"KomitentFirmaAdresa":null}
+
+                        String naziv = jObj.getString("KomitentNaziv");
+                        String ime = jObj.getString("KomitentIme");
+                        String prezime = jObj.getString("KomitentPrezime");
+                        String adresa = jObj.getString("KomitentAdresa");
+                        String posta = jObj.getString("KomitentPosBroj");
+                        String mesto = jObj.getString("KomitentMesto");
+                        String telefon = jObj.getString("KomitentTelefon");
+                        String mobilni = jObj.getString("KomitentMobTel");
+                        String email = jObj.getString("KomitentEmail");
+                        String username = jObj.getString("KomitentUserName");
+                        Integer tip = jObj.getInt("KomitentTipUsera");
+                        String firma = jObj.getString("KomitentFirma");
+                        String maticni = jObj.getString("KomitentMatBr");
+                        String pib = jObj.getString("KomitentPIB");
+                        String firma_adresa = jObj.getString("KomitentFirmaAdresa");
+
+                        session.setGeneralName(naziv);
+                        session.setName(ime);
+                        session.setLastName(prezime);
+                        session.setAddress(adresa);
+                        session.setZip(posta);
+                        session.setCity(mesto);
+                        session.setPhone(telefon);
+                        session.setMobile(mobilni);
+                        session.setEmail(email);
+                        session.setUsername(username);
+                        session.setUserType(tip);
+                        session.setFirmName(firma);
+                        session.setFirmId(maticni);
+                        session.setFirmPIB(pib);
+                        session.setFirmAddress(firma_adresa);
 
                         // Launching  main activity
                         Intent intent = new Intent(LoginActivity.this,

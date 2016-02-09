@@ -38,7 +38,10 @@
             android:name=".DrawerActivity"
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme" />
-        <activity android:name=".wifi.SensorConfig"></activity>
+        <activity android:name=".wifi.SensorConfig" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

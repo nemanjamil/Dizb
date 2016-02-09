@@ -8,12 +8,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Set;
+
 public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "AndroidSources";
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
     private static final String KEY_UID = "userID";
     private static final String KEY_SENSORS = "SensorsJSON";
+    private static final String KEY_USER_DATA = "UserData";
+
+    private static final String KEY_GENERAL_NAME = "KomitentNaziv";
+    private static final String KEY_NAME = "KomitentIme";
+    private static final String KEY_LAST_NAME = "KomitentPrezime";
+    private static final String KEY_ADDRESS = "KomitentAdresa";
+    private static final String KEY_ZIP_CODE = "KomitentPosBroj";
+    private static final String KEY_CITY = "KomitentMesto";
+    private static final String KEY_PHONE = "KomitentTelefon";
+    private static final String KEY_MOBILE = "KomitentMobTel";
+    private static final String KEY_EMAIL = "KomitentEmail";
+    private static final String KEY_USERNAME = "KomitentUserName";
+    private static final String KEY_USER_TYPE = "KomitentTipUsera";
+    private static final String KEY_FIRM_NAME = "KomitentFirma";
+    private static final String KEY_FIRM_ID = "KomitentMatBr";
+    private static final String KEY_FIRM_PIB = "KomitentPIB";
+    private static final String KEY_FIRM_ADDRESS = "KomitentFirmaAdresa";
 
     // Shared Preferences
     SharedPreferences pref;
@@ -50,73 +69,154 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void addSensor(String mac, boolean registered) {
-        String sensors = pref.getString(KEY_SENSORS, "{\"sensors\":[]}");
-        int index = -1;
-        try {
-            JSONObject jsonObject = new JSONObject(sensors);
-            JSONArray jsonArray = jsonObject.getJSONArray("sensors");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                if (jsonArray.getJSONObject(i).getString("mac").equals(mac)){
-                    index = i;
-                }
-            }
-
-            if (index > -1){
-                // sensor already exists
-                // so delete it before adding
-                jsonArray.remove(index);
-            }
-            JSONObject jsonSensor = new JSONObject();
-            jsonSensor.put("mac", mac);
-            jsonSensor.put("registered", registered);
-            jsonArray.put(jsonSensor);
-            jsonObject.put("sensors", jsonArray);
-            editor.putString(KEY_SENSORS, jsonObject.toString());
-            editor.commit();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public String getGeneralName() {
+        return pref.getString(KEY_GENERAL_NAME, "");
     }
 
-    public boolean isSensorRegistered(String mac) {
-        String sensors = pref.getString(KEY_SENSORS, "{\"sensors\":[]}");
-        try {
-            JSONObject jsonObject = new JSONObject(sensors);
-            JSONArray jsonArray = jsonObject.getJSONArray("sensors");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                if (jsonArray.getJSONObject(i).getString("mac").equals(mac)){
-                    return jsonArray.getJSONObject(i).getBoolean("registered");
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public void setGeneralName(String s) {
+        editor.putString(KEY_GENERAL_NAME, s);
+        // commit changes
+        editor.commit();
     }
 
-    public void deleteSensor(String mac) {
-        int index = -1;
-        String sensors = pref.getString(KEY_SENSORS, "{\"sensors\":[]}");
-        try {
-            JSONObject jsonObject = new JSONObject(sensors);
-            JSONArray jsonArray = jsonObject.getJSONArray("sensors");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                if (jsonArray.getJSONObject(i).getString("mac").equals(mac)){
-                     index = i;
-                }
-            }
-            if (index > -1){
-                jsonArray.remove(index);
-                jsonObject.put("sensors", jsonArray);
-                editor.putString(KEY_SENSORS, jsonObject.toString());
-                editor.commit();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+    public String getName() {
+        return pref.getString(KEY_NAME, "");
     }
+
+    public void setName(String s) {
+        editor.putString(KEY_NAME, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getLastName() {
+        return pref.getString(KEY_LAST_NAME, "");
+    }
+
+    public void setLastName(String s) {
+        editor.putString(KEY_LAST_NAME, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getAddress() {
+        return pref.getString(KEY_ADDRESS, "");
+    }
+
+    public void setAddress(String s) {
+        editor.putString(KEY_ADDRESS, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getZip() {
+        return pref.getString(KEY_ZIP_CODE, "");
+    }
+
+    public void setZip(String s) {
+        editor.putString(KEY_ZIP_CODE, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getCity() {
+        return pref.getString(KEY_CITY, "");
+    }
+
+    public void setCity(String s) {
+        editor.putString(KEY_CITY, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getPhone() {
+        return pref.getString(KEY_PHONE, "");
+    }
+
+    public void setPhone(String s) {
+        editor.putString(KEY_PHONE, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getMobile() {
+        return pref.getString(KEY_MOBILE, "");
+    }
+
+    public void setMobile(String s) {
+        editor.putString(KEY_MOBILE, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getEmail() {
+        return pref.getString(KEY_EMAIL, "");
+    }
+
+    public void setEmail(String s) {
+        editor.putString(KEY_EMAIL, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getUsername() {
+        return pref.getString(KEY_USERNAME, "");
+    }
+
+    public void setUsername(String s) {
+        editor.putString(KEY_USERNAME, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public Integer getUserType() {
+        return pref.getInt(KEY_USER_TYPE, -1);
+    }
+
+    public void setUserType(Integer i) {
+        editor.putInt(KEY_USER_TYPE, i);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getFirmName() {
+        return pref.getString(KEY_FIRM_NAME, "");
+    }
+
+    public void setFirmName(String s) {
+        editor.putString(KEY_FIRM_NAME, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getFirmId() {
+        return pref.getString(KEY_FIRM_ID, "");
+    }
+
+    public void setFirmId(String s) {
+        editor.putString(KEY_FIRM_ID, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getFirmPIB() {
+        return pref.getString(KEY_FIRM_PIB, "");
+    }
+
+    public void setFirmPIB(String s) {
+        editor.putString(KEY_FIRM_PIB, s);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getFirmAddress() {
+        return pref.getString(KEY_FIRM_ADDRESS, "");
+    }
+
+    public void setFirmAddress(String s) {
+        editor.putString(KEY_FIRM_ADDRESS, s);
+        // commit changes
+        editor.commit();
+    }
+
 }
