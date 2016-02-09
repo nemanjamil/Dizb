@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_user_data_settings"
+        android:title="@string/pref_title_user_data">
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="textPersonName"
+            android:key="@string/KEY_NAME"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_name_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="textPersonName"
+            android:key="@string/KEY_LAST_NAME"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_last_name_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="textPostalAddress"
+            android:key="@string/KEY_ADDRESS"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_address_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="number"
+            android:key="@string/KEY_ZIP_CODE"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_zip_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:key="@string/KEY_CITY"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_city_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="phone"
+            android:key="@string/KEY_PHONE"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_phone_title" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="phone"
+            android:key="@string/KEY_MOBILE"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_user_data_mobile_title" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="pref_key_firm_data_settings"
+        android:title="@string/pref_title_firm_data">
+        <SwitchPreference
+            android:key="pref_firm_data_toggle"
+            android:title="@string/pref_firm_data_available_title"
+            android:summary="@string/pref_firm_data_toggle_summ"
+            android:defaultValue="off" />
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="text"
+            android:dependency="pref_firm_data_toggle"
+            android:key="@string/KEY_FIRM_NAME"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_firm_data_name_title" />
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="textPostalAddress"
+            android:dependency="pref_firm_data_toggle"
+            android:key="@string/KEY_FIRM_ADDRESS"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_firm_data_address_title" />
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="number"
+            android:dependency="pref_firm_data_toggle"
+            android:key="@string/KEY_FIRM_ID"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_firm_data_ID_title" />
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_edit_text_value_unset"
+            android:inputType="number"
+            android:dependency="pref_firm_data_toggle"
+            android:key="@string/KEY_FIRM_PIB"
+            android:summary="@string/pref_edit_text_value_unset"
+            android:title="@string/pref_firm_data_PIB_title" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

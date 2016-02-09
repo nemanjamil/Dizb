@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dizb</string>
     <string name="hello_world">Hello world!</string>
@@ -14,7 +15,9 @@
     <string name="email_hint">Email</string>
     <string name="pass_hint">Šifra</string>
     <string name="btn_text_register">Registruj</string>
-    <string name="text_already_have_account">Ako već imate nalog: <u>kliknite ovde.</u></string>
+    <string name="text_already_have_account">Ako već imate nalog:
+        <u>kliknite ovde.</u>
+    </string>
     <string name="text_logged_in">Povezani ste</string>
     <string name="btn_text_logout">Odveži se</string>
     <string name="text_web_site">direktnoizbaste.rs</string>
@@ -36,8 +39,9 @@
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
     <string name="title_slider">Direktno iz bašte</string>
     <string name="subtitle_slider">www.direktnoizbaste.rs</string>
-    <string name="drawer_menu_logout">Odjavi se...</string>
-    <string name="drawer_menu_add">Dodaj senzor...</string>
+    <string name="drawer_menu_logout">Odjavi se…</string>
+    <string name="drawer_menu_add">Dodaj senzor…</string>
+    <string name="drawer_menu_settings">Podešavanja</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -45,21 +49,59 @@
     </string>
     <string name="title_activity_drawer">Lista senzora</string>
     <string name="drawer_action_subtitle">Akcije</string>
-    <string name="progress_update_sensor_list">Učitavam listu...</string>
-    <string name="delete_confirmation_question">Ako potvrdite, izbrisaćete izabrane senzore.</string>
+    <string name="progress_update_sensor_list">Učitavam listu…</string>
+    <string name="delete_confirmation_question">Ako potvrdite, izbrisaćete izabrane senzore.
+    </string>
     <string name="yes">Da</string>
     <string name="ok">OK</string>
     <string name="cancel">Otkaži</string>
     <string name="delete_confirmation_title">Brisanje senzora?</string>
-    <string name="progress_delete_sensor">Brisanje senzora...</string>
-    <string name="progress_add_sensor_list">Dodajem novi senzor...</string>
+    <string name="progress_delete_sensor">Brisanje senzora…</string>
+    <string name="progress_add_sensor_list">Dodajem novi senzor…</string>
     <string name="sensor_scan_confirmation_title">Pretraga senzora</string>
-    <string name="sensor_scan_confirmation_question">Postavite senzor u mod za podešavanje. Potom kliknite OK.</string>
+    <string name="sensor_scan_confirmation_question">Postavite senzor u mod za podešavanje. Potom
+        kliknite OK.
+    </string>
     <string name="title_ap_activity">Izaberi senzor</string>
     <string name="set_wifi_dialog_title">Podesi WiFi za</string>
     <string name="sensor_config_msg">Podešavam senzor</string>
-    <string name="drawer_menu_settings">Podešavanja</string>
+
     <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_title_user_data">PODACI O KORISNIKU</string>
+    <string name="pref_title_firm_data">PODACI O FIRMI</string>
+    <string name="pref_user_data_name_summary">Korisnikovo ime</string>
+    <string name="pref_user_data_name_title">Ime korisnika</string>
+    <string name="pref_edit_text_value_unset">Nepopunjeno</string>
+
+    <string name="KEY_GENERAL_NAME">KomitentNaziv</string>
+    <string name="KEY_NAME">KomitentIme</string>
+    <string name="KEY_LAST_NAME">KomitentPrezime</string>
+    <string name="KEY_ADDRESS">KomitentAdresa</string>
+    <string name="KEY_ZIP_CODE">KomitentPosBroj</string>
+    <string name="KEY_CITY">KomitentMesto</string>
+    <string name="KEY_PHONE">KomitentTelefon</string>
+    <string name="KEY_MOBILE">KomitentMobTel</string>
+    <string name="KEY_EMAIL">KomitentEmail</string>
+    <string name="KEY_USERNAME">KomitentUserName</string>
+    <string name="KEY_USER_TYPE">KomitentTipUsera</string>
+    <string name="KEY_FIRM_NAME">KomitentFirma</string>
+    <string name="KEY_FIRM_ID">KomitentMatBr</string>
+    <string name="KEY_FIRM_PIB">KomitentPIB</string>
+    <string name="KEY_FIRM_ADDRESS">KomitentFirmaAdresa</string>
+    <string name="pref_user_data_last_name_title">Prezime korisnika</string>
+    <string name="pref_user_data_address_title">Adresa</string>
+    <string name="pref_user_data_zip_title">Poštanski broj</string>
+    <string name="pref_user_data_city_title">Mesto</string>
+    <string name="pref_user_data_phone_title">Telefon</string>
+    <string name="pref_user_data_mobile_title">Mobilni</string>
+    <string name="pref_firm_data_name_title">Naziv firme</string>
+    <string name="pref_firm_data_address_title">Adresa</string>
+    <string name="pref_firm_data_ID_title">Matični broj</string>
+    <string name="pref_firm_data_PIB_title">PIB</string>
+    <string name="pref_firm_data_available_title">Koristi podatke o firmi</string>
+    <string name="pref_firm_data_toggle_summ">Isključeno</string>
+    <string name="title_activity_user_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
@@ -118,4 +160,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
 </resources>

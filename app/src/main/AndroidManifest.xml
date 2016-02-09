@@ -39,9 +39,11 @@
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme" />
         <activity android:name=".wifi.SensorConfig" />
+        <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".settings.SettingsFragment" />
         <activity
-            android:name=".settings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:name=".settings.UserSettingsActivity"
+            android:label="@string/title_activity_user_settings"></activity>
     </application>
 
 </manifest>

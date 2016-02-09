@@ -3,6 +3,7 @@ package rs.direktnoizbaste.dizb.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,13 +11,12 @@ import org.json.JSONObject;
 
 import java.util.Set;
 
+import rs.direktnoizbaste.dizb.R;
+
 public class SessionManager {
-    // Shared preferences file name
-    private static final String PREF_NAME = "AndroidSources";
+
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
     private static final String KEY_UID = "userID";
-    private static final String KEY_SENSORS = "SensorsJSON";
-    private static final String KEY_USER_DATA = "UserData";
 
     private static final String KEY_GENERAL_NAME = "KomitentNaziv";
     private static final String KEY_NAME = "KomitentIme";
@@ -39,12 +39,9 @@ public class SessionManager {
     Editor editor;
     Context _context;
 
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-
     public SessionManager(Context context) {
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = PreferenceManager.getDefaultSharedPreferences(_context);
         editor = pref.edit();
     }
 
@@ -70,151 +67,151 @@ public class SessionManager {
     }
 
     public String getGeneralName() {
-        return pref.getString(KEY_GENERAL_NAME, "");
+        return pref.getString(String.valueOf(R.string.KEY_GENERAL_NAME), "");
     }
 
     public void setGeneralName(String s) {
-        editor.putString(KEY_GENERAL_NAME, s);
+        editor.putString(String.valueOf(R.string.KEY_GENERAL_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getName() {
-        return pref.getString(KEY_NAME, "");
+        return pref.getString(String.valueOf(R.string.KEY_NAME), "");
     }
 
     public void setName(String s) {
-        editor.putString(KEY_NAME, s);
+        editor.putString(String.valueOf(R.string.KEY_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getLastName() {
-        return pref.getString(KEY_LAST_NAME, "");
+        return pref.getString(String.valueOf(R.string.KEY_LAST_NAME), "");
     }
 
     public void setLastName(String s) {
-        editor.putString(KEY_LAST_NAME, s);
+        editor.putString(String.valueOf(R.string.KEY_LAST_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getAddress() {
-        return pref.getString(KEY_ADDRESS, "");
+        return pref.getString(String.valueOf(R.string.KEY_ADDRESS), "");
     }
 
     public void setAddress(String s) {
-        editor.putString(KEY_ADDRESS, s);
+        editor.putString(String.valueOf(R.string.KEY_ADDRESS), s);
         // commit changes
         editor.commit();
     }
 
     public String getZip() {
-        return pref.getString(KEY_ZIP_CODE, "");
+        return pref.getString(String.valueOf(R.string.KEY_ZIP_CODE), "");
     }
 
     public void setZip(String s) {
-        editor.putString(KEY_ZIP_CODE, s);
+        editor.putString(String.valueOf(R.string.KEY_ZIP_CODE), s);
         // commit changes
         editor.commit();
     }
 
     public String getCity() {
-        return pref.getString(KEY_CITY, "");
+        return pref.getString(String.valueOf(R.string.KEY_CITY), "");
     }
 
     public void setCity(String s) {
-        editor.putString(KEY_CITY, s);
+        editor.putString(String.valueOf(R.string.KEY_CITY), s);
         // commit changes
         editor.commit();
     }
 
     public String getPhone() {
-        return pref.getString(KEY_PHONE, "");
+        return pref.getString(String.valueOf(R.string.KEY_PHONE), "");
     }
 
     public void setPhone(String s) {
-        editor.putString(KEY_PHONE, s);
+        editor.putString(String.valueOf(R.string.KEY_PHONE), s);
         // commit changes
         editor.commit();
     }
 
     public String getMobile() {
-        return pref.getString(KEY_MOBILE, "");
+        return pref.getString(String.valueOf(R.string.KEY_MOBILE), "");
     }
 
     public void setMobile(String s) {
-        editor.putString(KEY_MOBILE, s);
+        editor.putString(String.valueOf(R.string.KEY_MOBILE), s);
         // commit changes
         editor.commit();
     }
 
     public String getEmail() {
-        return pref.getString(KEY_EMAIL, "");
+        return pref.getString(String.valueOf(R.string.KEY_EMAIL), "");
     }
 
     public void setEmail(String s) {
-        editor.putString(KEY_EMAIL, s);
+        editor.putString(String.valueOf(R.string.KEY_EMAIL), s);
         // commit changes
         editor.commit();
     }
 
     public String getUsername() {
-        return pref.getString(KEY_USERNAME, "");
+        return pref.getString(String.valueOf(R.string.KEY_USERNAME), "");
     }
 
     public void setUsername(String s) {
-        editor.putString(KEY_USERNAME, s);
+        editor.putString(String.valueOf(R.string.KEY_USERNAME), s);
         // commit changes
         editor.commit();
     }
 
     public Integer getUserType() {
-        return pref.getInt(KEY_USER_TYPE, -1);
+        return pref.getInt(String.valueOf(R.string.KEY_USER_TYPE), -1);
     }
 
     public void setUserType(Integer i) {
-        editor.putInt(KEY_USER_TYPE, i);
+        editor.putInt(String.valueOf(R.string.KEY_USER_TYPE), i);
         // commit changes
         editor.commit();
     }
 
     public String getFirmName() {
-        return pref.getString(KEY_FIRM_NAME, "");
+        return pref.getString(String.valueOf(R.string.KEY_FIRM_NAME), "");
     }
 
     public void setFirmName(String s) {
-        editor.putString(KEY_FIRM_NAME, s);
+        editor.putString(String.valueOf(R.string.KEY_FIRM_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmId() {
-        return pref.getString(KEY_FIRM_ID, "");
+        return pref.getString(String.valueOf(R.string.KEY_FIRM_ID), "");
     }
 
     public void setFirmId(String s) {
-        editor.putString(KEY_FIRM_ID, s);
+        editor.putString(String.valueOf(R.string.KEY_FIRM_ID), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmPIB() {
-        return pref.getString(KEY_FIRM_PIB, "");
+        return pref.getString(String.valueOf(R.string.KEY_FIRM_PIB), "");
     }
 
     public void setFirmPIB(String s) {
-        editor.putString(KEY_FIRM_PIB, s);
+        editor.putString(String.valueOf(R.string.KEY_FIRM_PIB), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmAddress() {
-        return pref.getString(KEY_FIRM_ADDRESS, "");
+        return pref.getString(String.valueOf(R.string.KEY_FIRM_ADDRESS), "");
     }
 
     public void setFirmAddress(String s) {
-        editor.putString(KEY_FIRM_ADDRESS, s);
+        editor.putString(String.valueOf(R.string.KEY_FIRM_ADDRESS), s);
         // commit changes
         editor.commit();
     }
