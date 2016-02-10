@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +64,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         session = new SessionManager(getApplicationContext());
 
+        Log.i("PrefName:", session.getName());
+
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
@@ -106,37 +109,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         session.setUID(uid);
 
                         // collect user data
+                        JSONObject jObj_user_data = jObj.getJSONObject("user");
+                        //session.setCity("Gamzigrad");
 
-                        if (!jObj.isNull("KomitentNaziv"))
-                            session.setGeneralName(jObj.getString("KomitentNaziv"));
-                        if (!jObj.isNull("KomitentIme"))
-                            session.setName(jObj.getString("KomitentIme"));
-                        if (!jObj.isNull("KomitentPrezime"))
-                            session.setLastName(jObj.getString("KomitentPrezime"));
-                        if (!jObj.isNull("KomitentAdresa"))
-                            session.setAddress(jObj.getString("KomitentAdresa"));
-                        if (!jObj.isNull("KomitentPosBroj"))
-                            session.setZip(jObj.getString("KomitentPosBroj"));
-                        if (!jObj.isNull("KomitentMesto"))
-                            session.setCity(jObj.getString("KomitentMesto"));
-                        if (!jObj.isNull("KomitentTelefon"))
-                            session.setPhone(jObj.getString("KomitentTelefon"));
-                        if (!jObj.isNull("KomitentMobTel"))
-                            session.setMobile(jObj.getString("KomitentMobTel"));
-                        if (!jObj.isNull("KomitentEmail"))
-                            session.setEmail(jObj.getString("KomitentEmail"));
-                        if (!jObj.isNull("KomitentUserName"))
-                            session.setUsername(jObj.getString("KomitentUserName"));
-                        if (!jObj.isNull("KomitentTipUsera"))
-                            session.setUserType(jObj.getInt("KomitentTipUsera"));
-                        if (!jObj.isNull("KomitentFirma"))
-                            session.setFirmName(jObj.getString("KomitentFirma"));
-                        if (!jObj.isNull("KomitentMatBr"))
-                            session.setFirmId(jObj.getString("KomitentMatBr"));
-                        if (!jObj.isNull("KomitentPIB"))
-                            session.setFirmPIB(jObj.getString("KomitentPIB"));
-                        if (!jObj.isNull("KomitentFirmaAdresa"))
-                            session.setFirmAddress(jObj.getString("KomitentFirmaAdresa"));
+                        if (!jObj_user_data.isNull("KomitentNaziv"))
+                            session.setGeneralName(jObj_user_data.getString("KomitentNaziv"));
+                        if (!jObj_user_data.isNull("KomitentIme"))
+                            session.setName(jObj_user_data.getString("KomitentIme"));
+                        if (!jObj_user_data.isNull("KomitentPrezime"))
+                            session.setLastName(jObj_user_data.getString("KomitentPrezime"));
+                        if (!jObj_user_data.isNull("KomitentAdresa"))
+                            session.setAddress(jObj_user_data.getString("KomitentAdresa"));
+                        if (!jObj_user_data.isNull("KomitentPosBroj"))
+                            session.setZip(jObj_user_data.getString("KomitentPosBroj"));
+                        if (!jObj_user_data.isNull("KomitentMesto"))
+                            session.setCity(jObj_user_data.getString("KomitentMesto"));
+                        if (!jObj_user_data.isNull("KomitentTelefon"))
+                            session.setPhone(jObj_user_data.getString("KomitentTelefon"));
+                        if (!jObj_user_data.isNull("KomitentMobTel"))
+                            session.setMobile(jObj_user_data.getString("KomitentMobTel"));
+                        if (!jObj_user_data.isNull("KomitentEmail"))
+                            session.setEmail(jObj_user_data.getString("KomitentEmail"));
+                        if (!jObj_user_data.isNull("KomitentUserName"))
+                            session.setUsername(jObj_user_data.getString("KomitentUserName"));
+                        if (!jObj_user_data.isNull("KomitentTipUsera"))
+                            session.setUserType(jObj_user_data.getInt("KomitentTipUsera"));
+                        if (!jObj_user_data.isNull("KomitentFirma"))
+                            session.setFirmName(jObj_user_data.getString("KomitentFirma"));
+                        if (!jObj_user_data.isNull("KomitentMatBr"))
+                            session.setFirmId(jObj_user_data.getString("KomitentMatBr"));
+                        if (!jObj_user_data.isNull("KomitentPIB"))
+                            session.setFirmPIB(jObj_user_data.getString("KomitentPIB"));
+                        if (!jObj_user_data.isNull("KomitentFirmaAdresa"))
+                            session.setFirmAddress(jObj_user_data.getString("KomitentFirmaAdresa"));
 
                         // Launching  main activity
                         Intent intent = new Intent(LoginActivity.this,

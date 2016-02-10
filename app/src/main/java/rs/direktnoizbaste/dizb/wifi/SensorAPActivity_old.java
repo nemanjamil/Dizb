@@ -473,7 +473,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     }
                     if (goAdd && addingSensor) {
 
-                        asr.addSensor(uid, bssid.replace(":","").toUpperCase(), "4");
+                        asr.addSensor(uid, bssid.replace(":","").toUpperCase(), "1");
                         addingSensor = false;
                     }
                 }

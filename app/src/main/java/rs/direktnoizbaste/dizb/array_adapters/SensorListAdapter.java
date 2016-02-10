@@ -41,7 +41,7 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         try {
-            textView.setText(values[position].getString("ImeKulture") + " - " + values[position].getString("LokacijaIme"));
+            textView.setText(values[position].getString("ImeKulture"));
             textView_desc.setText(values[position].getString("SenzorSifra"));
             imageView.setImageResource(R.mipmap.tomato6);
                 /*TODO figure out better way to pair name with icon */
