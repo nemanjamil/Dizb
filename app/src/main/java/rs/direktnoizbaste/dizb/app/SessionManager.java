@@ -67,151 +67,151 @@ public class SessionManager {
     }
 
     public String getGeneralName() {
-        return pref.getString(String.valueOf(R.string.KEY_GENERAL_NAME), "");
+        return pref.getString(_context.getString(R.string.KEY_GENERAL_NAME), "");
     }
 
     public void setGeneralName(String s) {
-        editor.putString(String.valueOf(R.string.KEY_GENERAL_NAME), s);
+        editor.putString(_context.getString(R.string.KEY_GENERAL_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getName() {
-        return pref.getString(String.valueOf(R.string.KEY_NAME), "");
+        return pref.getString(_context.getString(R.string.KEY_NAME), "");
     }
 
     public void setName(String s) {
-        editor.putString(String.valueOf(R.string.KEY_NAME), s);
+        editor.putString(_context.getString(R.string.KEY_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getLastName() {
-        return pref.getString(String.valueOf(R.string.KEY_LAST_NAME), "");
+        return pref.getString(_context.getString(R.string.KEY_LAST_NAME), "");
     }
 
     public void setLastName(String s) {
-        editor.putString(String.valueOf(R.string.KEY_LAST_NAME), s);
+        editor.putString(_context.getString(R.string.KEY_LAST_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getAddress() {
-        return pref.getString(String.valueOf(R.string.KEY_ADDRESS), "");
+        return pref.getString(_context.getString(R.string.KEY_ADDRESS), "");
     }
 
     public void setAddress(String s) {
-        editor.putString(String.valueOf(R.string.KEY_ADDRESS), s);
+        editor.putString(_context.getString(R.string.KEY_ADDRESS), s);
         // commit changes
         editor.commit();
     }
 
     public String getZip() {
-        return pref.getString(String.valueOf(R.string.KEY_ZIP_CODE), "");
+        return pref.getString(_context.getString(R.string.KEY_ZIP_CODE), "");
     }
 
     public void setZip(String s) {
-        editor.putString(String.valueOf(R.string.KEY_ZIP_CODE), s);
+        editor.putString(_context.getString(R.string.KEY_ZIP_CODE), s);
         // commit changes
         editor.commit();
     }
 
     public String getCity() {
-        return pref.getString(String.valueOf(R.string.KEY_CITY), "");
+        return pref.getString(_context.getString(R.string.KEY_CITY), "");
     }
 
     public void setCity(String s) {
-        editor.putString(String.valueOf(R.string.KEY_CITY), s);
+        editor.putString(_context.getString(R.string.KEY_CITY), s);
         // commit changes
         editor.commit();
     }
 
     public String getPhone() {
-        return pref.getString(String.valueOf(R.string.KEY_PHONE), "");
+        return pref.getString(_context.getString(R.string.KEY_PHONE), "");
     }
 
     public void setPhone(String s) {
-        editor.putString(String.valueOf(R.string.KEY_PHONE), s);
+        editor.putString(_context.getString(R.string.KEY_PHONE), s);
         // commit changes
         editor.commit();
     }
 
     public String getMobile() {
-        return pref.getString(String.valueOf(R.string.KEY_MOBILE), "");
+        return pref.getString(_context.getString(R.string.KEY_MOBILE), "");
     }
 
     public void setMobile(String s) {
-        editor.putString(String.valueOf(R.string.KEY_MOBILE), s);
+        editor.putString(_context.getString(R.string.KEY_MOBILE), s);
         // commit changes
         editor.commit();
     }
 
     public String getEmail() {
-        return pref.getString(String.valueOf(R.string.KEY_EMAIL), "");
+        return pref.getString(_context.getString(R.string.KEY_EMAIL), "");
     }
 
     public void setEmail(String s) {
-        editor.putString(String.valueOf(R.string.KEY_EMAIL), s);
+        editor.putString(_context.getString(R.string.KEY_EMAIL), s);
         // commit changes
         editor.commit();
     }
 
     public String getUsername() {
-        return pref.getString(String.valueOf(R.string.KEY_USERNAME), "");
+        return pref.getString(_context.getString(R.string.KEY_USERNAME), "");
     }
 
     public void setUsername(String s) {
-        editor.putString(String.valueOf(R.string.KEY_USERNAME), s);
+        editor.putString(_context.getString(R.string.KEY_USERNAME), s);
         // commit changes
         editor.commit();
     }
 
     public Integer getUserType() {
-        return pref.getInt(String.valueOf(R.string.KEY_USER_TYPE), -1);
+        return pref.getInt(_context.getString(R.string.KEY_USER_TYPE), -1);
     }
 
     public void setUserType(Integer i) {
-        editor.putInt(String.valueOf(R.string.KEY_USER_TYPE), i);
+        editor.putInt(_context.getString(R.string.KEY_USER_TYPE), i);
         // commit changes
         editor.commit();
     }
 
     public String getFirmName() {
-        return pref.getString(String.valueOf(R.string.KEY_FIRM_NAME), "");
+        return pref.getString(_context.getString(R.string.KEY_FIRM_NAME), "");
     }
 
     public void setFirmName(String s) {
-        editor.putString(String.valueOf(R.string.KEY_FIRM_NAME), s);
+        editor.putString(_context.getString(R.string.KEY_FIRM_NAME), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmId() {
-        return pref.getString(String.valueOf(R.string.KEY_FIRM_ID), "");
+        return pref.getString(_context.getString(R.string.KEY_FIRM_ID), "");
     }
 
     public void setFirmId(String s) {
-        editor.putString(String.valueOf(R.string.KEY_FIRM_ID), s);
+        editor.putString(_context.getString(R.string.KEY_FIRM_ID), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmPIB() {
-        return pref.getString(String.valueOf(R.string.KEY_FIRM_PIB), "");
+        return pref.getString(_context.getString(R.string.KEY_FIRM_PIB), "");
     }
 
     public void setFirmPIB(String s) {
-        editor.putString(String.valueOf(R.string.KEY_FIRM_PIB), s);
+        editor.putString(_context.getString(R.string.KEY_FIRM_PIB), s);
         // commit changes
         editor.commit();
     }
 
     public String getFirmAddress() {
-        return pref.getString(String.valueOf(R.string.KEY_FIRM_ADDRESS), "");
+        return pref.getString(_context.getString(R.string.KEY_FIRM_ADDRESS), "");
     }
 
     public void setFirmAddress(String s) {
-        editor.putString(String.valueOf(R.string.KEY_FIRM_ADDRESS), s);
+        editor.putString(_context.getString(R.string.KEY_FIRM_ADDRESS), s);
         // commit changes
         editor.commit();
     }

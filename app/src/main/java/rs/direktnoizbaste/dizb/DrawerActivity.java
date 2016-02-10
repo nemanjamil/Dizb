@@ -28,7 +28,7 @@ import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorScanConfirmationDialog;
-import rs.direktnoizbaste.dizb.settings.UserSettingsActivity;
+import rs.direktnoizbaste.dizb.settings.SettingsActivity;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
@@ -211,7 +211,7 @@ public class DrawerActivity extends AppCompatActivity
             fab.callOnClick();
         } else if (id == R.id.nav_settings) {
             // start settings activity
-            Intent intent = new Intent(DrawerActivity.this, UserSettingsActivity.class);
+            Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
             startActivity(intent);
             //finish();
         }

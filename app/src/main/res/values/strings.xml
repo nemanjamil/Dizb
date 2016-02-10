@@ -39,8 +39,8 @@
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
     <string name="title_slider">Direktno iz bašte</string>
     <string name="subtitle_slider">www.direktnoizbaste.rs</string>
-    <string name="drawer_menu_logout">Odjavi se…</string>
-    <string name="drawer_menu_add">Dodaj senzor…</string>
+    <string name="drawer_menu_logout">Odjavi se</string>
+    <string name="drawer_menu_add">Dodaj senzor</string>
     <string name="drawer_menu_settings">Podešavanja</string>
 
     <string name="large_text">
