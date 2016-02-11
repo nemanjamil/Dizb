@@ -164,5 +164,6 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_change">Izmeni</string>
     <string name="pick_plant_title">Izaberi kulturu</string>
+    <string name="progress_update_sensor">Izmena kulture...</string>
 
 </resources>

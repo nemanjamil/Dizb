@@ -23,4 +23,6 @@ public class AppConfig {
     public static final String URL_ADD_SENSOR_GET = "http://direktnoizbaste.rs/parametri.php?action=dodajSenzorId&id=%1$s&string=%2$s&br=%3$s";
     //{"kulture":[{"IdKulture":1,"ImeKulture":"Boranija","SlikaKulture":null},{"IdKulture":2,"ImeKulture":"Paprika","SlikaKulture":null},{"IdKulture":3,"ImeKulture":"Paradajz","SlikaKulture":null}]}
     public static final String URL_SENSOR_PLANTS_GET = "http://direktnoizbaste.rs/parametri.php?action=podaciKulture";
+    //http://direktnoizbaste.rs/parametri.php?action=izmeniPodatkeSenzorId&id=57&string=5ECF7F0747A7&br=3
+    public static final String URL_UPDATE_SENSOR_GET = "http://direktnoizbaste.rs/parametri.php?action=izmeniPodatkeSenzorId&id=%1$s&string=%2$s&br=%3$s";
 }

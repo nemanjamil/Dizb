@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,10 +34,11 @@ import rs.direktnoizbaste.dizb.settings.SettingsActivity;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorPlantsRequest;
+import rs.direktnoizbaste.dizb.web_requests.UpdateSensorRequest;
 import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener, SelectPlantDialog.OnDialogDataPass {
 
     private ListView listView;
     private SensorListAdapter customArrayAdapter;
@@ -47,10 +49,9 @@ public class DrawerActivity extends AppCompatActivity
     private SessionManager session;
 
     private PullSensorListRequest psl;
-
     private PullSensorPlantsRequest psp;
-
     private DeleteSensorRequest dsr;
+    private UpdateSensorRequest usr;
 
     private String uid;
 
@@ -307,8 +308,9 @@ public class DrawerActivity extends AppCompatActivity
                 return true;
             case R.id.action_change:
                 // Show pick list
-                new SelectPlantDialog().show(getFragmentManager(),"pick_plant_TAG");
-                mode.finish();
+                SelectPlantDialog spd = new SelectPlantDialog();
+                spd.show(getFragmentManager(), "pick_plant_TAG");
+                actionBarReference = mode;
                 return true;
             default:
                 return false;
@@ -328,6 +330,33 @@ public class DrawerActivity extends AppCompatActivity
     private void showSnack(String msg) {
         Snackbar.make(fab, msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onDialogDataPass(String data) {
+        // Update sensor
+        Log.i("onDialogDataPass", data);
+        usr = new UpdateSensorRequest(this);
+        usr.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                if (success) {
+                    if (actionBarReference != null)// Action picked, so close the CAB
+                        actionBarReference.finish();
+                    //reload sensor list
+                    psl.pullSensorList(uid);
+                } else {
+                    showSnack("Izmena kulture nije uspela.");
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                // inform user
+                showSnack("Nije uspelo. Greška prilikom komunikacije sa serverom");
+            }
+        });
+        usr.updateSensorListRequest(uid, data);
     }
 
 }
