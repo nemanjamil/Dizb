@@ -26,11 +26,13 @@ import org.json.JSONObject;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
+import rs.direktnoizbaste.dizb.dialogs.SelectPlantDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorScanConfirmationDialog;
 import rs.direktnoizbaste.dizb.settings.SettingsActivity;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
+import rs.direktnoizbaste.dizb.web_requests.PullSensorPlantsRequest;
 import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 
 public class DrawerActivity extends AppCompatActivity
@@ -45,6 +47,8 @@ public class DrawerActivity extends AppCompatActivity
     private SessionManager session;
 
     private PullSensorListRequest psl;
+
+    private PullSensorPlantsRequest psp;
 
     private DeleteSensorRequest dsr;
 
@@ -139,6 +143,19 @@ public class DrawerActivity extends AppCompatActivity
             }
         });
 
+        psp = new PullSensorPlantsRequest(this);
+        psp.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                //
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                //
+            }
+        });
+
         dsr = new DeleteSensorRequest(this);
         dsr.setCallbackListener(new WebRequestCallbackInterface() {
             @Override
@@ -162,6 +179,7 @@ public class DrawerActivity extends AppCompatActivity
         });
 
         psl.pullSensorList(uid);
+        psp.pullPlantList();
     }
 
     @Override
@@ -286,6 +304,11 @@ public class DrawerActivity extends AppCompatActivity
                 actionBarReference = mode;
 
                 //mode.finish(); // Action picked, so close the CAB
+                return true;
+            case R.id.action_change:
+                // Show pick list
+                new SelectPlantDialog().show(getFragmentManager(),"pick_plant_TAG");
+                mode.finish();
                 return true;
             default:
                 return false;

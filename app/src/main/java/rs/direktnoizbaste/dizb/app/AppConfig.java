@@ -21,4 +21,6 @@ public class AppConfig {
     public static final String URL_DEL_SENSOR_GET = "http://direktnoizbaste.rs/parametri.php?action=obrisiSenzorId&id=%1$s&string=%2$s";
     //http://direktnoizbaste.rs/parametri.php?action=dodajSenzorId&string=pera&id=1&br=4
     public static final String URL_ADD_SENSOR_GET = "http://direktnoizbaste.rs/parametri.php?action=dodajSenzorId&id=%1$s&string=%2$s&br=%3$s";
+    //{"kulture":[{"IdKulture":1,"ImeKulture":"Boranija","SlikaKulture":null},{"IdKulture":2,"ImeKulture":"Paprika","SlikaKulture":null},{"IdKulture":3,"ImeKulture":"Paradajz","SlikaKulture":null}]}
+    public static final String URL_SENSOR_PLANTS_GET = "http://direktnoizbaste.rs/parametri.php?action=podaciKulture";
 }

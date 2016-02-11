@@ -89,6 +89,8 @@
     <string name="KEY_FIRM_ID">KomitentMatBr</string>
     <string name="KEY_FIRM_PIB">KomitentPIB</string>
     <string name="KEY_FIRM_ADDRESS">KomitentFirmaAdresa</string>
+    <string name="KEY_PLANTS">KomitentListaKultura</string>
+
     <string name="pref_user_data_last_name_title">Prezime korisnika</string>
     <string name="pref_user_data_address_title">Adresa</string>
     <string name="pref_user_data_zip_title">Poštanski broj</string>
@@ -160,5 +162,7 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="action_change">Izmeni</string>
+    <string name="pick_plant_title">Izaberi kulturu</string>
 
 </resources>
