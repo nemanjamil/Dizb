@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -20,7 +21,11 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import org.json.JSONObject;
+
 import rs.direktnoizbaste.dizb.R;
+import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
+import rs.direktnoizbaste.dizb.web_requests.UpdateUserDataRequest;
 
 import java.util.List;
 
@@ -40,6 +45,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+    private static UpdateUserDataRequest uudr;
+
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -84,6 +92,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+
+
+            //uudr.updateUserData();
             return true;
         }
     };
@@ -124,6 +135,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setupActionBar();
         // Show fragment
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
+        uudr = new UpdateUserDataRequest(this);
+        uudr.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                if (success) {
+                    // success
+                } else {
+
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                // fail
+            }
+        });
     }
 
     /**
@@ -280,5 +307,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showSnack(String msg) {
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }
