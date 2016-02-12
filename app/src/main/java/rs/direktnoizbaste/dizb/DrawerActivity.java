@@ -24,6 +24,7 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
+import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
@@ -35,6 +36,7 @@ import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorPlantsRequest;
 import rs.direktnoizbaste.dizb.web_requests.UpdateSensorRequest;
+import rs.direktnoizbaste.dizb.web_requests.UpdateUserDataRequest;
 import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 
 public class DrawerActivity extends AppCompatActivity
@@ -52,6 +54,7 @@ public class DrawerActivity extends AppCompatActivity
     private PullSensorPlantsRequest psp;
     private DeleteSensorRequest dsr;
     private UpdateSensorRequest usr;
+    private UpdateUserDataRequest uudr;
 
     private String uid;
 
@@ -140,7 +143,7 @@ public class DrawerActivity extends AppCompatActivity
 
             @Override
             public void webRequestError(String error) {
-                showSnack(error);
+                showSnack("Lista Senzora: Greška u komunikaciji sa serverom.");
             }
         });
 
@@ -174,8 +177,27 @@ public class DrawerActivity extends AppCompatActivity
             @Override
             public void webRequestError(String error) {
                 // refresh sensor list
-                showSnack(error);
+                showSnack("Brisanje: greška u komunikaciji sa serverom.");
                 psl.pullSensorList(uid);
+            }
+        });
+
+        uudr = new UpdateUserDataRequest(this);
+        uudr.setCallbackListener(new WebRequestCallbackInterface() {
+            @Override
+            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                if (success) {
+                    // success
+                    showSnack("Podešavanja uspešno promenjena.");
+                } else {
+                    showSnack("Podešavanja: server nije dozvolio promenu.");
+                }
+            }
+
+            @Override
+            public void webRequestError(String error) {
+                // fail
+                showSnack("Podešavanja: greška u komunikaciji sa serverom.");
             }
         });
 
@@ -231,7 +253,7 @@ public class DrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             // start settings activity
             Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, AppConfig.ACTIVITY_REQ_SETTINGS);
             //finish();
         }
 
@@ -359,4 +381,20 @@ public class DrawerActivity extends AppCompatActivity
         usr.updateSensorListRequest(uid, data);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        Log.i("DrawerActivity", "ActivityResult");
+        Log.i("DrawerActivity", String.valueOf(requestCode));
+        Log.i("DrawerActivity", String.valueOf(resultCode));
+        if (requestCode == AppConfig.ACTIVITY_REQ_SETTINGS) {
+            // Make sure the request was successful
+            Log.i("DrawerActivity", "RightRequest");
+            if (resultCode == AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE) {
+                Log.i("DrawerActivity", "Updating...");
+                uudr.updateUserData();
+            }
+        }
+
+    }
 }

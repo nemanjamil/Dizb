@@ -22,13 +22,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import rs.direktnoizbaste.dizb.R;
-import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
-import rs.direktnoizbaste.dizb.web_requests.UpdateUserDataRequest;
+import rs.direktnoizbaste.dizb.app.AppConfig;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -46,7 +43,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static UpdateUserDataRequest uudr;
 
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
@@ -180,6 +176,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || FirmDataPreferenceFragment.class.getName().equals(fragmentName);
     }
 
+    private void showSnack(String msg) {
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        Log.i("SettingActivity", "onContentChanged");
+        //if (uudr != null)
+        //   uudr.updateUserData();
+    }
+
+    @Override
+    public void finish() {
+        Log.i("SettingsActivity", "finnish");
+        setResult(AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE);
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("SettingsActivity", "onDestroy");
+        //setResult(AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE);
+    }
+
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
@@ -267,23 +290,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_main);
             setHasOptionsMenu(true);
 
-            uudr = new UpdateUserDataRequest(getActivity());
-            uudr.setCallbackListener(new WebRequestCallbackInterface() {
-                @Override
-                public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
-                    if (success) {
-                        // success
-                    } else {
-
-                    }
-                }
-
-                @Override
-                public void webRequestError(String error) {
-                    // fail
-                }
-            });
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
@@ -315,10 +321,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onDestroyView() {
-
-            Log.i("MainFragment", "onDestroyView");
-
             super.onDestroyView();
+            Log.i("MainFragment", "onDestroyView");
         }
 
         @Override
@@ -326,20 +330,5 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onDestroy();
             Log.i("MainFragment", "onDestroy");
         }
-    }
-
-    private void showSnack(String msg) {
-        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-        Log.i("SettingActivity", "onContentChanged");
-        //if (uudr != null)
-         //   uudr.updateUserData();
-
-
     }
 }

@@ -33,4 +33,7 @@ public class AppConfig {
             "&KomitentPrezime=%4$s&KomitentAdresa=%5$s&KomitentPosBroj=%6$s&KomitentMesto=%7$s&KomitentTelefon=%8$s" +
             "&KomitentMobTel=%9$s&email=%10$s&KomitentUserName=%11$s&KomitentTipUsera=%12$s&KomitentFirma=%13$s" +
             "&KomitentMatBr=%14$s&KomitentPIB=%15$s&KomitentFirmaAdresa=%16$s";
+
+    public static final int ACTIVITY_REQ_SETTINGS = 99;
+    public static final int ACTIVITY_RESP_SETTINGS_UPDATE = 98;
 }
