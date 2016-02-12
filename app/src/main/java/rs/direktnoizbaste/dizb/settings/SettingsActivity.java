@@ -13,21 +13,22 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import rs.direktnoizbaste.dizb.R;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
 import rs.direktnoizbaste.dizb.web_requests.UpdateUserDataRequest;
-
-import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -52,6 +53,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
+
+            Log.i("PrefChangeListener", "onPrefChange");
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
@@ -94,7 +97,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
 
 
-            //uudr.updateUserData();
+            //
             return true;
         }
     };
@@ -135,22 +138,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setupActionBar();
         // Show fragment
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
-        uudr = new UpdateUserDataRequest(this);
-        uudr.setCallbackListener(new WebRequestCallbackInterface() {
-            @Override
-            public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
-                if (success) {
-                    // success
-                } else {
 
-                }
-            }
-
-            @Override
-            public void webRequestError(String error) {
-                // fail
-            }
-        });
     }
 
     /**
@@ -178,7 +166,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
-       // loadHeadersFromResource(R.xml.pref_headers, target);
+        // loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     /**
@@ -279,6 +267,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_main);
             setHasOptionsMenu(true);
 
+            uudr = new UpdateUserDataRequest(getActivity());
+            uudr.setCallbackListener(new WebRequestCallbackInterface() {
+                @Override
+                public void webRequestSuccess(boolean success, JSONObject[] jsonObjects) {
+                    if (success) {
+                        // success
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void webRequestError(String error) {
+                    // fail
+                }
+            });
+
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
@@ -307,10 +312,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+        @Override
+        public void onDestroyView() {
+
+            Log.i("MainFragment", "onDestroyView");
+
+            super.onDestroyView();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            Log.i("MainFragment", "onDestroy");
+        }
     }
 
     private void showSnack(String msg) {
         Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        Log.i("SettingActivity", "onContentChanged");
+        //if (uudr != null)
+         //   uudr.updateUserData();
+
+
     }
 }
