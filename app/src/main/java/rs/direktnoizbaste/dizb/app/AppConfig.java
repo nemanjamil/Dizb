@@ -1,5 +1,7 @@
 package rs.direktnoizbaste.dizb.app;
 
+import android.util.Log;
+
 /**
  * Created by 1 on 1/15/2016.
  */
@@ -36,4 +38,16 @@ public class AppConfig {
 
     public static final int ACTIVITY_REQ_SETTINGS = 99;
     public static final int ACTIVITY_RESP_SETTINGS_UPDATE = 98;
+
+    public static boolean debug = true;
+
+    public static void logDebug(String tag, String msg){
+        if (debug)
+            Log.d(tag, msg);
+    }
+
+    public static void logInfo(String tag, String msg){
+        if (debug)
+            Log.i(tag, msg);
+    }
 }

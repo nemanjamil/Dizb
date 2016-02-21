@@ -55,6 +55,7 @@ import java.util.Map;
 
 import rs.direktnoizbaste.dizb.DrawerActivity;
 import rs.direktnoizbaste.dizb.R;
+import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.AppController;
 import rs.direktnoizbaste.dizb.array_adapters.SensorAPListAdapter;
 
@@ -113,7 +114,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 
         registerReceiver(wifiReciever, intentFilter);
-        Log.i("SensorScan", "onResume");
+        AppConfig.logInfo("SensorScan", "onResume");
         super.onResume();
     }
 
@@ -189,7 +190,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 //wifiManager.disconnect();
                 wifiManager.enableNetwork(networkId, true);
                 //wifiManager.reconnect();
-                Log.i("OKClicked", "enabling " + ssid);
+                AppConfig.logInfo("OKClicked", "enabling " + ssid);
 
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -216,7 +217,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 
             @Override
             public void onResponse(String response) {
-                Log.i("SensorResponse", response);
+                AppConfig.logInfo("SensorResponse", response);
                 Toast.makeText(getApplicationContext(),
                         response, Toast.LENGTH_LONG).show();
                 //restore previous wifi connection
@@ -232,7 +233,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
 
-                Log.i("SensorError", error.getMessage());
+                AppConfig.logInfo("SensorError", error.getMessage());
                 //hideDialog();
             }
         });
@@ -256,7 +257,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
-                Log.i("BroadCastRec", "scan results available");
+                AppConfig.logInfo("BroadCastRec", "scan results available");
                 if (!configuringSensor) {
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
@@ -278,13 +279,13 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
                 int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
-                    Log.i("BroadCastRec", "wifi enabling");
+                    AppConfig.logInfo("BroadCastRec", "wifi enabling");
 
                     // show progress dialog
                     showDialog("Uključujem WiFi...");
                 } else if (wifi_state == WifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
-                    Log.i("BroadCastRec", "wifi enabled");
+                    AppConfig.logInfo("BroadCastRec", "wifi enabled");
 
                     hideDialog();
                     if (!configuringSensor) {
@@ -293,16 +294,16 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     }
                 } else if (wifi_state == WifiManager.WIFI_STATE_DISABLED) {
                     // hide progress dialog
-                    Log.i("BroadCastRec", "wifi disabled");
+                    AppConfig.logInfo("BroadCastRec", "wifi disabled");
 
                     hideDialog();
                 }
             } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(intentAction)) {
-                Log.i("BroadCastRec", "connection change action");
+                AppConfig.logInfo("BroadCastRec", "connection change action");
                 NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 
                 if (info != null) {
-                    Log.i("BroadCastRec", info.getState().toString());
+                    AppConfig.logInfo("BroadCastRec", info.getState().toString());
                 }
 
 
@@ -310,12 +311,12 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
 
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
-                    Log.i("BroadCastRec", ssid);
-                    Log.i("BroadCastRec", String.valueOf(configuringSensor));
-                    Log.i("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
+                    AppConfig.logInfo("BroadCastRec", ssid);
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(configuringSensor));
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
 
                     if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
-                        Log.i("BroadCastRec", "Sakrij dialog");
+                        AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         hideDialog();
                         showSnack("Povezan sa senzorom");
                         configuringSensor = false;
@@ -329,7 +330,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
                     if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
-                        Log.i("BroadCastRec", "Sakrij dialog");
+                        AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         hideDialog();
                         showSnack("Nije uspelo povezivanje sa senzorom");
                         configuringSensor = false;

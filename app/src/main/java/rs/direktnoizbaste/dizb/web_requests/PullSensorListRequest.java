@@ -63,10 +63,10 @@ public class PullSensorListRequest {
             public void onResponse(String response) {
                 progressDialog.hideDialog();
                 if (response != null) {
-                    Log.i("pullSensorResp:", "Nije null");
-                    Log.i("pullSensorResp:", response);
+                    AppConfig.logInfo("pullSensorResp:", "Nije null");
+                    AppConfig.logInfo("pullSensorResp:", response);
                 } else {
-                    Log.d("pullSensorResp", "NULL RESPONSE");
+                    AppConfig.logDebug("pullSensorResp", "NULL RESPONSE");
                 }
 
                 try {

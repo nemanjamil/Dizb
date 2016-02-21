@@ -33,6 +33,7 @@ import java.util.List;
 
 import rs.direktnoizbaste.dizb.DrawerActivity;
 import rs.direktnoizbaste.dizb.R;
+import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.SessionManager;
 import rs.direktnoizbaste.dizb.array_adapters.SensorAPListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
@@ -227,7 +228,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         registerReceiver(wifiReciever, intentFilter);
-        Log.i("SensorScan", "onResume");
+        AppConfig.logInfo("SensorScan", "onResume");
         super.onResume();
     }
 
@@ -286,7 +287,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                 //wifiManager.disconnect();
                 wifiManager.enableNetwork(networkId, true);
                 //wifiManager.reconnect();
-                Log.i("OKClicked", "enabling " + ssid);
+                AppConfig.logInfo("OKClicked", "enabling " + ssid);
 
                 config_pass = password.getText().toString();
                 config_ssid = spinner.getSelectedItem().toString();
@@ -330,7 +331,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
 //
 //                urlConnection = (HttpURLConnection) url.openConnection();
 //                urlConnection.setConnectTimeout(90000);
-//                Log.i("Headers",urlConnection.getHeaderFields().toString());
+//                AppConfig.logInfo("Headers",urlConnection.getHeaderFields().toString());
 //
 //                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 //
@@ -368,7 +369,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
-                Log.i("BroadCastRec", "scan results available");
+                AppConfig.logInfo("BroadCastRec", "scan results available");
                 if (!configuringSensor && !addingSensor) {
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
@@ -395,11 +396,11 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                         // snackbar.show();
                         if (wasWiFiEnabled){
                             wifiManager.enableNetwork(wasNetworkId, true);
-                            Log.i("SensorWasWifi","enabling network...");
+                            AppConfig.logInfo("SensorWasWifi", "enabling network...");
                         }else
                         {
                             wifiManager.setWifiEnabled(false);
-                            Log.i("SensorWasWifi", "disabling network...");
+                            AppConfig.logInfo("SensorWasWifi", "disabling network...");
                         }
                         AlertDialog alertDialog = new AlertDialog.Builder(SensorAPActivity_old.this).create();
                         alertDialog.setTitle("Pretraga senzora");
@@ -428,13 +429,13 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
             } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
                 int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
-                    Log.i("BroadCastRec", "wifi enabling");
+                    AppConfig.logInfo("BroadCastRec", "wifi enabling");
 
                     // show progress dialog
                     progressDialog.showDialog("Uključujem WiFi...");
                 } else if (wifi_state == WifiManager.WIFI_STATE_ENABLED) {
                     // hide progress dialog
-                    Log.i("BroadCastRec", "wifi enabled");
+                    AppConfig.logInfo("BroadCastRec", "wifi enabled");
 
                     progressDialog.hideDialog();
                     if (!configuringSensor && !addingSensor) {
@@ -443,12 +444,12 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     }
                 } else if (wifi_state == WifiManager.WIFI_STATE_DISABLED) {
                     // hide progress dialog
-                    Log.i("BroadCastRec", "wifi disabled");
+                    AppConfig.logInfo("BroadCastRec", "wifi disabled");
 
                     progressDialog.hideDialog();
                 }
             } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intentAction)) {
-                Log.i("BroadCastRec", "connection change action");
+                AppConfig.logInfo("BroadCastRec", "connection change action");
                 //NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                 //boolean isWiFi = info.getType() == ConnectivityManager.TYPE_WIFI;
 
@@ -461,7 +462,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
 
 
                 if (activeNetwork != null) {
-                    Log.i("BroadCastRec", activeNetwork.getState().toString());
+                    AppConfig.logInfo("BroadCastRec", activeNetwork.getState().toString());
                 }
 
                 if (activeNetwork != null && isConnected) {
@@ -484,13 +485,13 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
 
-                    Log.i("BroadCastRec", ssid);
-                    Log.i("BroadCastRec", String.valueOf(configuringSensor));
-                    Log.i("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
+                    AppConfig.logInfo("BroadCastRec", ssid);
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(configuringSensor));
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
 
                     if (configuringSensor) {
                         if (ssid.startsWith("SENZOR", 1)) {
-                            Log.i("BroadCastRec", "Sakrij dialog");
+                            AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                             progressDialog.hideDialog();
                             showSnack("Povezan sa senzorom...");
                             configuringSensor = false;
@@ -526,7 +527,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
                     if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
-                        Log.i("BroadCastRec", "Sakrij dialog");
+                        AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         progressDialog.hideDialog();
 //                        showSnack("Nije uspelo pvezivanje sa senzorom.\n" +
 //                                "Resetujte senzor pa probajte ponovo.");

@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 pDialog.hideDialog();
 
                 try {
-                    Log.i("REGISTER_URL", response);
+                    AppConfig.logInfo("REGISTER_URL", response);
                     JSONObject jObj = new JSONObject(response);
 //{"error_msg":"","tag":"register","error":false,"uid":33,"user":{"KomitentIme":"Milan","KomitentPrezime":"Milan","KomitentUserName":"a","email":"a@b.com","created_at":"2016-01-14 19:03:33"}} */
 
@@ -207,7 +207,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        Log.i("REGISTER_URL", strReq.getUrl());
+        AppConfig.logInfo("REGISTER_URL", strReq.getUrl());
 
     }
 

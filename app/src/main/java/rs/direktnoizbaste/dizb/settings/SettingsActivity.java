@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
 
-            Log.i("PrefChangeListener", "onPrefChange");
+            AppConfig.logInfo("PrefChangeListener", "onPrefChange");
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
@@ -184,14 +184,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        Log.i("SettingActivity", "onContentChanged");
+        AppConfig.logInfo("SettingActivity", "onContentChanged");
         //if (uudr != null)
         //   uudr.updateUserData();
     }
 
     @Override
     public void finish() {
-        Log.i("SettingsActivity", "finnish");
+        AppConfig.logInfo("SettingsActivity", "finnish");
         setResult(AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE);
         super.finish();
     }
@@ -199,7 +199,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("SettingsActivity", "onDestroy");
+        AppConfig.logInfo("SettingsActivity", "onDestroy");
         //setResult(AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE);
     }
 
@@ -322,13 +322,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onDestroyView() {
             super.onDestroyView();
-            Log.i("MainFragment", "onDestroyView");
+            AppConfig.logInfo("MainFragment", "onDestroyView");
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
-            Log.i("MainFragment", "onDestroy");
+            AppConfig.logInfo("MainFragment", "onDestroy");
         }
     }
 }

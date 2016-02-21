@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         session = new SessionManager(getApplicationContext());
 
-        Log.i("PrefName:", session.getName());
+        AppConfig.logInfo("PrefName:", session.getName());
 
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {

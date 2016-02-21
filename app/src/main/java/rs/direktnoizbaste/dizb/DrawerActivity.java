@@ -357,7 +357,7 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public void onDialogDataPass(String data) {
         // Update sensor
-        Log.i("onDialogDataPass", data);
+        AppConfig.logInfo("onDialogDataPass", data);
         usr = new UpdateSensorRequest(this);
         usr.setCallbackListener(new WebRequestCallbackInterface() {
             @Override
@@ -384,14 +384,14 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        Log.i("DrawerActivity", "ActivityResult");
-        Log.i("DrawerActivity", String.valueOf(requestCode));
-        Log.i("DrawerActivity", String.valueOf(resultCode));
+        AppConfig.logInfo("DrawerActivity", "ActivityResult");
+        AppConfig.logInfo("DrawerActivity", String.valueOf(requestCode));
+        AppConfig.logInfo("DrawerActivity", String.valueOf(resultCode));
         if (requestCode == AppConfig.ACTIVITY_REQ_SETTINGS) {
             // Make sure the request was successful
-            Log.i("DrawerActivity", "RightRequest");
+            AppConfig.logInfo("DrawerActivity", "RightRequest");
             if (resultCode == AppConfig.ACTIVITY_RESP_SETTINGS_UPDATE) {
-                Log.i("DrawerActivity", "Updating...");
+                AppConfig.logInfo("DrawerActivity", "Updating...");
                 uudr.updateUserData();
             }
         }

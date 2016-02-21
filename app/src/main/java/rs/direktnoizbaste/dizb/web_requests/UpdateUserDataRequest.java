@@ -76,10 +76,10 @@ public class UpdateUserDataRequest {
             public void onResponse(String response) {
                 progressDialog.hideDialog();
                 if (response != null) {
-                    Log.d("RESPONSE", "Nije null");
-                    Log.d("RESPONSE", response);
+                    AppConfig.logDebug("RESPONSE", "Nije null");
+                    AppConfig.logDebug("RESPONSE", response);
                 } else {
-                    Log.d("RESPONSE", "NULL RESPONSE");
+                    AppConfig.logDebug("RESPONSE", "NULL RESPONSE");
                 }
 
                 try {
