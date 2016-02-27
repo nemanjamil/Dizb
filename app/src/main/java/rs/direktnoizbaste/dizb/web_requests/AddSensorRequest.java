@@ -112,7 +112,7 @@ public class AddSensorRequest {
 
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(30 * 1000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES*4, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(AppConfig.DEFAULT_TIMEOUT_MS, AppConfig.DEFAULT_MAX_RETRIES, AppConfig.DEFAULT_BACKOFF_MULT));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 

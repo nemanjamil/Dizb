@@ -88,7 +88,7 @@ public class ConfigSensorRequest {
         }) {
         };
 
-        strReq.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        strReq.setRetryPolicy(new DefaultRetryPolicy(AppConfig.DEFAULT_TIMEOUT_MS , AppConfig.DEFAULT_MAX_RETRIES, AppConfig.DEFAULT_BACKOFF_MULT));
         // Adding request to  queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
