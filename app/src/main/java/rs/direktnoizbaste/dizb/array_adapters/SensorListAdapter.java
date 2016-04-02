@@ -43,12 +43,13 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         try {
             textView.setText(values[position].getString("ImeKulture"));
             textView_desc.setText(values[position].getString("SenzorSifra"));
-            imageView.setImageResource(R.mipmap.tomato6);
-                /*TODO figure out better way to pair name with icon */
+            /*TODO figure out better way to pair name with icon */
+            if (values[position].getString("ImeKulture").equals("Paradajz"))
+                imageView.setImageResource(R.drawable.paradajz);
             if (values[position].getString("ImeKulture").equals("Paprika"))
-                imageView.setImageResource(R.mipmap.capsicum);
+                imageView.setImageResource(R.drawable.paprika);
             if (values[position].getString("ImeKulture").equals("Boranija"))
-                imageView.setImageResource(R.mipmap.peas);
+                imageView.setImageResource(R.drawable.boranija);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -44,9 +44,17 @@
 				title: {
 					text: ''
 				},
-				minorGridLineWidth: 0,
-				gridLineWidth: 0,
+				/*
 				alternateGridColor: null,
+				 zoomEnabled: false,
+				*/
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				min: '',
+				max: '',
+
+				tickInterval: 5,
+
 				plotBands: [{ // Zelena zona
 					from: '',
 					to: '',
@@ -103,13 +111,27 @@
 				name: ''
 			}],
 			tooltip: {
-				valueSuffix: ''
+				valueSuffix: '',
+				enabled: true,
+				followTouchMove: false,
+				formatter: function () {
+            		return '<b>' + this.y + '</b>';
+        		}
 			},
 			navigation: {
 				menuItemStyle: {
 					fontSize: '10px'
 				}
 			},
+			<!--legend: {-->
+                <!--layout: 'vertical',-->
+                <!--align: 'left',-->
+                <!--x: 80,-->
+                <!--verticalAlign: 'top',-->
+                <!--y: 55,-->
+                <!--floating: true,-->
+                <!--backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'-->
+            <!--},-->
 			exporting: {
 				enabled: false
 			}
@@ -117,9 +139,17 @@
 	
 		function visitor (data,kojaTabela,varijablaZaTip,tipSenzora) {
 
-
 			options.chart.renderTo = kojaTabela;
 			senzorTipIme = data.podaciSenzor[varijablaZaTip].senzorTipIme
+
+			// visina MIN I MAX
+			vaMath = Math.ceil;
+			minVar = vaMath(data.podaciSenzor[varijablaZaTip].OdZutoIdeal) - 20;
+			if (minVar<=0) { min = 0; } else { min = minVar; }
+			maxVar = vaMath(data.podaciSenzor[varijablaZaTip].DoZutoIdeal) + 20;
+			if (maxVar>100) { max = 100; } else { max = maxVar; }
+			options.yAxis.min = min;
+			options.yAxis.max = max;
 
 			// data.podaciSenzor[varijablaZaTip].ImeKulture+' - '+data.podaciSenzor[varijablaZaTip].ImeLokSamo+' - '+
 			options.title.text = senzorTipIme;
@@ -137,16 +167,16 @@
 
 			// crvena gore
 			options.yAxis.plotBands[3].from = data.podaciSenzor[varijablaZaTip].DoZutoIdeal;
-			options.yAxis.plotBands[3].to = 100;//parseFloat(data.podaciSenzor[varijablaZaTip].DoZutoIdeal) + 15;
+			options.yAxis.plotBands[3].to = parseFloat(data.podaciSenzor[varijablaZaTip].DoZutoIdeal) + 100;//parseFloat(data.podaciSenzor[varijablaZaTip].DoZutoIdeal) + 15;
 
 			// crvena dole
-			options.yAxis.plotBands[4].from = parseFloat(data.podaciSenzor[varijablaZaTip].OdZutoIdeal) - 15;
+			options.yAxis.plotBands[4].from = parseFloat(data.podaciSenzor[varijablaZaTip].OdZutoIdeal) - 100;
 			options.yAxis.plotBands[4].to = data.podaciSenzor[varijablaZaTip].OdZutoIdeal;
 
 			//options.yAxis.title.text = senzorTipIme;
 			options.series[0].data = data.podaciSenzor[varijablaZaTip].podacizaSenzorTime[0];
 			options.series[0].name = data.podaciSenzor[varijablaZaTip].podacizaSenzor[0].OpisSenNot;
-			options.tooltip.valueSuffix = tipSenzora;
+			options.tooltip.valueSuffix = ' ' + tipSenzora;
 
 			var chartTemp = new Highcharts.Chart(options);
 
