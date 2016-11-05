@@ -59,8 +59,8 @@ public class DeleteSensorRequest {
 
         String url = String.format(AppConfig.URL_DEL_SENSOR_GET, uid, mac);
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_DEL_SENSOR_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -108,7 +108,7 @@ public class DeleteSensorRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("action", "obrisiSenzorId");
                 params.put("id", uid);
-                params.put("string", mac);
+                params.put("br", mac);
                 return params;
             }
         };

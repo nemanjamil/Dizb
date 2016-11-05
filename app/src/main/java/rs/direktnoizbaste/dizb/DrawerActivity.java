@@ -202,7 +202,7 @@ public class DrawerActivity extends AppCompatActivity
         });
 
         psl.pullSensorList(uid);
-        psp.pullPlantList();
+        psp.pullPlantList("YADA YADA"); // has to have real sensor ID
     }
 
     @Override

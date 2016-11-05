@@ -56,8 +56,8 @@ public class PullSensorListRequest {
 
         String url = String.format(AppConfig.URL_SENSOR_LIST_GET, uid);
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_SENSOR_LIST_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -78,7 +78,7 @@ public class PullSensorListRequest {
 
                     if (success) {
                         //create Array of JSON objects
-                        JSONArray jArr = jObj.getJSONArray("senzor");
+                        JSONArray jArr = jObj.getJSONArray("podaci");
 
                         jsonObjects = new JSONObject[jArr.length()];
                         for (int i = 0; i < jArr.length(); i++) {
@@ -110,7 +110,7 @@ public class PullSensorListRequest {
             protected Map<String, String> getParams() {
                 // Post params
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("action", "povuciSensorUid");
+                params.put("action", "listaSenzoraPoKomitentu");
                 params.put("id", uid);
                 return params;
             }

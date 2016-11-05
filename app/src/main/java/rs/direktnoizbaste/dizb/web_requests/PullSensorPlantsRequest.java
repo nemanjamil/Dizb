@@ -44,15 +44,15 @@ public class PullSensorPlantsRequest {
     /**
      * function to pull sensor list form web server
      */
-    public void pullPlantList() {
+    public void pullPlantList(final String sensorID) {
         // Tag used to cancel the request
         String tag_string_req = "req_pull_sensor_plants";
 
 
         String url = AppConfig.URL_SENSOR_PLANTS_GET;
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_SENSOR_PLANTS_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -109,6 +109,7 @@ public class PullSensorPlantsRequest {
             protected Map<String, String> getParams() {
                 // Post params
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("id", sensorID);
                 return params;
             }
         };

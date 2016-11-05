@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         String url = String.format(AppConfig.URL_LOGIN_GET, "login", email, password);
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_LOGIN_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 params.put("action", "povuciPodatkeAndroidKorisnik");
                 params.put("tag", "login");
                 params.put("email", email);
-                params.put("password", password);
+                params.put("p", password);
                 return params;
             }
 

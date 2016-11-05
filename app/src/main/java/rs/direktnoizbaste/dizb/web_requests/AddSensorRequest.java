@@ -2,7 +2,6 @@ package rs.direktnoizbaste.dizb.web_requests;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -57,8 +56,8 @@ public class AddSensorRequest {
 
         String url = String.format(AppConfig.URL_ADD_SENSOR_GET, uid, mac, kind);
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_ADD_SENSOR_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -103,10 +102,10 @@ public class AddSensorRequest {
             protected Map<String, String> getParams() {
                 // Post params
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("action", "dodajSenzorId");
+                //params.put("action", "dodajSenzorId");
                 params.put("id", uid);
                 params.put("string", mac);
-                params.put("br", kind);
+                //params.put("br", kind);
                 return params;
             }
 
