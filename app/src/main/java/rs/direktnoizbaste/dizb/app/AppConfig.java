@@ -64,7 +64,7 @@ public class AppConfig {
      */
     public static final float DEFAULT_BACKOFF_MULT = 1f;
 
-    public static boolean debug = false;
+    public static boolean debug = true;
 
     public static void logDebug(String tag, String msg) {
         if (debug)
