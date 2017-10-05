@@ -300,23 +300,30 @@ public class DrawerActivity extends AppCompatActivity
                 final Dialog dialog = new Dialog(DrawerActivity.this);
                 dialog.setContentView(R.layout.activity_kulture);
 
-                listaKultura = new ArrayList<>();
-                listaKultura.addAll(response.body().podaci);
-                ListView lvListKultura = (ListView) dialog.findViewById(R.id.lvListKultura);
-                adapter = new KultureAdapter(DrawerActivity.this, listaKultura);
-                lvListKultura.setAdapter(adapter);
-                lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
-                        intent.putExtra("SensorMAC", SenzorMac);
-                        intent.putExtra("KulturaId", listaKultura.get(i).IdKulture);
-                        startActivity(intent);
-                        dialog.dismiss();
+                try {
+                    if (response.body().success) {
+                        listaKultura = new ArrayList<>();
+                        listaKultura.addAll(response.body().podaci);
+                        ListView lvListKultura = (ListView) dialog.findViewById(R.id.lvListKultura);
+                        adapter = new KultureAdapter(DrawerActivity.this, listaKultura);
+                        lvListKultura.setAdapter(adapter);
+                        lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+                                intent.putExtra("SensorMAC", SenzorMac);
+                                intent.putExtra("KulturaId", listaKultura.get(i).IdKulture);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    } else {
+                        showSnack(response.body().error_msg);
                     }
-                });
-                dialog.show();
-
+                } catch (Exception e) {
+                    showSnack(response.message());
+                }
             }
 
             @Override

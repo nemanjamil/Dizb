@@ -75,7 +75,6 @@ public class PullSensorListRequest {
 
                     boolean success = jObj.getBoolean("success");
 
-
                     if (success) {
                         //create Array of JSON objects
                         JSONArray jArr = jObj.getJSONArray("podaci");
