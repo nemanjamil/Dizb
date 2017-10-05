@@ -52,12 +52,12 @@ public class PullGraphDataRequest {
     /**
      * function to pull data for showing graphs form web server
      */
-    public void pullGraphData(final String uid, final String mac) {
+    public void pullGraphData(final String uid, final String mac, final String br) {
         // Tag used to cancel the request
         String tag_string_req = "req_pull_graphs";
         progressDialog.showDialog("Učitavam grafike...");
 
-        String url = String.format(AppConfig.URL_GRAPHS_DATA_GET, uid, mac);
+        String url = String.format(AppConfig.URL_GRAPHS_DATA_GET, uid, mac, br);
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
@@ -112,6 +112,7 @@ public class PullGraphDataRequest {
                 params.put("action", "povuciPodatkeSenzorId");
                 params.put("id", uid);
                 params.put("string", mac);
+                params.put("br", br); //TODO id kulture
                 return params;
             }
 

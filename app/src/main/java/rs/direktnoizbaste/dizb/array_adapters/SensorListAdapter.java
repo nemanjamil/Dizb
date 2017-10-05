@@ -92,6 +92,16 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         return mac;
     }
 
+    public String getSenzorId(int position) {
+        String id = "";
+        try {
+            id = values[position].getString("IdListaSenzora");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }
