@@ -87,7 +87,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // get Wifi service
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wasWiFiEnabled = wifiManager.isWifiEnabled();
 
         //setting progressDialog
