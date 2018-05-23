@@ -264,7 +264,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     wifiAPList = new ArrayList<ScanResult>();
 
                     for (int i = 0; i < wifiScanList.size(); i++) {
-                        if (wifiScanList.get(i).SSID.startsWith("SENZOR"))
+                        if (wifiScanList.get(i).SSID.startsWith(getString(R.string.sensorprefix)))
                             wifiSensorAPList.add(wifiScanList.get(i));
                         else
                             wifiAPList.add(wifiScanList.get(i));
@@ -313,9 +313,9 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     String ssid = wifiInfo.getSSID();
                     AppConfig.logInfo("BroadCastRec", ssid);
                     AppConfig.logInfo("BroadCastRec", String.valueOf(configuringSensor));
-                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith(getString(R.string.sensorprefix), 1)));
 
-                    if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
+                    if (configuringSensor && ssid.startsWith(getString(R.string.sensorprefix), 1)) {
                         AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         hideDialog();
                         showSnack("Povezan sa senzorom");
@@ -329,7 +329,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                 if (info != null && (info.getDetailedState() == NetworkInfo.DetailedState.FAILED)) {
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
-                    if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
+                    if (configuringSensor && ssid.startsWith(getString(R.string.sensorprefix), 1)) {
                         AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         hideDialog();
                         showSnack("Nije uspelo povezivanje sa senzorom");

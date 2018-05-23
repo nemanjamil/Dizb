@@ -166,5 +166,6 @@
     <string name="pick_plant_title">Izaberi kulturu</string>
     <string name="progress_update_sensor">Izmena kulture...</string>
     <string name="progress_update_user_data">Menjam podatke...</string>
+    <string name="sensorprefix">GardenLocal</string>
 
 </resources>

@@ -82,7 +82,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // get Wifi service
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wasWiFiEnabled = wifiManager.isWifiEnabled();
 
         //setting progressDialog
@@ -371,13 +371,16 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
                 AppConfig.logInfo("BroadCastRec", "scan results available");
                 if (!configuringSensor && !addingSensor) {
+                    AppConfig.logInfo("BroadCastRec","GETTING SCAN RESULTS");
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
                     wifiAPList = new ArrayList<ScanResult>();
 
                     for (int i = 0; i < wifiScanList.size(); i++) {
-                        if (wifiScanList.get(i).SSID.startsWith("SENZOR"))
+                        AppConfig.logInfo("BroadCastRec wifiScanList",wifiScanList.get(i).SSID);
+                        if (wifiScanList.get(i).SSID.startsWith(getString(R.string.sensorprefix)))
                             wifiSensorAPList.add(wifiScanList.get(i));
+
                         else
                             wifiAPList.add(wifiScanList.get(i));
                     }
@@ -470,7 +473,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     if (isWiFi) {
                         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                         String ssid = wifiInfo.getSSID();
-                        goAdd = !ssid.startsWith("SENZOR", 1);
+                        goAdd = !ssid.startsWith(getString(R.string.sensorprefix), 1);
                     }
                     if (goAdd && addingSensor) {
 
@@ -487,10 +490,10 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
 
                     AppConfig.logInfo("BroadCastRec", ssid);
                     AppConfig.logInfo("BroadCastRec", String.valueOf(configuringSensor));
-                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith("SENZOR", 1)));
+                    AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith(getString(R.string.sensorprefix), 1)));
 
                     if (configuringSensor) {
-                        if (ssid.startsWith("SENZOR", 1)) {
+                        if (ssid.startsWith(getString(R.string.sensorprefix), 1)) {
                             AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                             progressDialog.hideDialog();
                             showSnack("Povezan sa senzorom...");
@@ -526,7 +529,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                 if (activeNetwork != null && (activeNetwork.getDetailedState() == NetworkInfo.DetailedState.FAILED)) {
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
-                    if (configuringSensor && ssid.startsWith("SENZOR", 1)) {
+                    if (configuringSensor && ssid.startsWith(getString(R.string.sensorprefix), 1)) {
                         AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                         progressDialog.hideDialog();
 //                        showSnack("Nije uspelo pvezivanje sa senzorom.\n" +
