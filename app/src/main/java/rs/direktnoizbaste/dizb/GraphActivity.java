@@ -53,7 +53,8 @@ public class GraphActivity extends AppCompatActivity {
         });
         String uid = session.getUID();
         String mac = getIntent().getStringExtra("SensorMAC");
-        pgd.pullGraphData(uid, mac);
+        int br = getIntent().getIntExtra("KulturaId", 0);
+        pgd.pullGraphData(uid, mac, String.valueOf(br));
     }
 
     private void showSnack(String msg) {

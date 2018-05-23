@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressDialog.showDialog("Povezivanje...");
 
-        String url = String.format(AppConfig.URL_LOGIN_GET, "login", email, password);
+//        String url = String.format(AppConfig.URL_LOGIN_GET, "login", email, password);
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_LOGIN_POST, new Response.Listener<String>() {
@@ -200,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(getApplicationContext(),
                         RegisterActivity.class);
                 startActivity(intent);
-                finish();
                 break;
 
             //on clicking the signin button check for the empty field then call the checkLogin() function

@@ -41,7 +41,7 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         try {
-            textView.setText(values[position].getString("ImeKulture"));
+            textView.setText(values[position].getString("SenzorNaziv"));
             textView_desc.setText(values[position].getString("SenzorSifra"));
             /*TODO figure out better way to pair name with icon */
             if (values[position].getString("ImeKulture").equals("Paradajz"))
@@ -90,6 +90,16 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
             e.printStackTrace();
         }
         return mac;
+    }
+
+    public String getSenzorId(int position) {
+        String id = "";
+        try {
+            id = values[position].getString("IdListaSenzora");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
     public SparseBooleanArray getSelectedIds() {

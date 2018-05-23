@@ -23,7 +23,7 @@ public class AppConfig {
     public static final String URL_SENSOR_LIST_GET = URL_SENSOR_LIST_POST + "&id=%1$s";
     //http://direktnoizbaste.rs/parametri.php?action=povuciPodatkeSenzorId&string=5CCF7F747A7&id=1
     public static final String URL_GRAPHS_DATA_POST = URL_BASE + "parametri.php?action=povuciPodatkeSenzorId";
-    public static final String URL_GRAPHS_DATA_GET = URL_GRAPHS_DATA_POST + "&id=%1$s&string=%2$s";
+    public static final String URL_GRAPHS_DATA_GET = URL_GRAPHS_DATA_POST + "&id=%1$s&string=%2$s&br=%3$s";
     //http://direktnoizbaste.rs/parametri.php?action=obrisiSenzorId&string=pera&id=1
     public static final String URL_DEL_SENSOR_POST = URL_BASE + "parametri.php?action=obrisiSenzorId";
     public static final String URL_DEL_SENSOR_GET = URL_DEL_SENSOR_POST + "&id=%1$s&br=%2$s";

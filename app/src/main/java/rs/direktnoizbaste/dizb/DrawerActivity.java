@@ -1,5 +1,6 @@
 package rs.direktnoizbaste.dizb;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,22 +21,36 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rs.direktnoizbaste.dizb.app.AppConfig;
 import rs.direktnoizbaste.dizb.app.SessionManager;
+import rs.direktnoizbaste.dizb.array_adapters.KultureAdapter;
 import rs.direktnoizbaste.dizb.array_adapters.SensorListAdapter;
 import rs.direktnoizbaste.dizb.callback_interfaces.WebRequestCallbackInterface;
+import rs.direktnoizbaste.dizb.dialogs.ProgressDialogCustom;
 import rs.direktnoizbaste.dizb.dialogs.SelectPlantDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorDeleteConfirmationDialog;
 import rs.direktnoizbaste.dizb.dialogs.SensorScanConfirmationDialog;
+import rs.direktnoizbaste.dizb.settings.RetroCreator;
 import rs.direktnoizbaste.dizb.settings.SettingsActivity;
 import rs.direktnoizbaste.dizb.web_requests.DeleteSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorListRequest;
 import rs.direktnoizbaste.dizb.web_requests.PullSensorPlantsRequest;
 import rs.direktnoizbaste.dizb.web_requests.UpdateSensorRequest;
 import rs.direktnoizbaste.dizb.web_requests.UpdateUserDataRequest;
+import rs.direktnoizbaste.dizb.web_requests.kulture.Kulture;
+import rs.direktnoizbaste.dizb.web_requests.kulture.KultureInterface;
+import rs.direktnoizbaste.dizb.web_requests.kulture.KultureResponse;
+import rs.direktnoizbaste.dizb.web_requests.kulture.KulutureParams;
 import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 
 public class DrawerActivity extends AppCompatActivity
@@ -46,7 +60,8 @@ public class DrawerActivity extends AppCompatActivity
     private SensorListAdapter customArrayAdapter;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-
+    private List<Kulture> listaKultura;
+    private KultureAdapter adapter;
     private ActionMode actionBarReference;
     private SessionManager session;
 
@@ -91,7 +106,6 @@ public class DrawerActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(DrawerActivity.this, SensorAPActivity_old.class);
                         startActivity(intent);
-                        finish();
                     }
                 });
                 sensorScanConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
@@ -264,12 +278,60 @@ public class DrawerActivity extends AppCompatActivity
 
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         ListAdapter la = listView.getAdapter();
         SensorListAdapter sla = (SensorListAdapter) la;
-        intent.putExtra("SensorMAC", sla.getSensorMAC(position));
-        startActivity(intent);
+        GetKultureList(sla.getSenzorId(position), sla.getSensorMAC(position));
+    }
+
+    private void GetKultureList(String id, final String SenzorMac) {
+        final ProgressDialogCustom pDialog = new ProgressDialogCustom(DrawerActivity.this);
+        pDialog.show();
+
+        KultureInterface service = RetroCreator.getService().create(KultureInterface.class);
+        KulutureParams params = new KulutureParams();
+        params.id = id;
+        final Call<KultureResponse> repos = service.getKulture(params);
+        repos.enqueue(new Callback<KultureResponse>() {
+            @Override
+            public void onResponse(Call<KultureResponse> call, Response<KultureResponse> response) {
+                pDialog.dismiss();
+
+                final Dialog dialog = new Dialog(DrawerActivity.this);
+                dialog.setContentView(R.layout.activity_kulture);
+
+                try {
+                    if (response.body().success) {
+                        listaKultura = new ArrayList<>();
+                        listaKultura.addAll(response.body().podaci);
+                        ListView lvListKultura = (ListView) dialog.findViewById(R.id.lvListKultura);
+                        adapter = new KultureAdapter(DrawerActivity.this, listaKultura);
+                        lvListKultura.setAdapter(adapter);
+                        lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+                                intent.putExtra("SensorMAC", SenzorMac);
+                                intent.putExtra("KulturaId", listaKultura.get(i).IdKulture);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    } else {
+                        showSnack(response.body().error_msg);
+                    }
+                } catch (Exception e) {
+                    showSnack(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KultureResponse> call, Throwable t) {
+                t.printStackTrace();
+                pDialog.dismiss();
+            }
+        });
     }
 
     //Multichoice mode listener methods for list view
