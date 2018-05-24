@@ -310,7 +310,8 @@ public class DrawerActivity extends AppCompatActivity
                         lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+                                //Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+                                Intent intent = new Intent(DrawerActivity.this, SensorDetailActivity.class);
                                 intent.putExtra("SensorMAC", SenzorMac);
                                 intent.putExtra("KulturaId", listaKultura.get(i).IdKulture);
                                 startActivity(intent);

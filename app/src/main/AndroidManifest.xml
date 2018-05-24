@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rs.direktnoizbaste.dizb">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -43,11 +42,13 @@
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme" />
         <activity android:name=".wifi.SensorConfig" />
-
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/title_activity_settings"/>
-
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".SensorDetailActivity"
+            android:label="@string/title_activity_sensor_detail"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

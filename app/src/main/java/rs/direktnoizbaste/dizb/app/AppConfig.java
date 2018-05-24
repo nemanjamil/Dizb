@@ -11,6 +11,8 @@ public class AppConfig {
     public static final String URL_CONFIG_SENSOR = "http://192.168.4.1/wifisave?s=%1$s&p=%2$s";
     // Server login url
 
+    public static final String URL_GETINFOPARAMETER_POST = URL_BASE + "parametrigarden.php?action=getsensordetailactivity";
+
     //"action=povuciPodatkeAndroidKorisnik&email=pera@gjsd.com&p=miki";
     public static final String URL_LOGIN_POST = URL_BASE + "parametri.php?action=povuciPodatkeAndroidKorisnik";
     public static final String URL_LOGIN_GET = URL_LOGIN_POST + "&tag=%1$s&email=%2$s&p=%3$s";
