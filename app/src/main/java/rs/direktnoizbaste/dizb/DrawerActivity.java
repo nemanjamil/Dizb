@@ -1,12 +1,16 @@
 package rs.direktnoizbaste.dizb;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -56,6 +60,7 @@ import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener, SelectPlantDialog.OnDialogDataPass {
 
+    private final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 9893843;
     private ListView listView;
     private SensorListAdapter customArrayAdapter;
     private Toolbar toolbar;
@@ -100,23 +105,31 @@ public class DrawerActivity extends AppCompatActivity
 //                if (sensor_count ==3)
 //                    asr.addSensor(uid, "18FE349DB7E6", "4");
 //                //end dummy code
-                final SensorScanConfirmationDialog sensorScanConfirmationDialog = new SensorScanConfirmationDialog(DrawerActivity.this);
-                sensorScanConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DrawerActivity.this, SensorAPActivity_old.class);
-                        startActivity(intent);
-                    }
-                });
-                sensorScanConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                });
-                sensorScanConfirmationDialog.create().show();
+                if (ContextCompat.checkSelfPermission(DrawerActivity.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
 
+                    // Permission is not granted
+                    // Should we show an explanation?
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(DrawerActivity.this,
+//                            Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                        // Show an explanation to the user *asynchronously* -- don't block
+//                        // this thread waiting for the user's response! After the user
+//                        // sees the explanation, try again to request the permission.
+//                    } else {
+                    // No explanation needed; request the permission
+                    ActivityCompat.requestPermissions(DrawerActivity.this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                            PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+//                    }
+                } else {
+                    // Permission has already been granted
+                    goToSensorActivity();
+                }
             }
         });
 
@@ -217,6 +230,47 @@ public class DrawerActivity extends AppCompatActivity
 
         psl.pullSensorList(uid);
         psp.pullPlantList("YADA YADA"); // has to have real sensor ID
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    goToSensorActivity();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
+    private void goToSensorActivity() {
+        final SensorScanConfirmationDialog sensorScanConfirmationDialog = new SensorScanConfirmationDialog(DrawerActivity.this);
+        sensorScanConfirmationDialog.setPositiveButtonListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(DrawerActivity.this, SensorAPActivity_old.class);
+                startActivity(intent);
+            }
+        });
+        sensorScanConfirmationDialog.setNegativeButtonListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        sensorScanConfirmationDialog.create().show();
     }
 
     @Override
