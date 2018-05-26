@@ -168,5 +168,7 @@
     <string name="progress_update_user_data">Menjam podatke...</string>
     <string name="sensorprefix">GardenLocal</string>
     <string name="title_activity_sensor_detail">Sensor Detail Activity</string>
+    <string name="pleaseWait">Please Wait</string>
+    <string name="tvKategName">NameExample</string>
 
 </resources>

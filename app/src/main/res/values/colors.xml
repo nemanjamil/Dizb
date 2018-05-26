@@ -24,5 +24,7 @@
     <color name="snackbar_bg_color">#006064</color>
     <color name="snackbar_fg_color">#e0f7fa</color>
 
+    <color name="white">#FFF</color>
+
 
 </resources>
