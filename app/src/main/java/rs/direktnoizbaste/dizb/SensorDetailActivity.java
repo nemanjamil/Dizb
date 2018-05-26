@@ -50,11 +50,8 @@ public class SensorDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_detail_two);
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
         arraylist = new ArrayList<>();
 
-        // lociramo GridView
         listView = (ListView) findViewById(R.id.idListViewKategorije);
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -74,9 +71,6 @@ public class SensorDetailActivity extends AppCompatActivity {
         }
         Toast.makeText(this, SensorMAC + " " + KulturaId, Toast.LENGTH_SHORT).show();
 
-        //setting progressDialog
-        /*progressDialog = new ProgressDialogCustom(this);
-        progressDialog.setCancelable(false);*/
 
         session = new SessionManager(getApplicationContext());
         userID = session.getUID();
@@ -88,22 +82,16 @@ public class SensorDetailActivity extends AppCompatActivity {
     }
 
     private void getResults(final String sensorMAC, final Integer kulturaId, final String uid) {
-        // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        //progressDialog.showDialog("Getting informations...");
-        //String url = String.format(AppConfig.URL_LOGIN_GET, "login", sensorMAC, kulturaId, uid);
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_GETINFOPARAMETER_POST, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                //progressDialog.hideDialog();
-
                 try {
 
-                    Log.d("testmiki", "Usao u TRY");
                     jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
 
@@ -198,12 +186,7 @@ public class SensorDetailActivity extends AppCompatActivity {
 
             @Override
             protected Map<String, String> getParams() {
-                // Post params to login url
                 Map<String, String> params = new HashMap<String, String>();
-                //params.put("tag", "login");
-                //params.put("email", email);
-                //params.put("password", password);
-
                 params.put("action", "getsensordetailactivity");
                 params.put("tag", "getdensorbasicinfo");
                 params.put("sensormac", sensorMAC);
@@ -226,10 +209,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         Log.d("testmiki", String.valueOf(arraylist));
 
         if (arraylist.size() > 0) {
-            // Pass the results into ListViewAdapter.java
             adapter = new ViewAdapterSensorDetail(SensorDetailActivity.this, arraylist);
-
-            // Set the adapter to the ListView
             listView.setAdapter(adapter);
 
         } else {
