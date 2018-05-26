@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
 import android.widget.TextView;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class ViewAdapterSensorDetail extends BaseAdapter { // Ovde moze da ide ListAdapter ali ne znam za sta sluzi
+class ViewAdapterSensorDetail extends BaseAdapter { // Ovde moze da ide ListAdapter ili ArrayAdapter ali ne znam za sta sluzi
 
     String senzorTipIme = "senzorTipIme";
 
@@ -54,7 +55,7 @@ class ViewAdapterSensorDetail extends BaseAdapter { // Ovde moze da ide ListAdap
         resultp = data.get(position);
 
         tvKategName = (TextView) itemView.findViewById(R.id.tvKategName);
-        tvKategName.setTypeface(null, Typeface.BOLD);
+        //tvKategName.setTypeface(null, Typeface.BOLD);
 
         String nazivKategorije = resultp.get(this.senzorTipIme);
         tvKategName.setText(nazivKategorije);
