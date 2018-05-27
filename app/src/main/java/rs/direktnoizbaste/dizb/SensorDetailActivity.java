@@ -1,5 +1,6 @@
 package rs.direktnoizbaste.dizb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,7 +44,10 @@ public class SensorDetailActivity extends AppCompatActivity {
     String userID = null;
     JSONObject jsonObject;
     JSONArray jsonArray;
+    JSONArray jsonArrayIn;
     ArrayList arraylist;
+
+    Button buttonGraph;
 
     ListView listView;
     ViewAdapterSensorDetail adapter;
@@ -52,7 +57,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_detail);
         arraylist = new ArrayList<>();
-
+        buttonGraph = (Button) findViewById(R.id.buttonGraph);
         listView = (ListView) findViewById(R.id.idListViewKategorije);
 
         Bundle extras = getIntent().getExtras();
@@ -62,6 +67,15 @@ public class SensorDetailActivity extends AppCompatActivity {
         }
         Toast.makeText(this, SensorMAC + " " + KulturaId, Toast.LENGTH_SHORT).show();
 
+        buttonGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             Intent intent = new Intent(SensorDetailActivity.this, GraphActivity.class);
+                intent.putExtra("SensorMAC", SensorMAC);
+                intent.putExtra("KulturaId", KulturaId);
+                startActivity(intent);
+            }
+        });
 
         session = new SessionManager(getApplicationContext());
         userID = session.getUID();
@@ -90,7 +104,11 @@ public class SensorDetailActivity extends AppCompatActivity {
 
                         jsonArray = jsonObject.getJSONArray("podaciSenzor");
 
+
+
+
                         for (int i = 0; i < jsonArray.length(); i++) {
+
 
                             JSONObject c = jsonArray.getJSONObject(i);
                             String ImeKulture = c.getString("ImeKulture");
@@ -104,7 +122,6 @@ public class SensorDetailActivity extends AppCompatActivity {
                             Integer OdZutoIdeal = c.getInt("OdZutoIdeal");
                             Integer DoZutoIdeal = c.getInt("DoZutoIdeal");
 
-
                             HashMap<String, String> grupaPodataka = new HashMap<>();
                             grupaPodataka.put("ImeKulture", ImeKulture);
                             grupaPodataka.put("IdListaSenzora", String.valueOf(IdListaSenzora));
@@ -115,21 +132,19 @@ public class SensorDetailActivity extends AppCompatActivity {
                             grupaPodataka.put("OdZutoIdeal", String.valueOf(OdZutoIdeal));
                             grupaPodataka.put("DoZutoIdeal", String.valueOf(DoZutoIdeal));
 
-                            jsonArray = c.getJSONArray("podacizaSenzor");
-                            for (int y = 0; y < jsonArray.length(); y++) {
+                            jsonArrayIn = c.getJSONArray("podacizaSenzor");
+                            for (int y = 0; y < jsonArrayIn.length(); y++) {
 
-
-
-                                JSONObject m = jsonArray.getJSONObject(y);
+                                JSONObject m = jsonArrayIn.getJSONObject(y);
                                 //String vremeSenzor = m.getString("vremeSenzor");
 
                                 String vremeSenzor = m.getString("vremeSenzor");
-                                DateFormat df = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
+                                /*DateFormat df = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
                                 try {
                                     Date birthDate = df.parse(vremeSenzor);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
-                                }
+                                }*/
 
 
                                 Integer idSenzorIncr = m.getInt("idSenzorIncr");
@@ -141,9 +156,11 @@ public class SensorDetailActivity extends AppCompatActivity {
                                 grupaPodataka.put("vrednostSenzor", String.valueOf(vrednostSenzor));
                                 grupaPodataka.put("OpisNotifikacije", OpisNotifikacije);
 
-                                arraylist.add(grupaPodataka);
+
 
                             }
+
+                            arraylist.add(grupaPodataka);
 
 
 
@@ -151,10 +168,9 @@ public class SensorDetailActivity extends AppCompatActivity {
 
                         // Get And Sent all data to ListView
                         callListView(arraylist);
-                        Log.d("testmiki", String.valueOf(arraylist));
+
 
                     } else {
-                        Log.d("testmiki", "Usao u ERROR");
                         // login error
                         String errorMsg = jsonObject.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
