@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +49,7 @@ public class SensorDetailActivity extends AppCompatActivity {
     JSONArray jsonArrayIn;
     ArrayList arraylist;
 
-    Button buttonGraph;
+//    Button buttonGraph;
 
     ListView listView;
     ViewAdapterSensorDetail adapter;
@@ -55,9 +57,22 @@ public class SensorDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_sensor_detail);
+        // Setting up toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        myToolbar.setTitle(R.string.title_activity_sensor_detail);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+
+
         arraylist = new ArrayList<>();
-        buttonGraph = (Button) findViewById(R.id.buttonGraph);
+//        buttonGraph = (Button) findViewById(R.id.buttonGraph);
         listView = (ListView) findViewById(R.id.idListViewKategorije);
 
         Bundle extras = getIntent().getExtras();
@@ -67,23 +82,32 @@ public class SensorDetailActivity extends AppCompatActivity {
         }
         Toast.makeText(this, SensorMAC + " " + KulturaId, Toast.LENGTH_SHORT).show();
 
-        buttonGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             Intent intent = new Intent(SensorDetailActivity.this, GraphActivity.class);
-                intent.putExtra("SensorMAC", SensorMAC);
-                intent.putExtra("KulturaId", KulturaId);
-                startActivity(intent);
-            }
-        });
+//        buttonGraph.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showGraph();
+//            }
+//        });
 
         session = new SessionManager(getApplicationContext());
         userID = session.getUID();
         Log.d("testmiki", userID);
         Log.d("testmiki", "aaa");
         getResults(SensorMAC, KulturaId, userID);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_app_bar_sensor_detail, menu);
+        return true;
+    }
 
+    private void showGraph() {
+        Intent intent = new Intent(SensorDetailActivity.this, GraphActivity.class);
+        intent.putExtra("SensorMAC", SensorMAC);
+        intent.putExtra("KulturaId", KulturaId);
+        startActivity(intent);
     }
 
     private void getResults(final String sensorMAC, final Integer kulturaId, final String uid) {
@@ -231,6 +255,9 @@ public class SensorDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
+                return true;
+            case R.id.action_show_graph:
+                showGraph();
                 return true;
         }
         return super.onOptionsItemSelected(item);

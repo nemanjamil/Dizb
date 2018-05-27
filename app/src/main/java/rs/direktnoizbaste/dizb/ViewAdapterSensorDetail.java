@@ -20,12 +20,12 @@ import java.util.Locale;
 class ViewAdapterSensorDetail extends BaseAdapter {
 
 
-    TextView opisnotifikacije_tv, dopodaciideal_tv,odpodaciideal_tv,vrednostsenzor_tv,senzortipime_tv,imekulture_tv,vremesenzor_tv;
+    TextView opisnotifikacije_tv, dopodaciideal_tv, odpodaciideal_tv, vrednostsenzor_tv, senzortipime_tv, imekulture_tv, vremesenzor_tv;
 
     private Activity activity;
     private LayoutInflater inflater;
     ArrayList<HashMap<String, String>> data;
-    HashMap<String,String> resultp = new HashMap<>();
+    HashMap<String, String> resultp = new HashMap<>();
 
     public ViewAdapterSensorDetail(Activity activity, ArrayList<HashMap<String, String>> arraylist) {
         this.activity = activity;
@@ -50,8 +50,6 @@ class ViewAdapterSensorDetail extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-
-
 
 
         if (inflater == null)
@@ -82,7 +80,6 @@ class ViewAdapterSensorDetail extends BaseAdapter {
         String vremesenzor_str = resultp.get("vremeSenzor");
 
 
-
         // upucavamo varijable u polja
         opisnotifikacije_tv.setText(opisnotifikacije_str);
         odpodaciideal_tv.setText(odpodaciideal_str);
@@ -93,15 +90,16 @@ class ViewAdapterSensorDetail extends BaseAdapter {
 
 
         //2018-05-26 20:15:37
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         Date testDate = null;
+        String newFormat = "";
         try {
             testDate = sdf.parse(vremesenzor_str);
-        }catch(Exception ex){
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss", Locale.US); // MMM dd,yyyy hh:mm a
+            newFormat = formatter.format(testDate);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss"); // MMM dd,yyyy hh:mm a
-        String newFormat = formatter.format(testDate).toString();
         //System.out.println(".....Date..."+newFormat);
 
 

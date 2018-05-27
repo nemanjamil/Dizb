@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_delete">Izbriši</string>
+    <string name="action_show_graph">Grafik</string>
     <string name="text_settings">Podešavanje</string>
     <string name="text_readings">Praćenje</string>
     <string name="btn_text_connect">Poveži se</string>
