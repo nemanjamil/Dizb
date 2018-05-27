@@ -60,7 +60,7 @@ import rs.direktnoizbaste.dizb.wifi.SensorAPActivity_old;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener, SelectPlantDialog.OnDialogDataPass {
 
-    private final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 9893843;
+    private final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 232;
     private ListView listView;
     private SensorListAdapter customArrayAdapter;
     private Toolbar toolbar;
