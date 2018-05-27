@@ -260,7 +260,18 @@ public class SensorDetailActivity extends AppCompatActivity {
                 showGraph();
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        //return super.onOptionsItemSelected(item);
+        super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.facebook){
+            Toast.makeText(SensorDetailActivity.this, "Option pressed= facebook",Toast.LENGTH_LONG).show();
+        }
+        else if(item.getItemId() == R.id.Youtube){
+            Toast.makeText(SensorDetailActivity.this, "Option pressed= youtube",Toast.LENGTH_LONG).show();
+        }
+        else if(item.getItemId() == R.id.Twitter){
+            Toast.makeText(SensorDetailActivity.this, "Option pressed= twitter",Toast.LENGTH_LONG).show();
+        }
+        return true;
     }
 
 }
