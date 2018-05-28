@@ -13,17 +13,95 @@
         android:paddingTop="?actionBarSize"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/waterpumptext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:textSize="25dp"
+            android:gravity="center_horizontal"
+            android:text="@string/switchwaterpump" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/waterpumptext"
+            android:id="@+id/myRadioGroup"
+            android:checkedButton="@+id/sound" >
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/offwaterpump"
+                android:text="@string/offwaterpump" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/onwaterpump"
+                android:text="@string/onwaterpump" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/onwaterpumpwithout"
+                android:text="@string/onwaterpumpwithout" />
+
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/maintell1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/onpumpmin" />
+
+            <EditText
+                android:id="@+id/onpumpminutes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/maintell2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/offpumpminutes" />
+
+            <EditText
+                android:id="@+id/offpumpminutes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonpump"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonpumpsubmit" />
+
+
     </LinearLayout>
 
     <android.support.design.widget.AppBarLayout

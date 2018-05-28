@@ -177,5 +177,12 @@
     <string name="currentvalue">Current Value</string>
     <string name="buttonmanual">manage</string>
     <string name="managewithsensor">Manage With Sensor</string>
+    <string name="switchwaterpump">Water Pump</string>
+    <string name="onwaterpump">ON - with pause</string>
+    <string name="offwaterpump">OFF</string>
+    <string name="onwaterpumpwithout">ON - full work</string>
+    <string name="onpumpmin">ON pump (minutes)</string>
+    <string name="offpumpminutes">OFF pump (minutes)</string>
+    <string name="buttonpumpsubmit">Submit Pump Changes</string>
 
 </resources>

@@ -12,6 +12,8 @@ public class AppConfig {
     // Server login url
 
     public static final String URL_GETINFOPARAMETER_POST = URL_BASE + "parametrigarden.php?action=getsensordetailactivity";
+    public static final String URL_CHANGEPUMPSTATUS_POST = URL_BASE + "parametrigarden.php?action=changepumpstatus";
+    public static final String URL_GETPUMPSTATUS_POST = URL_BASE + "parametrigarden.php?action=getpumpstatus";
 
     //"action=povuciPodatkeAndroidKorisnik&email=pera@gjsd.com&p=miki";
     public static final String URL_LOGIN_POST = URL_BASE + "parametri.php?action=povuciPodatkeAndroidKorisnik";

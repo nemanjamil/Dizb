@@ -80,7 +80,7 @@ public class SensorDetailActivity extends AppCompatActivity {
             SensorMAC = extras.getString("SensorMAC"); // retrieve the data using keyName
             KulturaId = extras.getInt("KulturaId");
         }
-        Toast.makeText(this, SensorMAC + " " + KulturaId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, SensorMAC + " " + KulturaId, Toast.LENGTH_SHORT).show();
 
 //        buttonGraph.setOnClickListener(new View.OnClickListener() {
 //            @Override
