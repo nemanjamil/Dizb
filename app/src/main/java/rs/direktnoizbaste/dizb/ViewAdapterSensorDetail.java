@@ -3,6 +3,8 @@ package rs.direktnoizbaste.dizb;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,15 +62,6 @@ class ViewAdapterSensorDetail extends BaseAdapter {
 
         resultp = data.get(position);
 
-        // definisemo polja
-        opisnotifikacije_tv = (TextView) view.findViewById(R.id.opisnotifikacije_tv);
-        odpodaciideal_tv = (TextView) view.findViewById(R.id.odpodaciideal_tv);
-        dopodaciideal_tv = (TextView) view.findViewById(R.id.dopodaciideal_tv);
-        vrednostsenzor_tv = (TextView) view.findViewById(R.id.vrednostsenzor_tv);
-        senzortipime_tv = (TextView) view.findViewById(R.id.senzortipime_tv);
-        imekulture_tv = (TextView) view.findViewById(R.id.imekulture_tv);
-        vremesenzor_tv = (TextView) view.findViewById(R.id.vremesenzor_tv);
-
 
         // GET INFORMATIONS
         String opisnotifikacije_str = resultp.get("OpisNotifikacije");
@@ -76,17 +69,68 @@ class ViewAdapterSensorDetail extends BaseAdapter {
         String dopodaciideal_str = resultp.get("DoPodaciIdeal");
         String vrednostsenzor_str = resultp.get("vrednostSenzor");
         String senzortipime_str = resultp.get("senzorTipIme");
-        String imekulture_str = resultp.get("ImeKulture");
+        //String imekulture_str = resultp.get("ImeKulture");
         String vremesenzor_str = resultp.get("vremeSenzor");
+        int IdSenNotNotifikacija = Integer.parseInt(resultp.get("IdSenNotNotifikacija"));
+
+        String colortype;
+        switch (IdSenNotNotifikacija) {
+            case 1:
+                colortype = "Color.GREEN";
+                colortype = "#52be80";
+                break;
+            case 2:
+                colortype = "Color.YELLOW";
+                colortype = "#f1c40f";
+                break;
+            case 3:
+                colortype = "Color.RED";
+                colortype = "#cb4335";
+                break;
+            default:
+                colortype = "Color.GRAY";
+                colortype = "#aeb6bf";
+                break;
+        }
+
+        Log.d("testmiki color", String.valueOf(colortype));
+        // definisemo polja
+        //opisnotifikacije_tv = (TextView) view.findViewById(R.id.opisnotifikacije_tv);
+        //opisnotifikacije_tv.setBackgroundColor(Color.RED);
+        //opisnotifikacije_tv.setTextColor(colourtype);
+        //String color = Integer.parseInt(String.valueOf(R.color.my_color));
+
+
+        odpodaciideal_tv = (TextView) view.findViewById(R.id.odpodaciideal_tv);
+        dopodaciideal_tv = (TextView) view.findViewById(R.id.dopodaciideal_tv);
+
+        vrednostsenzor_tv = (TextView) view.findViewById(R.id.vrednostsenzor_tv);
+        vrednostsenzor_tv.setTypeface(null, Typeface.BOLD);
+        vrednostsenzor_tv.setTextColor(Color.parseColor(colortype));
+        vrednostsenzor_tv.setTextSize(40);
+
+        senzortipime_tv = (TextView) view.findViewById(R.id.senzortipime_tv);
+        senzortipime_tv.setTypeface(null, Typeface.BOLD);
+        senzortipime_tv.setTextSize(20);
+
+        //imekulture_tv = (TextView) view.findViewById(R.id.imekulture_tv);
+        vremesenzor_tv = (TextView) view.findViewById(R.id.vremesenzor_tv);
+
+
+        TextView tekstodpodaciideal_tv = (TextView) view.findViewById(R.id.tekstodpodaciideal_tv);
+        tekstodpodaciideal_tv.setTextSize(8);
 
 
         // upucavamo varijable u polja
-        opisnotifikacije_tv.setText(opisnotifikacije_str);
+        //opisnotifikacije_tv.setText(opisnotifikacije_str);
         odpodaciideal_tv.setText(odpodaciideal_str);
+        odpodaciideal_tv.setTextSize(8);
         dopodaciideal_tv.setText(dopodaciideal_str);
+        dopodaciideal_tv.setTextSize(8);
+
         vrednostsenzor_tv.setText(vrednostsenzor_str);
         senzortipime_tv.setText(senzortipime_str);
-        imekulture_tv.setText(imekulture_str);
+        //imekulture_tv.setText(imekulture_str);
 
 
         //2018-05-26 20:15:37
@@ -95,7 +139,7 @@ class ViewAdapterSensorDetail extends BaseAdapter {
         String newFormat = "";
         try {
             testDate = sdf.parse(vremesenzor_str);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss", Locale.US); // MMM dd,yyyy hh:mm a
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/YYYY HH:mm", Locale.US); // MMM dd,yyyy hh:mm a
             newFormat = formatter.format(testDate);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -105,7 +149,8 @@ class ViewAdapterSensorDetail extends BaseAdapter {
 
         //SimpleDateFormat dateF = new SimpleDateFormat("EEE, d MMM yyyy", vremesenzor_str); // "HH:mm"
         //String date = dateF.format(Calendar.getInstance().getTime());
-        vremesenzor_tv.setText(newFormat);
+        vremesenzor_tv.setText("Date Time : "+newFormat);
+        vremesenzor_tv.setTextSize(8);
 
 
         return view;

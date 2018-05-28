@@ -91,8 +91,6 @@ public class SensorDetailActivity extends AppCompatActivity {
 
         session = new SessionManager(getApplicationContext());
         userID = session.getUID();
-        Log.d("testmiki", userID);
-        Log.d("testmiki", "aaa");
         getResults(SensorMAC, KulturaId, userID);
     }
 
@@ -105,6 +103,13 @@ public class SensorDetailActivity extends AppCompatActivity {
 
     private void showGraph() {
         Intent intent = new Intent(SensorDetailActivity.this, GraphActivity.class);
+        intent.putExtra("SensorMAC", SensorMAC);
+        intent.putExtra("KulturaId", KulturaId);
+        startActivity(intent);
+    }
+
+    private void showMaintenance(){
+        Intent intent = new Intent(SensorDetailActivity.this, MainTenance.class);
         intent.putExtra("SensorMAC", SensorMAC);
         intent.putExtra("KulturaId", KulturaId);
         startActivity(intent);
@@ -127,9 +132,6 @@ public class SensorDetailActivity extends AppCompatActivity {
                     if (success) {
 
                         jsonArray = jsonObject.getJSONArray("podaciSenzor");
-
-
-
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -172,6 +174,7 @@ public class SensorDetailActivity extends AppCompatActivity {
 
 
                                 Integer idSenzorIncr = m.getInt("idSenzorIncr");
+                                Integer IdSenNotNotifikacija = m.getInt("IdSenNotNotifikacija");
                                 float vrednostSenzor = Float.valueOf(m.getString("vrednostSenzor"));
                                 String OpisNotifikacije = m.getString("OpisNotifikacije");
 
@@ -179,6 +182,7 @@ public class SensorDetailActivity extends AppCompatActivity {
                                 grupaPodataka.put("idSenzorIncr", String.valueOf(idSenzorIncr));
                                 grupaPodataka.put("vrednostSenzor", String.valueOf(vrednostSenzor));
                                 grupaPodataka.put("OpisNotifikacije", OpisNotifikacije);
+                                grupaPodataka.put("IdSenNotNotifikacija", String.valueOf(IdSenNotNotifikacija));
 
 
 
@@ -224,7 +228,7 @@ public class SensorDetailActivity extends AppCompatActivity {
                 params.put("id", uid);
                 params.put("kulturaid", String.valueOf(kulturaId));
 
-                Log.d("testmiki", String.valueOf(params));
+                //Log.d("testmiki", String.valueOf(params));
                 return params;
             }
 
@@ -237,7 +241,7 @@ public class SensorDetailActivity extends AppCompatActivity {
     }
 
     private void callListView(ArrayList arraylist) {
-        Log.d("testmiki", String.valueOf(arraylist));
+        //Log.d("testmiki", String.valueOf(arraylist));
 
         if (arraylist.size() > 0) {
             adapter = new ViewAdapterSensorDetail(SensorDetailActivity.this, arraylist);
@@ -259,18 +263,15 @@ public class SensorDetailActivity extends AppCompatActivity {
             case R.id.action_show_graph:
                 showGraph();
                 return true;
+            case R.id.action_show_manual:
+                showMaintenance();
+                return true;
         }
         //return super.onOptionsItemSelected(item);
         super.onOptionsItemSelected(item);
-        if(item.getItemId() == R.id.facebook){
+       /* if(item.getItemId() == R.id.facebook){
             Toast.makeText(SensorDetailActivity.this, "Option pressed= facebook",Toast.LENGTH_LONG).show();
-        }
-        else if(item.getItemId() == R.id.Youtube){
-            Toast.makeText(SensorDetailActivity.this, "Option pressed= youtube",Toast.LENGTH_LONG).show();
-        }
-        else if(item.getItemId() == R.id.Twitter){
-            Toast.makeText(SensorDetailActivity.this, "Option pressed= twitter",Toast.LENGTH_LONG).show();
-        }
+        }*/
         return true;
     }
 
