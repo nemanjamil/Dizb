@@ -3,14 +3,17 @@ package rs.direktnoizbaste.dizb;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ class ViewAdapterSensorDetail extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
 
 
         if (inflater == null)
@@ -73,6 +76,7 @@ class ViewAdapterSensorDetail extends BaseAdapter {
         String vremesenzor_str = resultp.get("vremeSenzor");
         int IdSenNotNotifikacija = Integer.parseInt(resultp.get("IdSenNotNotifikacija"));
 
+
         String colortype;
         switch (IdSenNotNotifikacija) {
             case 1:
@@ -93,7 +97,6 @@ class ViewAdapterSensorDetail extends BaseAdapter {
                 break;
         }
 
-        Log.d("testmiki color", String.valueOf(colortype));
         // definisemo polja
         //opisnotifikacije_tv = (TextView) view.findViewById(R.id.opisnotifikacije_tv);
         //opisnotifikacije_tv.setBackgroundColor(Color.RED);
@@ -152,6 +155,31 @@ class ViewAdapterSensorDetail extends BaseAdapter {
         //String date = dateF.format(Calendar.getInstance().getTime());
         vremesenzor_tv.setText("Date Time : "+newFormat);
         vremesenzor_tv.setTextSize(8);
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                resultp = data.get(position);
+                int IdSenzorTip_str = Integer.parseInt(resultp.get("IdSenzorTip"));
+
+                Toast.makeText(activity.getApplicationContext(), "Broj : "+IdSenzorTip_str, Toast.LENGTH_SHORT).show();
+                // MACADRESA
+                // userid
+                // kulturaId
+                // tipsenzora
+
+               /* Intent intent = null;
+                //intent = new Intent(activity, PrikazJednogArtikla.class);
+                Bundle bundle = new Bundle();
+                //bundle.putInt("ArtikalId", Integer.parseInt(resultp.get(this.ArtikalId)));
+                bundle.putString("teer", resultp.get(this.IdSenzorTip_str));
+                intent.putExtras(bundle);
+                //activity.startActivity(intent);*/
+
+            }
+        });
 
 
         return view;
