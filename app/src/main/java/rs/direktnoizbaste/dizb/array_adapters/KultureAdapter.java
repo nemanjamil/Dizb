@@ -67,12 +67,6 @@ public class KultureAdapter extends ArrayAdapter<Kulture> {
         Glide.with(getContext()).load(item.slikaKulture).into(viewHolder.imgKulura);
 
         viewHolder.txtKulturaNaziv.setText(item.ImeKulture);
-        viewHolder.imgMainTenance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getContext().startActivity(new Intent(getContext(), MainTenance.class));
-            }
-        });
 
         viewHolder.llOpenDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +83,6 @@ public class KultureAdapter extends ArrayAdapter<Kulture> {
     private void SetKultureFields(ViewHolder viewHolder, View convertView) {
         viewHolder.txtKulturaNaziv = (TextView) convertView.findViewById(R.id.txtKulturaNaziv);
         viewHolder.imgKulura = (ImageView) convertView.findViewById(R.id.imgKulura);
-        viewHolder.imgMainTenance = (ImageView) convertView.findViewById(R.id.imgMainTenance);
         viewHolder.llOpenDialog = (LinearLayout) convertView.findViewById(R.id.llOpenDialog);
     }
 }

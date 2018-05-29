@@ -1,6 +1,7 @@
 package rs.direktnoizbaste.dizb.array_adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rs.direktnoizbaste.dizb.MainTenance;
 import rs.direktnoizbaste.dizb.R;
 
 /**
@@ -39,6 +41,14 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
         TextView textView_desc = (TextView) rowView.findViewById(R.id.secondLine);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        ImageView imgMainTenance = (ImageView) rowView.findViewById(R.id.imgMainTenance);
+
+        imgMainTenance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(getContext(), MainTenance.class));
+            }
+        });
 
         try {
             textView.setText(values[position].getString("SenzorNaziv"));
