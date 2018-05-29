@@ -118,19 +118,20 @@ class ViewAdapterSensorDetail extends BaseAdapter {
 
 
         TextView tekstodpodaciideal_tv = (TextView) view.findViewById(R.id.tekstodpodaciideal_tv);
-        tekstodpodaciideal_tv.setTextSize(8);
-
+        tekstodpodaciideal_tv.setTextSize(10);
+        tekstodpodaciideal_tv.setText(activity.getResources().getString(R.string.idealnavrenost)+" "+senzortipime_str);
 
         // upucavamo varijable u polja
         //opisnotifikacije_tv.setText(opisnotifikacije_str);
         odpodaciideal_tv.setText(odpodaciideal_str);
-        odpodaciideal_tv.setTextSize(8);
+        odpodaciideal_tv.setTextSize(10);
         dopodaciideal_tv.setText(dopodaciideal_str);
-        dopodaciideal_tv.setTextSize(8);
+        dopodaciideal_tv.setTextSize(10);
 
         vrednostsenzor_tv.setText(vrednostsenzor_str);
         senzortipime_tv.setText(senzortipime_str);
         //imekulture_tv.setText(imekulture_str);
+
 
 
         //2018-05-26 20:15:37
