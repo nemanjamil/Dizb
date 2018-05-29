@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/imgKulura"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="5dp" />
-
-    <TextView
-        android:id="@+id/txtKulturaNaziv"
+    <LinearLayout
+        android:id="@+id/llOpenDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textSize="16sp" />
+        android:layout_toLeftOf="@+id/imgMainTenance"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/imgKulura"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/txtKulturaNaziv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgMainTenance"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:src="@mipmap/ic_launcher" />
+</RelativeLayout>

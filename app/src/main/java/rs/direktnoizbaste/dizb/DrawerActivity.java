@@ -359,19 +359,17 @@ public class DrawerActivity extends AppCompatActivity
                         listaKultura = new ArrayList<>();
                         listaKultura.addAll(response.body().podaci);
                         ListView lvListKultura = (ListView) dialog.findViewById(R.id.lvListKultura);
-                        adapter = new KultureAdapter(DrawerActivity.this, listaKultura);
+                        adapter = new KultureAdapter(DrawerActivity.this, listaKultura, SenzorMac, dialog);
                         lvListKultura.setAdapter(adapter);
-                        lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                //Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
-                                Intent intent = new Intent(DrawerActivity.this, SensorDetailActivity.class);
-                                intent.putExtra("SensorMAC", SenzorMac);
-                                intent.putExtra("KulturaId", listaKultura.get(i).IdKulture);
-                                startActivity(intent);
-                                dialog.dismiss();
-                            }
-                        });
+
+//
+//                        lvListKultura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                                //Intent intent = new Intent(DrawerActivity.this, GraphActivity.class);
+//
+//                            }
+//                        });
                         dialog.show();
                     } else {
                         showSnack(response.body().error_msg);
