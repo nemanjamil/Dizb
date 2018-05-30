@@ -42,7 +42,7 @@ public class MainTenance extends AppCompatActivity implements RadioGroup.OnCheck
     private String op1;
     private Button subbuttonpump;
     String SensorMAC = null;
-    Integer KulturaId = null;
+    //Integer KulturaId = null;
     private LinearLayout maintell1,maintell2;
 
     ProgressDialog pd;
@@ -59,7 +59,7 @@ public class MainTenance extends AppCompatActivity implements RadioGroup.OnCheck
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             SensorMAC = extras.getString("SensorMAC"); // retrieve the data using keyName
-            KulturaId = extras.getInt("KulturaId");
+            //KulturaId = extras.getInt("KulturaId");
         }
 
         pd = new ProgressDialog(MainTenance.this);
@@ -69,7 +69,7 @@ public class MainTenance extends AppCompatActivity implements RadioGroup.OnCheck
 
 
         // Setting up toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbarmain);
         myToolbar.setTitle(R.string.title_maintanance);
         setSupportActionBar(myToolbar);
         // Get a support ActionBar corresponding to this toolbar
@@ -274,7 +274,7 @@ public class MainTenance extends AppCompatActivity implements RadioGroup.OnCheck
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_app_bar_sensor_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_maintanace, menu);
         return true;
     }
     @Override

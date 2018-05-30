@@ -374,6 +374,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     AppConfig.logInfo("BroadCastRec","GETTING SCAN RESULTS");
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
+                    AppConfig.logInfo("BroadCastRec 1", String.valueOf(wifiSensorAPList));
                     wifiAPList = new ArrayList<ScanResult>();
 
                     for (int i = 0; i < wifiScanList.size(); i++) {
@@ -465,7 +466,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
 
 
                 if (activeNetwork != null) {
-                    AppConfig.logInfo("BroadCastRec", activeNetwork.getState().toString());
+                    AppConfig.logInfo("BroadCastRec Conne", activeNetwork.getState().toString());
                 }
 
                 if (activeNetwork != null && isConnected) {
@@ -492,7 +493,7 @@ public class SensorAPActivity_old extends AppCompatActivity implements AdapterVi
                     AppConfig.logInfo("BroadCastRec", String.valueOf(configuringSensor));
                     AppConfig.logInfo("BroadCastRec", String.valueOf(ssid.startsWith(getString(R.string.sensorprefix), 1)));
 
-                    if (configuringSensor) {
+                    if (true) { // configuringSensor
                         if (ssid.startsWith(getString(R.string.sensorprefix), 1)) {
                             AppConfig.logInfo("BroadCastRec", "Sakrij dialog");
                             progressDialog.hideDialog();

@@ -111,7 +111,7 @@ public class SensorDetailActivity extends AppCompatActivity {
     private void showMaintenance(){
         Intent intent = new Intent(SensorDetailActivity.this, MainTenance.class);
         intent.putExtra("SensorMAC", SensorMAC);
-        intent.putExtra("KulturaId", KulturaId);
+        //intent.putExtra("KulturaId", KulturaId);
         startActivity(intent);
     }
 

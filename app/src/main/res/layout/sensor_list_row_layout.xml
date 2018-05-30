@@ -54,5 +54,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_settings_black_24dp" />
 </RelativeLayout>

@@ -164,7 +164,7 @@ class ViewAdapterSensorDetail extends BaseAdapter {
                 resultp = data.get(position);
                 int IdSenzorTip_str = Integer.parseInt(resultp.get("IdSenzorTip"));
 
-                Toast.makeText(activity.getApplicationContext(), "Broj : "+IdSenzorTip_str, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity.getApplicationContext(), "Broj : "+IdSenzorTip_str, Toast.LENGTH_SHORT).show();
                 // MACADRESA
                 // userid
                 // kulturaId

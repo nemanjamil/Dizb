@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Direktno_iz_baste</string>
+    <string name="app_name">ProGarden - Hydroponics</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_delete">Izbriši</string>
@@ -21,7 +21,7 @@
     </string>
     <string name="text_logged_in">Povezani ste</string>
     <string name="btn_text_logout">Odveži se</string>
-    <string name="text_web_site">direktnoizbaste.rs</string>
+    <string name="text_web_site">progarden.rs</string>
     <string name="btn_text_sign_in">Poveži se</string>
     <string name="btn_text_register_here">Registruj me</string>
 
@@ -38,8 +38,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_sensor_ap_list">SensorApListActivity</string>
-    <string name="title_slider">Direktno iz bašte</string>
-    <string name="subtitle_slider">www.direktnoizbaste.rs</string>
+    <string name="title_slider">ProGarden - Hydroponics</string>
+    <string name="subtitle_slider">progarden.site</string>
     <string name="drawer_menu_logout">Odjavi se</string>
     <string name="drawer_menu_add">Dodaj senzor</string>
     <string name="drawer_menu_settings">Podešavanja</string>
@@ -48,7 +48,7 @@
         "Material is the metaphor.\n\n"
 
     </string>
-    <string name="title_activity_drawer">Lista senzora</string>
+    <string name="title_activity_drawer">Sensor List</string>
     <string name="drawer_action_subtitle">Akcije</string>
     <string name="progress_update_sensor_list">Učitavam listu…</string>
     <string name="delete_confirmation_question">Ako potvrdite, izbrisaćete izabrane senzore.
@@ -168,7 +168,7 @@
     <string name="progress_update_sensor">Izmena kulture...</string>
     <string name="progress_update_user_data">Menjam podatke...</string>
     <string name="sensorprefix">GardenLocal</string>
-    <string name="title_activity_sensor_detail">Sensor Detail Activity</string>
+    <string name="title_activity_sensor_detail">Sensors</string>
     <string name="title_maintanance">Manual Control</string>
     <string name="pleaseWait">Please Wait</string>
     <string name="tvKategName">NameExample</string>

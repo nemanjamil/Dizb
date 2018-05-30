@@ -3,6 +3,7 @@ package rs.direktnoizbaste.dizb.array_adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +26,20 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
     private final JSONObject[] values;
     private SparseBooleanArray mSelectedItemsIds;
 
+
+
     public SensorListAdapter(Context context, JSONObject[] values) {
         super(context, R.layout.sensor_list_row_layout, values);
         this.context = context;
         this.values = values;
         mSelectedItemsIds = new SparseBooleanArray();
+        // 0 nameValuePairs 1 key SenzorSifra
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             /*TODO use view recycling for smooth scrolling...*/
@@ -46,7 +52,16 @@ public class SensorListAdapter extends ArrayAdapter<JSONObject> {
         imgMainTenance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(getContext(), MainTenance.class));
+
+                Intent intent = new Intent(new Intent(getContext(), MainTenance.class));
+                try {
+                    intent.putExtra("SensorMAC", values[position].getString("SenzorSifra"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(intent);
+
+                //context.startActivity(new Intent(getContext(), MainTenance.class));
             }
         });
 

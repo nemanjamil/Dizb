@@ -257,7 +257,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             /*TODO Check for intent action*/
             String intentAction = intent.getAction();
             if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intentAction)) {
-                AppConfig.logInfo("BroadCastRec", "scan results available");
+                AppConfig.logInfo("BroadCastRec qqq", "scan results available");
                 if (!configuringSensor) {
                     wifiScanList = wifiManager.getScanResults();
                     wifiSensorAPList = new ArrayList<ScanResult>();
@@ -271,7 +271,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
                     }
 
                     if (wifiSensorAPList.size() == 0)
-                        showSnack("Nije pronađen ni jedan senzor.\nDa li ste prebacili senzor u mod za podešavanje?");
+                        showSnack("qqq Nije pronađen ni jedan senzor.\nDa li ste prebacili senzor u mod za podešavanje?");
 
                     listView.setAdapter(new SensorAPListAdapter(getApplicationContext(), wifiScanList));
                     hideDialog();
@@ -279,7 +279,7 @@ public class SensorAPActivity extends AppCompatActivity implements AdapterView.O
             } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intentAction)) {
                 int wifi_state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 if (wifi_state == WifiManager.WIFI_STATE_ENABLING) {
-                    AppConfig.logInfo("BroadCastRec", "wifi enabling");
+                    AppConfig.logInfo("BroadCastRec qqq", "wifi enabling");
 
                     // show progress dialog
                     showDialog("Uključujem WiFi...");
